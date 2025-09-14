@@ -1,66 +1,112 @@
+/* 全体のリセット＆フォント */
 body {
-  font-family: sans-serif;
-  background-color: #f0f4f8;
-  color: #333;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
   margin: 0;
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  background: #f5f6fa;
+  color: #333;
 }
 
-#root {
-  width: 100%;
-  max-width: 600px;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
+/* アプリ全体 */
 .app-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
   text-align: center;
 }
 
+/* タイトル */
 h1 {
-  font-size: 2.5rem;
-  color: #2c3e50;
+  font-size: 2.2rem;
+  color: #2f3640;
   margin-bottom: 20px;
+  letter-spacing: 2px;
+  font-weight: bold;
 }
 
+/* カード風のエリア */
 .group-selection-card,
 .quiz-card,
 .result-card {
-  background-color: #ffffff;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  border-radius: 12px;
+  padding: 30px 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-top: 20px;
 }
 
-.esperanto-word {
-  font-size: 2rem;
-  font-weight: bold;
-  margin: 20px 0;
-  color: #3498db;
+/* 見出し */
+h2 {
+  font-size: 1.4rem;
+  color: #40739e;
+  margin-bottom: 20px;
 }
 
-.japanese-word {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin: 20px 0;
-  color: #e74c3c;
-}
-
+/* ボタン共通スタイル */
 button {
-  background-color: #3498db;
-  color: white;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 5px;
+  display: inline-block;
+  margin: 8px;
+  padding: 12px 20px;
   font-size: 1rem;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin: 5px; /* ボタン間の余白を追加 */
+  background: #00a8ff;
+  color: #fff;
+  transition: background 0.2s ease, transform 0.1s ease;
 }
 
 button:hover {
-  background-color: #2980b9;
+  background: #0097e6;
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+/* 戻るボタン */
+.back-button {
+  background: #718093;
+}
+
+.back-button:hover {
+  background: #596275;
+}
+
+/* 出題単語 */
+.esperanto-word {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #273c75;
+  margin-bottom: 20px;
+}
+
+/* 回答エリア（高さを確保してガタガタしない） */
+.answer-area {
+  min-height: 60px;
+  margin-bottom: 20px;
+}
+
+/* 和訳 */
+.japanese-word {
+  font-size: 1.4rem;
+  color: #44bd32;
+  margin: 0;
+}
+
+/* スマホ対応 */
+@media (max-width: 480px) {
+  .app-container {
+    margin: 20px;
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  button {
+    width: 100%;
+    margin: 6px 0;
+  }
 }
