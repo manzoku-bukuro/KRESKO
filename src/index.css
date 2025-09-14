@@ -26,7 +26,9 @@ h1 {
   margin-bottom: 20px;
 }
 
-.quiz-card, .result-card {
+.group-selection-card,
+.quiz-card,
+.result-card {
   background-color: #ffffff;
   padding: 30px;
   border-radius: 10px;
@@ -56,7 +58,7 @@ button {
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-top: 10px;
+  margin: 5px; /* ボタン間の余白を追加 */
 }
 
 button:hover {
