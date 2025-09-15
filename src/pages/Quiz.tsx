@@ -43,6 +43,7 @@ function Quiz() {
   const [questions, setQuestions] = useState<Word[]>([]);
   const [index, setIndex] = useState(0);
   const [show, setShow] = useState(false);
+  const [finished, setFinished] = useState(false);
 
   // クイズ開始/リセット処理
   const startQuiz = () => {
@@ -50,14 +51,14 @@ function Quiz() {
     setQuestions(shuffled.slice(0, 10));
     setIndex(0);
     setShow(false);
+    setFinished(false);
   };
 
-  // ページ初期表示 or パラメータ変化時に新しいクイズを用意
+  // 初期化
   useEffect(() => {
     startQuiz();
   }, [category, rangeStart, rangeSize]);
 
-  // ボタン押下
   const handleClick = () => {
     if (!show) {
       setShow(true);
@@ -66,11 +67,36 @@ function Quiz() {
         setIndex(index + 1);
         setShow(false);
       } else {
-        // 10問終わったら再スタート
-        startQuiz();
+        // 終了
+        setFinished(true);
       }
     }
   };
+
+  // 次の範囲へ進む処理
+  const handleNextRange = () => {
+    const nextStart = start + size + 1;
+    if (nextStart <= words.length) {
+      navigate(`/quiz/${category}/${nextStart}/${size}`);
+    } else {
+      // 末尾を超えたら範囲選択に戻る
+      navigate(`/range/${category}`);
+    }
+  };
+
+  if (finished) {
+    return (
+      <div className="quiz-card">
+        <h2>{category}</h2>
+        <h3>この範囲の学習が完了しました！</h3>
+        <button onClick={startQuiz}>同じ範囲をもう一度</button>
+        <button onClick={handleNextRange}>次の範囲へ進む</button>
+        <button className="back-button" onClick={() => navigate(`/range/${category}`)}>
+          範囲選択に戻る
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="quiz-card">
@@ -97,7 +123,6 @@ function Quiz() {
         {show ? "次の問題へ" : "回答を表示"}
       </button>
 
-      {/* 範囲選択に戻る */}
       <button
         className="back-button"
         onClick={() => navigate(`/range/${category}`)}
