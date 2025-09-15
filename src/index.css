@@ -1,62 +1,101 @@
-/* 全体のリセット＆フォント */
-body {
-  margin: 0;
-  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-  background: #f5f6fa;
-  color: #333;
+/***********************************************************
+ * RESET & BASE
+ ***********************************************************/
+:root {
+  --color-bg: #fdfdfd;
+  --color-text: #333;
+  --color-primary: #58cc02;
+  --color-primary-dark: #46a302;
+  --color-accent: #ff9f1c;
+  --color-accent-dark: #e08e17;
+  --color-success: #2e7d32;
+  --color-muted: #555;
+
+  --font-main: "Nunito", "Segoe UI", "Helvetica Neue", sans-serif;
+
+  --radius-card: 20px;
+  --radius-pill: 999px;
+
+  --shadow-soft: 0 4px 14px rgba(0, 0, 0, 0.08);
 }
 
-/* アプリ全体 */
+body {
+  margin: 0;
+  font-family: var(--font-main);
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+/***********************************************************
+ * LAYOUT
+ ***********************************************************/
 .app-container {
-  max-width: 600px;
+  max-width: 640px;
   margin: 40px auto;
   padding: 20px;
   text-align: center;
 }
 
-/* タイトル */
-h1 {
-  font-size: 2.2rem;
-  color: #2f3640;
-  margin-bottom: 20px;
-  letter-spacing: 2px;
-  font-weight: bold;
-}
-
-/* カード風のエリア */
-.group-selection-card,
-.quiz-card,
-.result-card {
+.group-selection-card {
   background: #fff;
-  border-radius: 12px;
+  border-radius: var(--radius-card);
   padding: 30px 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   margin-top: 20px;
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.2s ease;
+  text-align: center;
 }
 
-/* 見出し */
+.group-selection-card:hover {
+  transform: translateY(-2px);
+}
+
+.quiz-card {
+  background: #fff;
+  border-radius: var(--radius-card);
+  padding: 30px 20px;
+  margin-top: 20px;
+  box-shadow: var(--shadow-soft);
+  text-align: center;
+}
+
+/***********************************************************
+ * TYPOGRAPHY
+ ***********************************************************/
+h1 {
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: var(--color-primary);
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
 h2 {
   font-size: 1.4rem;
-  color: #40739e;
-  margin-bottom: 20px;
+  font-weight: 700;
+  color: var(--color-muted);
+  margin-bottom: 15px;
 }
 
-/* ボタン共通スタイル */
+/***********************************************************
+ * BUTTON
+ ***********************************************************/
 button {
   display: inline-block;
   margin: 8px;
-  padding: 12px 20px;
+  padding: 14px 22px;
   font-size: 1rem;
+  font-weight: 600;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-pill);
   cursor: pointer;
-  background: #00a8ff;
+  background: var(--color-primary);
   color: #fff;
-  transition: background 0.2s ease, transform 0.1s ease;
+  transition: background-color 0.25s, transform 0.15s;
 }
 
 button:hover {
-  background: #0097e6;
+  background: var(--color-primary-dark);
   transform: translateY(-2px);
 }
 
@@ -64,37 +103,53 @@ button:active {
   transform: translateY(1px);
 }
 
-/* 戻るボタン */
 .back-button {
-  background: #718093;
+  background: var(--color-accent);
 }
-
 .back-button:hover {
-  background: #596275;
+  background: var(--color-accent-dark);
 }
 
-/* 出題単語 */
+/***********************************************************
+ * QUIZ TEXT
+ ***********************************************************/
 .esperanto-word {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #273c75;
-  margin-bottom: 20px;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #37474f;
+  margin: 25px 0;
 }
 
-/* 回答エリア（高さを確保してガタガタしない） */
-.answer-area {
-  min-height: 60px;
-  margin-bottom: 20px;
-}
-
-/* 和訳 */
 .japanese-word {
-  font-size: 1.4rem;
-  color: #44bd32;
-  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: var(--color-success);
+  margin: 12px 0;
+  line-height: 1.5;
 }
 
-/* スマホ対応 */
+.japanese-extra {
+  font-size: 1.1rem;
+  color: var(--color-muted);
+  margin: 6px 0 0;
+  line-height: 1.4;
+}
+
+/***********************************************************
+ * ANSWER AREA
+ ***********************************************************/
+.answer-area {
+  min-height: 100px;   /* 回答全体を表示できる高さを確保 */
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/***********************************************************
+ * RESPONSIVE
+ ***********************************************************/
 @media (max-width: 480px) {
   .app-container {
     margin: 20px;
@@ -102,7 +157,7 @@ button:active {
   }
 
   h1 {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
   }
 
   button {

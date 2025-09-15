@@ -5,9 +5,11 @@ import esuken4 from "../data/esuken4.json";
 
 interface Word {
   esperanto: string;
-  japanese: string;
+  japanese: string; // 主な意味
+  extra?: string;   // 意味続き（エス研のみ）
 }
 
+// JSON → 共通形式に変換
 const normalizeWords = (category: string): Word[] => {
   if (category === "drill") {
     return (vortaro as any[]).map(w => ({
@@ -15,12 +17,15 @@ const normalizeWords = (category: string): Word[] => {
       japanese: w.japanese,
     }));
   }
+
   if (category === "esuken4") {
     return (esuken4 as any[]).map(w => ({
       esperanto: w.vorto,
-      japanese: `${w.意味}${w["意味続き"] ? " / " + w["意味続き"] : ""}`,
+      japanese: w.意味,
+      extra: w["意味続き"] ?? "",
     }));
   }
+
   return [];
 };
 
@@ -39,7 +44,7 @@ function Quiz() {
   const [index, setIndex] = useState(0);
   const [show, setShow] = useState(false);
 
-  // クイズ開始/リセット
+  // クイズ開始/リセット処理
   const startQuiz = () => {
     const shuffled = [...slice].sort(() => 0.5 - Math.random());
     setQuestions(shuffled.slice(0, 10));
@@ -47,10 +52,12 @@ function Quiz() {
     setShow(false);
   };
 
+  // ページ初期表示 or パラメータ変化時に新しいクイズを用意
   useEffect(() => {
     startQuiz();
   }, [category, rangeStart, rangeSize]);
 
+  // ボタン押下
   const handleClick = () => {
     if (!show) {
       setShow(true);
@@ -59,26 +66,42 @@ function Quiz() {
         setIndex(index + 1);
         setShow(false);
       } else {
-        // 10問終わったら同じカテゴリ&範囲で再スタート
+        // 10問終わったら再スタート
         startQuiz();
       }
     }
   };
 
-  
-
   return (
     <div className="quiz-card">
       <h2>{category}</h2>
       <h3>問題 {index + 1} / {questions.length}</h3>
+
+      {/* 出題単語 */}
       <p className="esperanto-word">{questions[index]?.esperanto}</p>
+
+      {/* 回答表示部分 */}
       <div className="answer-area">
-        {show && <p className="japanese-word">{questions[index]?.japanese}</p>}
+        {show && (
+          <>
+            <p className="japanese-word">{questions[index]?.japanese}</p>
+            {questions[index]?.extra && (
+              <p className="japanese-extra">{questions[index]?.extra}</p>
+            )}
+          </>
+        )}
       </div>
+
+      {/* 回答/次へボタン */}
       <button onClick={handleClick}>
         {show ? "次の問題へ" : "回答を表示"}
       </button>
-      <button className="back-button" onClick={() => navigate(`/range/${category}`)}>
+
+      {/* 範囲選択に戻る */}
+      <button
+        className="back-button"
+        onClick={() => navigate(`/range/${category}`)}
+      >
         範囲選択に戻る
       </button>
     </div>
