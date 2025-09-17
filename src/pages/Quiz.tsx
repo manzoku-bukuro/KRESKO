@@ -73,6 +73,8 @@ function Quiz() {
     }
   };
 
+  const isLastQuestion = index === questions.length - 1;
+
   // 次の範囲へ進む処理
   const handleNextRange = () => {
     const nextStart = start + size + 1;
@@ -84,51 +86,126 @@ function Quiz() {
     }
   };
 
+  const getCategoryEmoji = (cat: string) => {
+    if (cat === "drill") return "📚";
+    if (cat === "esuken4") return "🏆";
+    return "📖";
+  };
+
+  const getCategoryName = (cat: string) => {
+    if (cat === "drill") return "ドリル式";
+    if (cat === "esuken4") return "エス検4級";
+    return cat;
+  };
+
   if (finished) {
     return (
-      <div className="quiz-card">
-        <h2>{category}</h2>
-        <h3>この範囲の学習が完了しました！</h3>
-        <button onClick={startQuiz}>同じ範囲をもう一度</button>
-        <button onClick={handleNextRange}>次の範囲へ進む</button>
-        <button className="back-button" onClick={() => navigate(`/range/${category}`)}>
-          範囲選択に戻る
-        </button>
+      <div className="app-container">
+        <div className="card quiz-completion">
+          <h1>🎉 完了！</h1>
+          <h3>この範囲の学習が完了しました！</h3>
+          <p>お疲れ様でした。{questions.length}問の単語を学習しました。</p>
+
+          {/* 学習した単語一覧 */}
+          <div className="word-review">
+            <h4>📖 学習した単語一覧 ({questions.length}語)</h4>
+            <div className="word-grid">
+              {questions.map((word, idx) => (
+                <div key={idx} className="word-item">
+                  <div className="word-esperanto">{word.esperanto}</div>
+                  <div className="word-japanese">{word.japanese}</div>
+                  {word.extra && <div className="word-extra">{word.extra}</div>}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ marginTop: "2rem" }}>
+            <button
+              className="btn btn-primary btn-large btn-full"
+              onClick={startQuiz}
+              style={{ marginBottom: "1rem" }}
+            >
+              🔄 同じ範囲をもう一度
+            </button>
+            <button
+              className="btn btn-accent btn-large btn-full"
+              onClick={handleNextRange}
+              style={{ marginBottom: "1rem" }}
+            >
+              ➡️ 次の範囲へ進む
+            </button>
+            <button
+              className="btn btn-secondary"
+              onClick={() => navigate(`/range/${category}`)}
+            >
+              📋 範囲選択に戻る
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
 
+  const progress = ((index + 1) / questions.length) * 100;
+
   return (
-    <div className="quiz-card">
-      <h2>{category}</h2>
-      <h3>問題 {index + 1} / {questions.length}</h3>
+    <div className="app-container">
+      <div className="card quiz-container">
+        {/* Progress Bar */}
+        <div className="quiz-progress">
+          <div className="quiz-progress-bar" style={{ width: `${progress}%` }}></div>
+        </div>
 
-      {/* 出題単語 */}
-      <p className="esperanto-word">{questions[index]?.esperanto}</p>
+        {/* Header */}
+        <div className="quiz-header">
+          <h2>{getCategoryEmoji(category!)} {getCategoryName(category!)}</h2>
+          <p className="quiz-counter">
+            問題 {index + 1} / {questions.length} ({rangeStart} - {Math.min(Number(rangeStart) + Number(rangeSize) - 1, words.length)})
+          </p>
+        </div>
 
-      {/* 回答表示部分 */}
-      <div className="answer-area">
-        {show && (
-          <>
-            <p className="japanese-word">{questions[index]?.japanese}</p>
-            {questions[index]?.extra && (
-              <p className="japanese-extra">{questions[index]?.extra}</p>
+        {/* Quiz Content */}
+        <div className="quiz-content">
+          {/* 出題単語 */}
+          <p className="esperanto-word">{questions[index]?.esperanto}</p>
+
+          {/* 回答表示部分 */}
+          <div className="answer-area">
+            {show && (
+              <>
+                <p className="japanese-word">{questions[index]?.japanese}</p>
+                {questions[index]?.extra && (
+                  <p className="japanese-extra">{questions[index]?.extra}</p>
+                )}
+              </>
             )}
-          </>
-        )}
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div style={{ marginTop: "auto" }}>
+          <button
+            className="btn btn-primary btn-large btn-full"
+            onClick={handleClick}
+            style={{ marginBottom: "1rem" }}
+          >
+            {!show
+              ? "👁️ 回答を表示"
+              : isLastQuestion
+                ? "🎉 完了！"
+                : "➡️ 次の問題へ"
+            }
+          </button>
+
+          <button
+            className="btn btn-accent btn-small"
+            onClick={() => navigate(`/range/${category}`)}
+          >
+            ← 範囲選択に戻る
+          </button>
+        </div>
       </div>
-
-      {/* 回答/次へボタン */}
-      <button onClick={handleClick}>
-        {show ? "次の問題へ" : "回答を表示"}
-      </button>
-
-      <button
-        className="back-button"
-        onClick={() => navigate(`/range/${category}`)}
-      >
-        範囲選択に戻る
-      </button>
     </div>
   );
 }
