@@ -301,9 +301,12 @@ function Quiz() {
               {/* 結果表示 */}
               {showResult && (
                 <div className={`choice-result ${selectedAnswer === questions[index]?.japanese ? 'correct' : 'wrong'}`}>
-                  <div className="choice-result-content">
-                    {selectedAnswer === questions[index]?.japanese ? '🎉 正解！' : '❌ 不正解'}
-                  </div>
+                  {/* 正解の意味続きを表示 */}
+                  {questions[index]?.extra && (
+                    <div className="choice-extra-meaning">
+                      {questions[index]?.extra}
+                    </div>
+                  )}
 
                   {/* 次へボタン */}
                   <div className="choice-result-button">

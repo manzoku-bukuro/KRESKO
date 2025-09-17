@@ -64,19 +64,26 @@ body {
  ***********************************************************/
 .app-container {
   max-width: 640px;
-  margin: var(--spacing-2xl) auto;
-  padding: var(--spacing-lg);
+  margin: 0 auto;
+  padding: var(--spacing-md);
   text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .card {
   background: var(--color-surface);
   border-radius: var(--radius-card);
-  padding: var(--spacing-xl) var(--spacing-lg);
-  margin-top: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  margin: var(--spacing-md) 0;
   box-shadow: var(--shadow-soft);
   text-align: center;
   transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  flex: 1;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .card:hover {
@@ -165,8 +172,9 @@ body {
 }
 
 .quiz-header {
-  padding-top: var(--spacing-md);
-  margin-bottom: var(--spacing-lg);
+  padding-top: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+  flex-shrink: 0;
 }
 
 .quiz-counter {
@@ -181,6 +189,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  flex: 1;
 }
 
 .quiz-completion {
@@ -214,24 +223,32 @@ body {
   gap: var(--spacing-sm);
   justify-content: center;
   margin-top: var(--spacing-md);
+  width: 100%;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .quiz-mode-toggle .btn {
   flex: 1;
-  max-width: 150px;
+  max-width: 180px;
   font-size: 0.9rem;
   padding: var(--spacing-sm) var(--spacing-md);
+  white-space: nowrap;
+  min-height: 40px;
 }
 
 .multiple-choice-area {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
-  margin: var(--spacing-xl) 0;
+  gap: var(--spacing-xs);
+  margin: var(--spacing-md) 0;
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
   width: 100%;
+  padding: 0 var(--spacing-xs);
+  box-sizing: border-box;
 }
 
 .choice-btn {
@@ -246,7 +263,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  line-height: 1.4;
+  line-height: 1.3;
   transition: all var(--transition-fast);
   white-space: normal;
   word-wrap: break-word;
@@ -278,28 +295,13 @@ body {
 
 .choice-result {
   text-align: center;
-  font-size: 1.2rem;
-  font-weight: var(--font-weight-bold);
-  margin-top: var(--spacing-lg);
-  padding: var(--spacing-lg);
-  border-radius: var(--radius-lg);
-  animation: fadeIn 0.5s ease-out;
+  margin-top: var(--spacing-xs);
+  padding: 0;
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
 }
 
-.choice-result.correct {
-  background: rgba(76, 175, 80, 0.1);
-  color: var(--color-success);
-  border: 2px solid var(--color-success);
-}
-
-.choice-result.wrong {
-  background: rgba(244, 67, 54, 0.1);
-  color: var(--color-danger);
-  border: 2px solid var(--color-danger);
-}
 
 .choice-extra {
   font-size: 1rem;
@@ -308,20 +310,30 @@ body {
   opacity: 0.9;
 }
 
-.choice-result-content {
-  margin-bottom: var(--spacing-md);
-  width: 100%;
-}
 
 .choice-result-button {
   width: 100%;
   display: flex;
   justify-content: center;
+  margin-top: 0;
 }
 
 .choice-result-button .btn {
   width: auto;
-  min-width: 180px;
+  min-width: 140px;
+  padding: var(--spacing-xs) var(--spacing-md);
+  font-size: 0.9rem;
+}
+
+.choice-extra-meaning {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  text-align: center;
+  margin-bottom: var(--spacing-xs);
+  padding: var(--spacing-xs);
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: var(--radius-sm);
+  line-height: 1.3;
 }
 
 .word-review {
@@ -419,17 +431,33 @@ body {
  ***********************************************************/
 h1 {
   font-size: 2.4rem;
-  font-weight: 900;
+  font-weight: var(--font-weight-black);
   color: var(--color-primary);
-  margin-bottom: 20px;
-  letter-spacing: 1px;
+  margin-bottom: var(--spacing-lg);
+  letter-spacing: 0.5px;
+  line-height: 1.2;
 }
 
 h2 {
   font-size: 1.4rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--color-muted);
-  margin-bottom: 15px;
+  margin-bottom: var(--spacing-md);
+  line-height: 1.3;
+}
+
+h3 {
+  font-size: 1.2rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  margin-bottom: var(--spacing-sm);
+  line-height: 1.4;
+}
+
+p {
+  line-height: 1.6;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-sm);
 }
 
 /***********************************************************
@@ -445,19 +473,35 @@ h2 {
   font-weight: var(--font-weight-semibold);
   font-family: inherit;
   border: none;
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-lg);
   cursor: pointer;
   text-decoration: none;
   transition: all var(--transition-fast);
   user-select: none;
   position: relative;
   overflow: hidden;
+  min-height: 44px; /* タッチターゲットサイズ確保 */
+  touch-action: manipulation; /* タッチレスポンス改善 */
 }
 
 .btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
   transform: none !important;
+}
+
+.btn:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.btn:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
 /* Primary Button */
@@ -525,11 +569,15 @@ h2 {
 .btn-large {
   padding: var(--spacing-lg) var(--spacing-2xl);
   font-size: 1.1rem;
+  min-height: 50px;
+  touch-action: manipulation;
 }
 
 .btn-small {
   padding: var(--spacing-sm) var(--spacing-md);
   font-size: 0.9rem;
+  min-height: 36px;
+  touch-action: manipulation;
 }
 
 /* Full Width */
@@ -666,16 +714,30 @@ h2 {
 /* Small mobile */
 @media (max-width: 375px) {
   .app-container {
-    margin: var(--spacing-sm) auto;
-    padding: var(--spacing-sm);
+    margin: 0;
+    padding: var(--spacing-xs);
+    min-height: 100vh;
+    justify-content: flex-start;
+    padding-top: var(--spacing-sm);
   }
 
   .card {
-    padding: var(--spacing-lg) var(--spacing-md);
+    padding: var(--spacing-xs);
+    margin: 0;
+    min-height: calc(100vh - var(--spacing-sm));
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
   h1 {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  h2 {
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-xs);
   }
 
   .range-grid {
@@ -684,12 +746,14 @@ h2 {
   }
 
   .esperanto-word {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
+    margin: var(--spacing-md) 0;
   }
 
   .btn-large {
-    padding: var(--spacing-md) var(--spacing-lg);
-    font-size: 1rem;
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 0.95rem;
+    min-height: 44px;
   }
 
   .word-grid {
@@ -706,7 +770,19 @@ h2 {
 /* Mobile */
 @media (min-width: 376px) and (max-width: 480px) {
   .app-container {
-    margin: var(--spacing-md) auto;
+    margin: 0;
+    padding: var(--spacing-sm);
+    min-height: 100vh;
+    justify-content: flex-start;
+    padding-top: var(--spacing-sm);
+  }
+
+  .card {
+    margin: 0;
+    min-height: calc(100vh - var(--spacing-md));
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
   .range-grid {
@@ -723,7 +799,10 @@ h2 {
 @media (min-width: 481px) and (max-width: 768px) {
   .app-container {
     max-width: 580px;
-    margin: var(--spacing-xl) auto;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+    min-height: 100vh;
+    justify-content: center;
   }
 
   .range-grid {
@@ -745,9 +824,18 @@ h2 {
 /* Desktop */
 @media (min-width: 769px) {
   .app-container {
-    max-width: 640px;
-    margin: var(--spacing-2xl) auto;
-    padding: var(--spacing-xl);
+    max-width: 700px;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .card {
+    padding: var(--spacing-lg) var(--spacing-xl);
+    margin-top: var(--spacing-sm);
   }
 
   .card:hover {
@@ -772,35 +860,35 @@ h2 {
   }
 
   .quiz-content {
-    min-height: 250px;
+    min-height: 180px;
   }
 
   /* Multiple Choice Desktop */
   .multiple-choice-area {
-    margin: var(--spacing-2xl) 0;
-    gap: var(--spacing-lg);
-    max-width: 700px;
+    margin: var(--spacing-lg) 0;
+    gap: var(--spacing-md);
+    max-width: 650px;
     padding: 0;
   }
 
   .choice-btn {
-    padding: var(--spacing-xl) var(--spacing-2xl) !important;
-    font-size: 1.2rem !important;
-    min-height: 70px;
+    padding: var(--spacing-lg) var(--spacing-xl) !important;
+    font-size: 1.1rem !important;
+    min-height: 55px;
     width: 100% !important;
   }
 
   .choice-result {
-    font-size: 1.4rem;
-    padding: var(--spacing-2xl);
-    margin-top: var(--spacing-2xl);
+    font-size: 1.2rem;
+    padding: var(--spacing-lg);
+    margin-top: var(--spacing-md);
     width: 100%;
   }
 
   .choice-result .btn {
     width: auto;
-    min-width: 200px;
-    margin: var(--spacing-lg) auto 0;
+    min-width: 180px;
+    margin: var(--spacing-sm) auto 0;
   }
 }
 
@@ -1023,51 +1111,59 @@ h2 {
 
   /* Multiple Choice Responsive */
   .quiz-mode-toggle {
-    margin-top: var(--spacing-sm);
+    margin-top: 2px;
+    margin-bottom: var(--spacing-xs);
   }
 
   .quiz-mode-toggle .btn {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     padding: var(--spacing-xs) var(--spacing-sm);
+    min-height: 32px;
   }
 
   .multiple-choice-area {
-    margin: var(--spacing-md) 0;
-    gap: var(--spacing-sm);
+    margin: var(--spacing-xs) 0;
+    gap: 2px;
     max-width: 100%;
-    padding: 0 var(--spacing-md);
+    padding: 0;
+    flex: 1;
   }
 
   .choice-btn {
-    padding: var(--spacing-md) var(--spacing-lg) !important;
-    font-size: 1rem !important;
-    min-height: 50px;
+    padding: var(--spacing-sm) var(--spacing-md) !important;
+    font-size: 0.9rem !important;
+    min-height: 40px;
     width: 100% !important;
   }
 
   .choice-result {
-    font-size: 1rem;
-    padding: var(--spacing-md);
-    margin-top: var(--spacing-md);
+    padding: 0;
+    margin-top: var(--spacing-xs);
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .choice-result-content {
-    margin-bottom: var(--spacing-sm);
+    display: block;
     text-align: center;
   }
 
   .choice-result-button {
     width: 100%;
-    margin-top: var(--spacing-sm);
+    margin-top: 0;
+    display: flex;
+    justify-content: center;
   }
 
   .choice-result-button .btn {
-    width: 100%;
+    width: 85%;
     min-width: auto;
+    max-width: 200px;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.8rem;
+    min-height: 32px;
+  }
+
+  .choice-extra-meaning {
+    font-size: 0.75rem;
+    margin-bottom: var(--spacing-xs);
+    padding: var(--spacing-xs) var(--spacing-sm);
   }
 }
 
@@ -1138,62 +1234,62 @@ h2 {
 
 @media (min-width: 769px) {
   .number-game-container {
-    padding: var(--spacing-xl);
+    padding: var(--spacing-lg);
   }
 
   .target-number {
-    font-size: 4rem;
-    padding: var(--spacing-2xl);
-    margin: var(--spacing-2xl) 0;
+    font-size: 3.2rem;
+    padding: var(--spacing-lg);
+    margin: var(--spacing-lg) 0;
   }
 
   .selected-cards-area {
-    margin: var(--spacing-2xl) 0;
+    margin: var(--spacing-lg) 0;
   }
 
   .selected-cards-area h3 {
-    font-size: 1.2rem;
-    margin-bottom: var(--spacing-md);
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-sm);
   }
 
   .selected-cards {
-    padding: var(--spacing-lg);
-    min-height: 100px;
+    padding: var(--spacing-md);
+    min-height: 70px;
   }
 
   .game-actions {
     flex-direction: row;
     justify-content: center;
-    gap: var(--spacing-lg);
-    margin: var(--spacing-2xl) 0;
+    gap: var(--spacing-md);
+    margin: var(--spacing-lg) 0;
     flex-wrap: wrap;
   }
 
   .game-actions .btn {
     flex: 0 0 auto;
     width: auto;
-    min-width: 200px;
-    max-width: 280px;
-    padding: var(--spacing-lg) var(--spacing-2xl);
+    min-width: 160px;
+    max-width: 220px;
+    padding: var(--spacing-md) var(--spacing-lg);
     white-space: nowrap;
   }
 
   .number-cards-grid {
     grid-template-columns: repeat(4, 1fr);
-    max-width: 700px;
-    margin: var(--spacing-2xl) auto;
-    gap: var(--spacing-lg);
+    max-width: 600px;
+    margin: var(--spacing-lg) auto;
+    gap: var(--spacing-md);
   }
 
   .number-card {
     aspect-ratio: 3/2;
-    font-size: 1.2rem;
-    padding: var(--spacing-md);
+    font-size: 1.05rem;
+    padding: var(--spacing-sm);
   }
 
   .game-result {
-    font-size: 1.4rem;
-    padding: var(--spacing-2xl);
-    margin: var(--spacing-2xl) 0;
+    font-size: 1.1rem;
+    padding: var(--spacing-lg);
+    margin: var(--spacing-md) 0;
   }
 }
