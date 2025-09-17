@@ -21,6 +21,12 @@ function Top() {
           >
             🏆 エス検4級
           </button>
+          <button
+            className="btn btn-accent btn-large btn-full"
+            onClick={() => navigate("/number-game")}
+          >
+            🔢 数字当てゲーム
+          </button>
         </div>
       </div>
     </div>

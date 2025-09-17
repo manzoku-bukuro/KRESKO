@@ -653,3 +653,307 @@ h2 {
     border: 2px solid var(--color-border);
   }
 }
+
+/***********************************************************
+ * NUMBER GAME
+ ***********************************************************/
+.number-game-container {
+  background: var(--color-surface);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.target-number {
+  font-size: 3.5rem;
+  font-weight: var(--font-weight-black);
+  color: var(--color-primary);
+  text-align: center;
+  background: linear-gradient(135deg, var(--color-surface-hover) 0%, var(--color-surface) 100%);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  margin: var(--spacing-lg) 0;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  animation: fadeIn 0.5s ease-out;
+}
+
+.selected-cards-area {
+  margin: var(--spacing-lg) 0;
+}
+
+.selected-cards-area h3 {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--spacing-sm);
+  font-size: 1rem;
+}
+
+.selected-cards {
+  background: var(--color-surface-hover);
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md);
+  min-height: 60px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  align-items: center;
+  justify-content: center;
+}
+
+.selected-card-chip {
+  background: var(--color-primary);
+  color: white;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-pill);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  user-select: none;
+}
+
+.selected-card-chip:hover {
+  background: var(--color-primary-dark);
+  transform: scale(1.05);
+}
+
+.empty-selection {
+  color: var(--color-muted);
+  font-style: italic;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.number-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--spacing-md);
+  margin: var(--spacing-lg) 0;
+}
+
+.number-card {
+  aspect-ratio: 3/2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: var(--font-weight-bold);
+  background: var(--color-surface) !important;
+  border: 2px solid var(--color-border) !important;
+  color: var(--color-text) !important;
+}
+
+.number-card:hover:not(:disabled) {
+  background: var(--color-primary) !important;
+  color: white !important;
+  border-color: var(--color-primary) !important;
+  transform: translateY(-2px);
+}
+
+.number-card:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.game-result {
+  text-align: center;
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  margin: var(--spacing-xl) 0;
+  font-weight: var(--font-weight-bold);
+  font-size: 1.2rem;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.game-result.correct {
+  background: linear-gradient(135deg, var(--color-success) 0%, #4caf50 100%);
+  color: white;
+}
+
+.game-result.wrong {
+  background: rgba(244, 67, 54, 0.1);
+  color: var(--color-danger);
+  border: 2px solid var(--color-danger);
+}
+
+.game-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin: var(--spacing-lg) 0;
+  align-items: center;
+}
+
+.game-actions .btn {
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+/* Number Game Responsive */
+@media (max-width: 480px) {
+  .number-game-container {
+    padding: var(--spacing-md);
+  }
+
+  .target-number {
+    font-size: 2.2rem;
+    padding: var(--spacing-md);
+    margin: var(--spacing-md) 0;
+  }
+
+  .number-cards-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-xs);
+    margin: var(--spacing-md) 0;
+  }
+
+  .number-card {
+    aspect-ratio: 1/1;
+    font-size: 0.9rem;
+    padding: var(--spacing-xs);
+  }
+
+  .selected-cards {
+    padding: var(--spacing-sm);
+    min-height: 50px;
+  }
+
+  .selected-cards-area {
+    margin: var(--spacing-md) 0;
+  }
+
+  .selected-cards-area h3 {
+    font-size: 0.9rem;
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .selected-card-chip {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.85rem;
+  }
+
+  .game-result {
+    padding: var(--spacing-md);
+    font-size: 1rem;
+    margin: var(--spacing-md) 0;
+  }
+
+  .game-actions {
+    gap: var(--spacing-xs);
+    margin: var(--spacing-md) 0;
+  }
+
+  .game-actions .btn {
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 0.9rem;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .number-game-container {
+    padding: var(--spacing-lg);
+  }
+
+  .target-number {
+    font-size: 3rem;
+    padding: var(--spacing-xl);
+    margin: var(--spacing-xl) 0;
+  }
+
+  .selected-cards-area {
+    margin: var(--spacing-xl) 0;
+  }
+
+  .selected-cards {
+    padding: var(--spacing-lg);
+    min-height: 80px;
+  }
+
+  .game-actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+    margin: var(--spacing-xl) 0;
+  }
+
+  .game-actions .btn {
+    flex: 1 1 calc(50% - var(--spacing-sm));
+    min-width: 180px;
+    max-width: none;
+  }
+
+  .number-cards-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-md);
+    margin: var(--spacing-xl) 0;
+  }
+
+  .number-card {
+    aspect-ratio: 2/1;
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 769px) {
+  .number-game-container {
+    padding: var(--spacing-xl);
+  }
+
+  .target-number {
+    font-size: 4rem;
+    padding: var(--spacing-2xl);
+    margin: var(--spacing-2xl) 0;
+  }
+
+  .selected-cards-area {
+    margin: var(--spacing-2xl) 0;
+  }
+
+  .selected-cards-area h3 {
+    font-size: 1.2rem;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .selected-cards {
+    padding: var(--spacing-lg);
+    min-height: 100px;
+  }
+
+  .game-actions {
+    flex-direction: row;
+    justify-content: center;
+    gap: var(--spacing-lg);
+    margin: var(--spacing-2xl) 0;
+    flex-wrap: wrap;
+  }
+
+  .game-actions .btn {
+    flex: 0 0 auto;
+    width: auto;
+    min-width: 200px;
+    max-width: 280px;
+    padding: var(--spacing-lg) var(--spacing-2xl);
+    white-space: nowrap;
+  }
+
+  .number-cards-grid {
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 700px;
+    margin: var(--spacing-2xl) auto;
+    gap: var(--spacing-lg);
+  }
+
+  .number-card {
+    aspect-ratio: 3/2;
+    font-size: 1.2rem;
+    padding: var(--spacing-md);
+  }
+
+  .game-result {
+    font-size: 1.4rem;
+    padding: var(--spacing-2xl);
+    margin: var(--spacing-2xl) 0;
+  }
+}
