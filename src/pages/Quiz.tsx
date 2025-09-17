@@ -45,6 +45,36 @@ function Quiz() {
   const [show, setShow] = useState(false);
   const [finished, setFinished] = useState(false);
 
+  // 4択モード用状態
+  const [quizMode, setQuizMode] = useState<'traditional' | 'multiple-choice'>('traditional');
+  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+  const [choices, setChoices] = useState<string[]>([]);
+  const [showResult, setShowResult] = useState(false);
+  const [incorrectQuestions, setIncorrectQuestions] = useState<number[]>([]);
+
+  // 4択の選択肢を生成
+  const generateChoices = (correctAnswer: string, allWords: Word[]): string[] => {
+    // 正解以外の単語から3つをランダムに選択
+    const otherWords = allWords.filter(word => word.japanese !== correctAnswer);
+    const wrongChoices = [...otherWords]
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 3)
+      .map(word => word.japanese);
+
+    // 正解と間違いをシャッフル
+    const allChoices = [correctAnswer, ...wrongChoices];
+    return allChoices.sort(() => 0.5 - Math.random());
+  };
+
+  // 4択モード用の選択肢を更新
+  const updateChoicesForCurrentQuestion = () => {
+    if (quizMode === 'multiple-choice' && questions.length > 0) {
+      const currentQuestion = questions[index];
+      const newChoices = generateChoices(currentQuestion.japanese, words);
+      setChoices(newChoices);
+    }
+  };
+
   // クイズ開始/リセット処理
   const startQuiz = () => {
     const shuffled = [...slice].sort(() => 0.5 - Math.random());
@@ -52,6 +82,9 @@ function Quiz() {
     setIndex(0);
     setShow(false);
     setFinished(false);
+    setSelectedAnswer(null);
+    setShowResult(false);
+    setIncorrectQuestions([]);
   };
 
   // 初期化
@@ -59,6 +92,12 @@ function Quiz() {
     startQuiz();
   }, [category, rangeStart, rangeSize]);
 
+  // 選択肢を更新（インデックス変更時、モード変更時）
+  useEffect(() => {
+    updateChoicesForCurrentQuestion();
+  }, [index, quizMode, questions]);
+
+  // 従来モードのクリック処理
   const handleClick = () => {
     if (!show) {
       setShow(true);
@@ -70,6 +109,31 @@ function Quiz() {
         // 終了
         setFinished(true);
       }
+    }
+  };
+
+  // 4択モードの選択肢クリック処理
+  const handleChoiceClick = (choice: string) => {
+    if (selectedAnswer) return; // 既に選択済みの場合は無効
+
+    setSelectedAnswer(choice);
+    const isCorrect = choice === questions[index].japanese;
+    setShowResult(true);
+
+    // 間違えた場合は記録
+    if (!isCorrect) {
+      setIncorrectQuestions(prev => [...prev, index]);
+    }
+  };
+
+  // 4択モードで次の問題へ進む
+  const handleNextQuestion = () => {
+    if (index < questions.length - 1) {
+      setIndex(index + 1);
+      setSelectedAnswer(null);
+      setShowResult(false);
+    } else {
+      setFinished(true);
     }
   };
 
@@ -110,13 +174,17 @@ function Quiz() {
           <div className="word-review">
             <h4>📖 学習した単語一覧 ({questions.length}語)</h4>
             <div className="word-grid">
-              {questions.map((word, idx) => (
-                <div key={idx} className="word-item">
-                  <div className="word-esperanto">{word.esperanto}</div>
-                  <div className="word-japanese">{word.japanese}</div>
-                  {word.extra && <div className="word-extra">{word.extra}</div>}
-                </div>
-              ))}
+              {questions.map((word, idx) => {
+                const wasIncorrect = incorrectQuestions.includes(idx);
+                return (
+                  <div key={idx} className={`word-item ${wasIncorrect ? 'word-item-incorrect' : ''}`}>
+                    <div className="word-esperanto">{word.esperanto}</div>
+                    <div className="word-japanese">{word.japanese}</div>
+                    {word.extra && <div className="word-extra">{word.extra}</div>}
+                    {wasIncorrect && <div className="incorrect-marker">❌ 間違い</div>}
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -163,6 +231,22 @@ function Quiz() {
           <p className="quiz-counter">
             問題 {index + 1} / {questions.length} ({rangeStart} - {Math.min(Number(rangeStart) + Number(rangeSize) - 1, words.length)})
           </p>
+
+          {/* Mode Toggle */}
+          <div className="quiz-mode-toggle">
+            <button
+              className={`btn btn-small ${quizMode === 'traditional' ? 'btn-primary' : 'btn-secondary'}`}
+              onClick={() => setQuizMode('traditional')}
+            >
+              👁️ 表示形式
+            </button>
+            <button
+              className={`btn btn-small ${quizMode === 'multiple-choice' ? 'btn-primary' : 'btn-secondary'}`}
+              onClick={() => setQuizMode('multiple-choice')}
+            >
+              ✅ 4択形式
+            </button>
+          </div>
         </div>
 
         {/* Quiz Content */}
@@ -170,41 +254,97 @@ function Quiz() {
           {/* 出題単語 */}
           <p className="esperanto-word">{questions[index]?.esperanto}</p>
 
-          {/* 回答表示部分 */}
-          <div className="answer-area">
-            {show && (
-              <>
-                <p className="japanese-word">{questions[index]?.japanese}</p>
-                {questions[index]?.extra && (
-                  <p className="japanese-extra">{questions[index]?.extra}</p>
-                )}
-              </>
-            )}
+          {/* 従来モード：回答表示部分 */}
+          {quizMode === 'traditional' && (
+            <div className="answer-area">
+              {show && (
+                <>
+                  <p className="japanese-word">{questions[index]?.japanese}</p>
+                  {questions[index]?.extra && (
+                    <p className="japanese-extra">{questions[index]?.extra}</p>
+                  )}
+                </>
+              )}
+            </div>
+          )}
+
+          {/* 4択モード：選択肢 */}
+          {quizMode === 'multiple-choice' && (
+            <div className="multiple-choice-area">
+              {choices.map((choice, idx) => {
+                const isSelected = selectedAnswer === choice;
+                const isCorrect = choice === questions[index]?.japanese;
+                let buttonClass = "btn choice-btn";
+
+                if (showResult && isSelected) {
+                  buttonClass += isCorrect ? " choice-correct" : " choice-wrong";
+                } else if (showResult && isCorrect) {
+                  buttonClass += " choice-correct";
+                } else if (isSelected) {
+                  buttonClass += " btn-primary";
+                } else {
+                  buttonClass += " btn-secondary";
+                }
+
+                return (
+                  <button
+                    key={idx}
+                    className={buttonClass}
+                    onClick={() => handleChoiceClick(choice)}
+                    disabled={!!selectedAnswer}
+                  >
+                    {choice}
+                  </button>
+                );
+              })}
+
+              {/* 結果表示 */}
+              {showResult && (
+                <div className={`choice-result ${selectedAnswer === questions[index]?.japanese ? 'correct' : 'wrong'}`}>
+                  <div className="choice-result-content">
+                    {selectedAnswer === questions[index]?.japanese ? '🎉 正解！' : '❌ 不正解'}
+                  </div>
+
+                  {/* 次へボタン */}
+                  <div className="choice-result-button">
+                    <button
+                      className="btn btn-primary btn-large"
+                      onClick={handleNextQuestion}
+                    >
+                      {isLastQuestion ? "🎉 完了！" : "➡️ 次の問題へ"}
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Action Buttons - 従来モードのみ */}
+        {quizMode === 'traditional' && (
+          <div style={{ marginTop: "auto" }}>
+            <button
+              className="btn btn-primary btn-large btn-full"
+              onClick={handleClick}
+              style={{ marginBottom: "1rem" }}
+            >
+              {!show
+                ? "👁️ 回答を表示"
+                : isLastQuestion
+                  ? "🎉 完了！"
+                  : "➡️ 次の問題へ"
+              }
+            </button>
           </div>
-        </div>
+        )}
 
-        {/* Action Buttons */}
-        <div style={{ marginTop: "auto" }}>
-          <button
-            className="btn btn-primary btn-large btn-full"
-            onClick={handleClick}
-            style={{ marginBottom: "1rem" }}
-          >
-            {!show
-              ? "👁️ 回答を表示"
-              : isLastQuestion
-                ? "🎉 完了！"
-                : "➡️ 次の問題へ"
-            }
-          </button>
-
-          <button
-            className="btn btn-accent btn-small"
-            onClick={() => navigate(`/range/${category}`)}
-          >
-            ← 範囲選択に戻る
-          </button>
-        </div>
+        {/* 戻るボタン - 両モード共通 */}
+        <button
+          className="btn btn-accent btn-small"
+          onClick={() => navigate(`/range/${category}`)}
+        >
+          ← 範囲選択に戻る
+        </button>
       </div>
     </div>
   );
