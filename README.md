@@ -1,69 +1,151 @@
-# React + TypeScript + Vite
+# KRESKO
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+KRESKOは、エスペラント語学習のためのインタラクティブなクイズアプリケーションです。単語の暗記と理解を支援する複数の学習モードを提供しています。
 
-Currently, two official plugins are available:
+## 🚀 セットアップ方法
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 必要な環境
+- Node.js (v18以上推奨)
+- npm または yarn
 
-## Expanding the ESLint configuration
+### インストール手順
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+1. リポジトリをクローン
+```bash
+git clone <repository-url>
+cd KRESKO
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+2. 依存関係をインストール
+```bash
+npm install
 ```
+
+3. 開発サーバーを起動
+```bash
+npm run dev
+```
+
+4. ブラウザで http://localhost:5173 にアクセス
+
+### その他のコマンド
+
+```bash
+# プロダクションビルド
+npm run build
+
+# ESLint実行
+npm run lint
+
+# プレビューサーバー起動
+npm run preview
+
+# GitHub Pagesにデプロイ
+npm run deploy
+```
+
+## 📚 機能説明
+
+### 1. ドリル式学習
+- 基本的なエスペラント語単語の学習
+- フラッシュカード形式での学習
+- 従来モード（表示形式）と4択モード対応
+
+### 2. エス検4級対策
+- エスペラント検定4級の出題範囲に対応
+- 意味の詳細説明付き
+- 試験対策に特化した単語セット
+
+### 3. 数字当てゲーム
+- エスペラント語の数詞学習
+- 1000-9999の範囲の数字をエスペラント語で表現
+- インタラクティブなカード選択システム
+
+### 4. 学習管理機能
+- 範囲選択（10個ずつ、100個ずつ、全体）
+- 進捗表示
+- 間違えた問題の記録
+- 学習完了後の復習機能
+
+## 🎯 学習モード
+
+### 従来モード（表示形式）
+- エスペラント語を見て、クリックで日本語の意味を表示
+- 自分のペースで学習可能
+
+### 4択モード
+- エスペラント語に対して4つの選択肢から正解を選択
+- 即座に正誤判定
+- 間違えた問題を自動記録
+
+## 🛠️ 開発者向け情報
+
+### 技術スタック
+- **フロントエンド**: React 19, TypeScript
+- **ルーティング**: React Router DOM
+- **ビルドツール**: Vite
+- **リンター**: ESLint
+- **デプロイ**: GitHub Pages
+
+### プロジェクト構造
+```
+src/
+├── pages/
+│   ├── Top.tsx           # トップページ（カテゴリ選択）
+│   ├── RangeSelect.tsx   # 範囲選択ページ
+│   ├── Quiz.tsx          # クイズページ（メイン機能）
+│   └── NumberGame.tsx    # 数字当てゲーム
+├── data/
+│   ├── vortaro.json      # ドリル式用単語データ
+│   └── esuken4.json      # エス検4級用単語データ
+├── App.tsx               # ルーティング設定
+├── main.tsx              # エントリーポイント
+└── index.css             # スタイル定義
+```
+
+### データ形式
+
+#### ドリル式単語データ (vortaro.json)
+```json
+[
+  {
+    "esperanto": "エスペラント語",
+    "japanese": "日本語意味"
+  }
+]
+```
+
+#### エス検4級データ (esuken4.json)
+```json
+[
+  {
+    "vorto": "エスペラント語",
+    "意味": "主な意味",
+    "意味続き": "詳細説明（オプション）"
+  }
+]
+```
+
+### 開発のポイント
+- React 19の新機能を活用
+- TypeScript strict modeで型安全性を確保
+- レスポンシブデザイン対応
+- 状態管理はReact hooksを使用（Redux等は不使用）
+
+### カスタマイズ
+新しい学習カテゴリを追加する場合：
+1. `src/data/` に新しいJSONファイルを作成
+2. `Quiz.tsx` の `normalizeWords` 関数に新しいカテゴリを追加
+3. `Top.tsx` にカテゴリボタンを追加
+
+### デプロイ
+GitHub Pagesへの自動デプロイが設定されています：
+```bash
+npm run deploy
+```
+
+## 📄 ライセンス
+このプロジェクトは学習目的で作成されています。
+
+## 🤝 コントリビューション
+バグ報告や機能要望は、GitHubのIssuesで受け付けています。
