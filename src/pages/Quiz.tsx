@@ -33,9 +33,31 @@ function Quiz() {
   const { category, rangeStart, rangeSize } = useParams();
   const navigate = useNavigate();
 
+  const [dataError, setDataError] = useState<string | null>(null);
+
   const words = normalizeWords(category!);
   const start = Number(rangeStart) - 1;
   const size = Number(rangeSize);
+
+  // データの整合性チェック
+  useEffect(() => {
+    if (!category || !rangeStart || !rangeSize) {
+      setDataError("クイズパラメータが正しくありません");
+      return;
+    }
+
+    if (words.length === 0) {
+      setDataError("単語データの読み込みに失敗しました");
+      return;
+    }
+
+    if (start < 0 || start >= words.length) {
+      setDataError("指定された範囲が無効です");
+      return;
+    }
+
+    setDataError(null);
+  }, [category, rangeStart, rangeSize, words, start]);
 
   const slice = words.slice(start, start + size);
 
@@ -161,6 +183,24 @@ function Quiz() {
     if (cat === "esuken4") return "エス検4級";
     return cat;
   };
+
+  // エラー表示
+  if (dataError) {
+    return (
+      <div className="app-container">
+        <div className="card error-card">
+          <h1>⚠️ エラー</h1>
+          <p>{dataError}</p>
+          <button
+            className="btn btn-primary"
+            onClick={() => navigate('/')}
+          >
+            🏠 ホームに戻る
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (finished) {
     return (

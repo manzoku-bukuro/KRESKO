@@ -540,6 +540,24 @@ p {
   box-shadow: var(--shadow-soft);
 }
 
+/* Error Card */
+.error-card {
+  text-align: center;
+  padding: 2rem;
+  border: 2px solid var(--color-danger);
+  background: rgba(220, 53, 69, 0.1);
+}
+
+.error-card h1 {
+  color: var(--color-danger);
+  margin-bottom: 1rem;
+}
+
+.error-card p {
+  margin-bottom: 1.5rem;
+  color: var(--color-text);
+}
+
 /* Danger Button */
 .btn-danger {
   background: var(--color-danger);
