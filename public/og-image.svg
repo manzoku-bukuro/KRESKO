@@ -1,26 +1,38 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
   <defs>
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#58cc02;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#46a302;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#009639;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00b347;stop-opacity:1" />
     </linearGradient>
   </defs>
 
   <!-- Background -->
   <rect width="1200" height="630" fill="url(#bgGrad)"/>
 
-  <!-- Main Circle -->
-  <circle cx="300" cy="315" r="120" fill="white" opacity="0.9"/>
-
-  <!-- K Letter -->
-  <text x="300" y="360" font-family="Arial, sans-serif" font-size="120" font-weight="bold" text-anchor="middle" fill="#58cc02">K</text>
+  <!-- Esperanto Green Star with K -->
+  <g transform="translate(300, 315)">
+    <!-- Star background circle -->
+    <circle cx="0" cy="0" r="100" fill="white" opacity="0.95"/>
+    <!-- Five-pointed star -->
+    <polygon points="0,-80 23.5,-24.7 76,-24.7 37.1,9.4 47.0,65.1 0,31.6 -47.0,65.1 -37.1,9.4 -76,-24.7 -23.5,-24.7"
+             fill="#009639" stroke="#006b2a" stroke-width="2"/>
+    <!-- K Letter in center of star -->
+    <text x="0" y="15" font-family="Arial, sans-serif" font-size="80" font-weight="bold" text-anchor="middle" fill="white">K</text>
+  </g>
 
   <!-- Title -->
-  <text x="500" y="280" font-family="Arial, sans-serif" font-size="72" font-weight="bold" fill="white">KRESKO</text>
+  <text x="520" y="280" font-family="Arial, sans-serif" font-size="72" font-weight="bold" fill="white">KRESKO</text>
 
   <!-- Subtitle -->
-  <text x="500" y="340" font-family="Arial, sans-serif" font-size="36" fill="white" opacity="0.9">エスペラント語学習アプリ</text>
+  <text x="520" y="340" font-family="Arial, sans-serif" font-size="36" fill="white" opacity="0.9">エスペラント語学習アプリ</text>
 
   <!-- Description -->
-  <text x="500" y="400" font-family="Arial, sans-serif" font-size="28" fill="white" opacity="0.8">楽しく効率的にエスペラント語を学習</text>
+  <text x="520" y="400" font-family="Arial, sans-serif" font-size="28" fill="white" opacity="0.8">楽しく効率的にエスペラント語を学習</text>
+
+  <!-- Small decorative stars -->
+  <g fill="white" opacity="0.6">
+    <polygon points="150,150 155,140 160,150 150,145 140,150" transform="scale(0.8)"/>
+    <polygon points="900,500 905,490 910,500 900,495 890,500" transform="scale(0.6)"/>
+    <polygon points="1050,200 1055,190 1060,200 1050,195 1040,200" transform="scale(0.7)"/>
+  </g>
 </svg>
