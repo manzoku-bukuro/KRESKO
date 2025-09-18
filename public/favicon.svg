@@ -8,6 +8,6 @@
     <polygon points="0,-35 10.3,-10.8 33.4,-10.8 16.3,4.1 20.7,28.6 0,13.9 -20.7,28.6 -16.3,4.1 -33.4,-10.8 -10.3,-10.8"
              fill="#009639" stroke="#006b2a" stroke-width="1"/>
     <!-- K Letter in center -->
-    <text x="0" y="7" font-family="Arial, sans-serif" font-size="32" font-weight="bold" text-anchor="middle" fill="white">K</text>
+    <text x="0" y="8" font-family="Arial, sans-serif" font-size="28" font-weight="900" text-anchor="middle" fill="white">K</text>
   </g>
 </svg>
