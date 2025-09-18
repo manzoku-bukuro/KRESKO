@@ -67,7 +67,7 @@ body {
   margin: 0 auto;
   padding: var(--spacing-md);
   text-align: center;
-  min-height: 100vh;
+  min-height: calc(100vh - 2 * var(--spacing-md));
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -84,11 +84,6 @@ body {
   flex: 1;
   width: 100%;
   box-sizing: border-box;
-}
-
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-medium);
 }
 
 /***********************************************************
@@ -827,7 +822,7 @@ p {
     max-width: 700px;
     margin: 0 auto;
     padding: var(--spacing-lg);
-    min-height: 100vh;
+    min-height: calc(100vh - 2 * var(--spacing-lg));
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -838,25 +833,21 @@ p {
     margin-top: var(--spacing-sm);
   }
 
-  .card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-strong);
-  }
-
   .range-grid {
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: var(--spacing-md);
   }
 
   .category-buttons {
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
-    gap: var(--spacing-xl);
+    gap: var(--spacing-md);
   }
 
   .category-buttons .btn {
-    flex: 1;
-    max-width: 250px;
+    flex: none;
+    max-width: 400px;
+    margin: 0 auto;
   }
 
   .quiz-content {
