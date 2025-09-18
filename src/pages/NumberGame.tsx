@@ -192,13 +192,15 @@ function NumberGame() {
 
         {/* Action Buttons */}
         <div className="game-actions">
-          <button
-            className="btn btn-primary btn-large"
-            onClick={checkAnswer}
-            disabled={selectedCards.length === 0}
-          >
-            📝 答えをチェック
-          </button>
+          {!result.show && (
+            <button
+              className="btn btn-primary btn-large"
+              onClick={checkAnswer}
+              disabled={selectedCards.length === 0}
+            >
+              📝 答えをチェック
+            </button>
+          )}
 
           <button
             className="btn btn-secondary"

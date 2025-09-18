@@ -805,14 +805,15 @@ p {
   }
 
   .category-buttons {
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
-    gap: var(--spacing-lg);
+    gap: var(--spacing-md);
   }
 
   .category-buttons .btn {
-    flex: 1;
-    max-width: 200px;
+    flex: none;
+    max-width: 400px;
+    margin: 0 auto;
   }
 }
 
@@ -1062,7 +1063,7 @@ p {
   .number-card {
     aspect-ratio: 1/1;
     font-size: 0.9rem;
-    padding: var(--spacing-xs);
+    padding: 2px;
   }
 
   .selected-cards {
