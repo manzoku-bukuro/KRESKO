@@ -95,7 +95,7 @@ export default function PrivacyPolicy() {
           </section>
 
           <div className="text-right text-gray-600 mt-12">
-            <p>制定日：2025年1月19日</p>
+            <p>制定日：2025年9月20日</p>
           </div>
         </div>
 
