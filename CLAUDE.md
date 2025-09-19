@@ -17,7 +17,7 @@ npm run lint
 # Preview production build
 npm run preview
 
-# Deploy to GitHub Pages
+# Deploy to Netlify (runs build)
 npm run deploy
 ```
 
@@ -78,7 +78,7 @@ Uses React hooks exclusively - no external state management. Quiz state includes
 - `incorrectQuestions`: Array of missed question indices
 
 ### Deployment Configuration
-Vite config uses conditional base path: `/KRESKO/` for production (GitHub Pages), `/` for development.
+Deployed on Netlify with automatic builds from Git. Vite config uses base path `/` for all environments.
 
 ## File Organization
 - `src/pages/` - Route components (Top, RangeSelect, Quiz, NumberGame)
