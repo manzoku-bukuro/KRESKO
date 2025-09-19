@@ -31,8 +31,8 @@ export default function Footer() {
               textDecoration: 'none',
               transition: 'color var(--transition-fast)'
             }}
-            onMouseEnter={(e) => e.target.style.color = 'var(--color-primary)'}
-            onMouseLeave={(e) => e.target.style.color = 'var(--color-muted)'}
+            onMouseEnter={(e) => (e.target as HTMLElement).style.color = 'var(--color-primary)'}
+            onMouseLeave={(e) => (e.target as HTMLElement).style.color = 'var(--color-muted)'}
           >
             プライバシーポリシー
           </Link>
@@ -46,8 +46,8 @@ export default function Footer() {
               textDecoration: 'none',
               transition: 'color var(--transition-fast)'
             }}
-            onMouseEnter={(e) => e.target.style.color = 'var(--color-primary)'}
-            onMouseLeave={(e) => e.target.style.color = 'var(--color-muted)'}
+            onMouseEnter={(e) => (e.target as HTMLElement).style.color = 'var(--color-primary)'}
+            onMouseLeave={(e) => (e.target as HTMLElement).style.color = 'var(--color-muted)'}
           >
             GitHub
           </a>
