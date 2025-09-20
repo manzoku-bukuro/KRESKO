@@ -38,7 +38,7 @@ export default function Footer() {
           </Link>
           <span>|</span>
           <a
-            href="https://github.com/manzoku-bukuro/KRESKO"
+            href="https://github.com/manzoku-bukuro/MEMORU"
             target="_blank"
             rel="noopener noreferrer"
             style={{
@@ -53,7 +53,7 @@ export default function Footer() {
           </a>
         </div>
         <div>
-          <p style={{ margin: 0 }}>&copy; 2025 KRESKO. All rights reserved.</p>
+          <p style={{ margin: 0 }}>&copy; 2025 MEMORU. All rights reserved.</p>
         </div>
       </div>
     </footer>

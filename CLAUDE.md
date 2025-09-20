@@ -23,7 +23,7 @@ npm run deploy
 
 ## Architecture Overview
 
-KRESKO is a React-based Esperanto language learning application with three main learning modes:
+MEMORU is a React-based Esperanto language learning application with three main learning modes:
 
 ### Core Architecture
 - **React 19** with TypeScript and Vite

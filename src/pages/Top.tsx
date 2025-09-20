@@ -10,7 +10,7 @@ function Top() {
     <>
       <div className="app-container">
         <div className="card category-selection">
-          <h1>KRESKO</h1>
+          <h1>MEMORU</h1>
           <h2>カテゴリを選択</h2>
           <div className="category-buttons">
             {showDrill && (

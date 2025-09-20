@@ -10,7 +10,7 @@ export default function PrivacyPolicy() {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-gray-800 mb-4">1. 基本方針</h2>
             <p className="text-gray-700 leading-relaxed">
-              KRESKO（以下「当サイト」）は、ユーザーの個人情報保護を重要視し、個人情報の保護に関する法律、その他関係法令等を遵守し、適切に取り扱うことを約束いたします。
+              MEMORU（以下「当サイト」）は、ユーザーの個人情報保護を重要視し、個人情報の保護に関する法律、その他関係法令等を遵守し、適切に取り扱うことを約束いたします。
             </p>
           </section>
 
@@ -90,7 +90,7 @@ export default function PrivacyPolicy() {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-gray-800 mb-4">8. お問い合わせ</h2>
             <p className="text-gray-700 leading-relaxed">
-              プライバシーポリシーに関するお問い合わせは、GitHubの<a href="https://github.com/manzoku-bukuro/KRESKO" className="text-emerald-600 hover:text-emerald-800 underline" target="_blank" rel="noopener noreferrer">リポジトリ</a>までご連絡ください。
+              プライバシーポリシーに関するお問い合わせは、GitHubの<a href="https://github.com/manzoku-bukuro/MEMORU" className="text-emerald-600 hover:text-emerald-800 underline" target="_blank" rel="noopener noreferrer">リポジトリ</a>までご連絡ください。
             </p>
           </section>
 
