@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import Footer from "../components/Footer";
+import AuthButton from "../components/AuthButton";
 import { updatePageMeta, seoData } from "../utils/seo";
 
 function Top() {
@@ -14,8 +15,13 @@ function Top() {
     <>
       <div className="app-container">
         <div className="card category-selection">
-          <h1>MEMORU</h1>
-          <h2>カテゴリを選択</h2>
+          <div className="header-with-auth">
+            <div>
+              <h1>MEMORU</h1>
+              <h2>カテゴリを選択</h2>
+            </div>
+            <AuthButton />
+          </div>
           <div className="category-buttons">
             <button
               className="btn btn-primary btn-large btn-full"

@@ -808,6 +808,43 @@ p {
   }
 }
 
+/***********************************************************
+ * AUTHENTICATION
+ ***********************************************************/
+.header-with-auth {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-lg);
+  gap: var(--spacing-md);
+}
+
+.auth-status {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.user-info {
+  color: var(--color-muted);
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .header-with-auth {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .auth-status {
+    margin-top: var(--spacing-sm);
+  }
+}
+
 /* Tablet */
 @media (min-width: 481px) and (max-width: 768px) {
   .app-container {
