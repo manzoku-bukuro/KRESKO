@@ -112,9 +112,9 @@ function InterrogativeBasic() {
           <div style={{ marginTop: "2rem" }}>
             <button
               className="btn btn-secondary"
-              onClick={() => navigate("/interrogative-level")}
+              onClick={() => navigate("/interrogative-menu")}
             >
-              📋 レベル選択に戻る
+              📋 メニューに戻る
             </button>
           </div>
         </div>
@@ -193,9 +193,9 @@ function InterrogativeBasic() {
         {/* 戻るボタン */}
         <button
           className="btn btn-accent btn-small"
-          onClick={() => navigate("/interrogative-level")}
+          onClick={() => navigate("/interrogative-menu")}
         >
-          ← レベル選択に戻る
+          ← メニューに戻る
         </button>
       </div>
     </div>

@@ -19,7 +19,7 @@ function Top() {
             </button>
             <button
               className="btn btn-secondary btn-large btn-full"
-              onClick={() => navigate("/interrogative-level")}
+              onClick={() => navigate("/interrogative-menu")}
             >
               ❓ 疑問詞
             </button>

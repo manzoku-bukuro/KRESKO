@@ -4,7 +4,8 @@ import RangeSelect from "./pages/RangeSelect";
 import Quiz from "./pages/Quiz";
 import NumberGame from "./pages/NumberGame";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
-import InterrogativeLevel from "./pages/InterrogativeLevel";
+import InterrogativeMenu from "./pages/InterrogativeLevel";
+import InterrogativeExplanation from "./pages/InterrogativeExplanation";
 import InterrogativeBasic from "./pages/InterrogativeBasic";
 import InterrogativeAdvanced from "./pages/InterrogativeAdvanced";
 
@@ -16,7 +17,8 @@ function App() {
       <Route path="/quiz/:category/:rangeStart/:rangeSize" element={<Quiz />} />
       <Route path="/number-game" element={<NumberGame />} />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-      <Route path="/interrogative-level" element={<InterrogativeLevel />} />
+      <Route path="/interrogative-menu" element={<InterrogativeMenu />} />
+      <Route path="/interrogative-explanation" element={<InterrogativeExplanation />} />
       <Route path="/interrogative-basic" element={<InterrogativeBasic />} />
       <Route path="/interrogative-advanced" element={<InterrogativeAdvanced />} />
     </Routes>

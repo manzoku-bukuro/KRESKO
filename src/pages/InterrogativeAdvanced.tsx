@@ -72,7 +72,6 @@ function InterrogativeAdvanced() {
   }
 
   const currentQuestion = shuffledQuestions[currentIndex];
-  const isCorrect = selectedAnswer === currentQuestion.correctAnswer;
 
   // 結果表示画面
   if (finished) {
@@ -102,9 +101,9 @@ function InterrogativeAdvanced() {
           <div style={{ marginTop: "2rem" }}>
             <button
               className="btn btn-secondary"
-              onClick={() => navigate("/interrogative-level")}
+              onClick={() => navigate("/interrogative-menu")}
             >
-              📋 レベル選択に戻る
+              📋 メニューに戻る
             </button>
           </div>
         </div>
@@ -242,9 +241,9 @@ function InterrogativeAdvanced() {
         {/* 戻るボタン - 両モード共通 */}
         <button
           className="btn btn-accent btn-small"
-          onClick={() => navigate("/interrogative-level")}
+          onClick={() => navigate("/interrogative-menu")}
         >
-          ← レベル選択に戻る
+          ← メニューに戻る
         </button>
       </div>
     </div>
