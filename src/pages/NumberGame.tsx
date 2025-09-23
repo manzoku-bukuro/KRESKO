@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { updatePageMeta, seoData } from "../utils/seo";
 
 interface Card {
   value: number;
@@ -15,6 +16,10 @@ const esperantoNumbers: Record<number, string> = {
 function NumberGame() {
   const navigate = useNavigate();
   const [targetNumber, setTargetNumber] = useState(2521);
+
+  useEffect(() => {
+    updatePageMeta(seoData.numberGame.title, seoData.numberGame.description);
+  }, []);
   const [selectedCards, setSelectedCards] = useState<Card[]>([]);
   const [cards, setCards] = useState<Card[]>([]);
   const [result, setResult] = useState<{ show: boolean; correct: boolean; message: string }>({

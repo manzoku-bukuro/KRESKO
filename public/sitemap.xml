@@ -1,21 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+  <!-- ホームページ -->
   <url>
-    <loc>https://kuresuko.netlify.app/</loc>
-    <lastmod>2025-09-20</lastmod>
+    <loc>https://memoru-esperanto.netlify.app/</loc>
+    <lastmod>2025-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+
+  <!-- エス検4級 範囲選択 -->
   <url>
-    <loc>https://kuresuko.netlify.app/number-game</loc>
-    <lastmod>2025-09-20</lastmod>
+    <loc>https://memoru-esperanto.netlify.app/range/esuken4</loc>
+    <lastmod>2025-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+
+  <!-- 疑問詞学習メニュー -->
   <url>
-    <loc>https://kuresuko.netlify.app/privacy-policy</loc>
-    <lastmod>2025-09-20</lastmod>
+    <loc>https://memoru-esperanto.netlify.app/interrogative-menu</loc>
+    <lastmod>2025-09-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- 疑問詞の説明 -->
+  <url>
+    <loc>https://memoru-esperanto.netlify.app/interrogative-explanation</loc>
+    <lastmod>2025-09-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 疑問詞基本学習 -->
+  <url>
+    <loc>https://memoru-esperanto.netlify.app/interrogative-basic</loc>
+    <lastmod>2025-09-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 疑問詞応用問題 -->
+  <url>
+    <loc>https://memoru-esperanto.netlify.app/interrogative-advanced</loc>
+    <lastmod>2025-09-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 数字当てゲーム -->
+  <url>
+    <loc>https://memoru-esperanto.netlify.app/number-game</loc>
+    <lastmod>2025-09-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- プライバシーポリシー -->
+  <url>
+    <loc>https://memoru-esperanto.netlify.app/privacy-policy</loc>
+    <lastmod>2025-09-02</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
+
 </urlset>

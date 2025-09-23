@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import vortaro from "../data/vortaro.json";
 import esuken4 from "../data/esuken4.json";
+import { updatePageMeta, seoData } from "../utils/seo";
 
 function RangeSelect() {
   const { category } = useParams();
@@ -10,6 +11,8 @@ function RangeSelect() {
   useEffect(() => {
     if (category === "drill") {
       navigate("/", { replace: true });
+    } else if (category === "esuken4") {
+      updatePageMeta(seoData.esuken4.title, seoData.esuken4.description);
     }
   }, [category, navigate]);
 

@@ -1,7 +1,13 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { updatePageMeta, seoData } from "../utils/seo";
 
 function InterrogativeMenu() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    updatePageMeta(seoData.interrogativeMenu.title, seoData.interrogativeMenu.description);
+  }, []);
 
   return (
     <div className="app-container">

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import interrogativeQuestionsData from "../data/interrogative-questions.json";
+import { updatePageMeta, seoData } from "../utils/seo";
 
 interface QuizQuestion {
   sentence: string;
@@ -25,6 +26,7 @@ function InterrogativeAdvanced() {
   const [showResult, setShowResult] = useState(false);
 
   useEffect(() => {
+    updatePageMeta(seoData.interrogativeAdvanced.title, seoData.interrogativeAdvanced.description);
     const shuffled = [...interrogativeQuestionsData].sort(() => Math.random() - 0.5).slice(0, 5);
     setShuffledQuestions(shuffled);
   }, []);

@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://memoru-esperanto.netlify.app/sitemap.xml
+
+# Allow search engines to crawl all content
+Allow: /range/
+Allow: /interrogative-menu
+Allow: /interrogative-explanation
+Allow: /interrogative-basic
+Allow: /interrogative-advanced
+Allow: /number-game
+Allow: /privacy-policy
+
+# Crawl delay (optional)
+Crawl-delay: 1

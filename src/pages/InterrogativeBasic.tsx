@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { updatePageMeta, seoData } from "../utils/seo";
 
 interface InterrogativeWord {
   word: string;
@@ -29,6 +30,7 @@ function InterrogativeBasic() {
   const [choices, setChoices] = useState<string[]>([]);
 
   useEffect(() => {
+    updatePageMeta(seoData.interrogativeBasic.title, seoData.interrogativeBasic.description);
     const shuffled = [...interrogativeWords].sort(() => Math.random() - 0.5);
     setShuffledQuestions(shuffled);
   }, []);

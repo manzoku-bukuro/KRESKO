@@ -1,8 +1,14 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import Footer from "../components/Footer";
+import { updatePageMeta, seoData } from "../utils/seo";
 
 function Top() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    updatePageMeta(seoData.home.title, seoData.home.description);
+  }, []);
 
   return (
     <>

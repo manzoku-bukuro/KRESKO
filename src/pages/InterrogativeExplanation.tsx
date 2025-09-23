@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { updatePageMeta, seoData } from "../utils/seo";
 
 interface InterrogativeInfo {
   word: string;
@@ -93,6 +95,10 @@ const interrogatives: InterrogativeInfo[] = [
 
 function InterrogativeExplanation() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    updatePageMeta(seoData.interrogativeExplanation.title, seoData.interrogativeExplanation.description);
+  }, []);
 
   return (
     <div className="app-container">
