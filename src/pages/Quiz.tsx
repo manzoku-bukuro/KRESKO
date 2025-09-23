@@ -35,6 +35,14 @@ function Quiz() {
 
   const [dataError, setDataError] = useState<string | null>(null);
 
+  // ドリル式へのアクセスをブロック
+  useEffect(() => {
+    if (category === "drill") {
+      navigate("/", { replace: true });
+      return;
+    }
+  }, [category, navigate]);
+
   const words = normalizeWords(category!);
   const start = Number(rangeStart) - 1;
   const size = Number(rangeSize);

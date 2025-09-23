@@ -1,10 +1,17 @@
 import { useParams, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import vortaro from "../data/vortaro.json";
 import esuken4 from "../data/esuken4.json";
 
 function RangeSelect() {
   const { category } = useParams();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (category === "drill") {
+      navigate("/", { replace: true });
+    }
+  }, [category, navigate]);
 
   // 単語数
   let total = 0;
