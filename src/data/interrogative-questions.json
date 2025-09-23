@@ -1,0 +1,254 @@
+[
+  {
+    "sentence": "_____ estas tio?",
+    "blanks": ["Kio", "Kiu", "Kie", "Kiel"],
+    "correctAnswer": "Kio",
+    "translation": "それは何ですか？",
+    "explanation": "物事を尋ねる時は「kio」を使います"
+  },
+  {
+    "sentence": "_____ estas s-ino Tanaka?",
+    "blanks": ["Kio", "Kiu", "Kia", "Kies"],
+    "correctAnswer": "Kio",
+    "translation": "田中さん（の仕事）は何ですか？",
+    "explanation": "職業など物事を尋ねる時は「kio」を使います"
+  },
+  {
+    "sentence": "_____ estas s-ro Suzuki?",
+    "blanks": ["Kio", "Kiu", "Kiam", "Kie"],
+    "correctAnswer": "Kio",
+    "translation": "鈴木さんは何ですか？",
+    "explanation": "職業や身分を尋ねる時は「kio」を使います"
+  },
+  {
+    "sentence": "_____ vi faras nun?",
+    "blanks": ["Kion", "Kiun", "Kien", "Kiel"],
+    "correctAnswer": "Kion",
+    "translation": "今何をしていますか？",
+    "explanation": "「何を」と対格で尋ねる時は「kion」を使います"
+  },
+  {
+    "sentence": "_____ estas tiu?",
+    "blanks": ["Kiu", "Kio", "Kia", "Kies"],
+    "correctAnswer": "Kiu",
+    "translation": "その人はだれですか？",
+    "explanation": "人を特定する時は「kiu」を使います"
+  },
+  {
+    "sentence": "_____ estas la prezidanto?",
+    "blanks": ["Kiu", "Kio", "Kie", "Kiel"],
+    "correctAnswer": "Kiu",
+    "translation": "だれが会長ですか？",
+    "explanation": "人を特定する時は「kiu」を使います"
+  },
+  {
+    "sentence": "_____ estas via valizo?",
+    "blanks": ["Kiu", "Kio", "Kia", "Kiom"],
+    "correctAnswer": "Kiu",
+    "translation": "どれがあなたの旅行鞄ですか？",
+    "explanation": "複数の中から特定する時は「kiu」を使います"
+  },
+  {
+    "sentence": "_____ libro estas la plej interesa?",
+    "blanks": ["Kiu", "Kio", "Kia", "Kies"],
+    "correctAnswer": "Kiu",
+    "translation": "どの本が一番面白いですか？",
+    "explanation": "選択肢の中から特定する時は「kiu」を使います"
+  },
+  {
+    "sentence": "_____ estas via kato?",
+    "blanks": ["Kia", "Kio", "Kiu", "Kie"],
+    "correctAnswer": "Kia",
+    "translation": "あなたのネコはどんなですか？",
+    "explanation": "性質や状態を尋ねる時は「kia」を使います"
+  },
+  {
+    "sentence": "_____ estis via vojaĝo?",
+    "blanks": ["Kia", "Kio", "Kiu", "Kiel"],
+    "correctAnswer": "Kia",
+    "translation": "旅行はどんなでしたか？",
+    "explanation": "性質や状態を尋ねる時は「kia」を使います"
+  },
+  {
+    "sentence": "_____ estas la koloro de via ombrelo?",
+    "blanks": ["Kia", "Kio", "Kiom", "Kiel"],
+    "correctAnswer": "Kia",
+    "translation": "あなたの傘の色はどんなですか？",
+    "explanation": "色や性質を尋ねる時は「kia」を使います"
+  },
+  {
+    "sentence": "_____ filmo plaĉas al vi?",
+    "blanks": ["Kia", "Kiu", "Kio", "Kie"],
+    "correctAnswer": "Kia",
+    "translation": "どんな映画があなたの気に入りですか？",
+    "explanation": "種類や性質を尋ねる時は「kia」を使います"
+  },
+  {
+    "sentence": "_____ estas tiu malpura jako?",
+    "blanks": ["Kies", "Kiu", "Kio", "Kia"],
+    "correctAnswer": "Kies",
+    "translation": "その汚い上着は誰のですか？",
+    "explanation": "所有を尋ねる時は「kies」を使います"
+  },
+  {
+    "sentence": "_____ vortaro tio estas?",
+    "blanks": ["Kies", "Kiu", "Kio", "Kie"],
+    "correctAnswer": "Kies",
+    "translation": "これはだれの辞書ですか？",
+    "explanation": "所有を尋ねる時は「kies」を使います"
+  },
+  {
+    "sentence": "_____ estas tiu libro?",
+    "blanks": ["Kies", "Kiu", "Kio", "Kia"],
+    "correctAnswer": "Kies",
+    "translation": "この本はだれのですか？",
+    "explanation": "所有を尋ねる時は「kies」を使います"
+  },
+  {
+    "sentence": "_____ paroladon vi legis hieraŭ?",
+    "blanks": ["Kies", "Kiun", "Kion", "Kiel"],
+    "correctAnswer": "Kies",
+    "translation": "だれの演説を昨日読みましたか？",
+    "explanation": "所有を尋ねる時は「kies」を使います"
+  },
+  {
+    "sentence": "_____ vi estis?",
+    "blanks": ["Kie", "Kiam", "Kial", "Kiel"],
+    "correctAnswer": "Kie",
+    "translation": "あなたはどこにいましたか？",
+    "explanation": "場所を尋ねる時は「kie」を使います"
+  },
+  {
+    "sentence": "_____ vi loĝas?",
+    "blanks": ["Kie", "Kiam", "Kial", "Kiom"],
+    "correctAnswer": "Kie",
+    "translation": "どこにお住まいですか？",
+    "explanation": "場所を尋ねる時は「kie」を使います"
+  },
+  {
+    "sentence": "_____ vi estas nun?",
+    "blanks": ["Kie", "Kiam", "Kio", "Kiu"],
+    "correctAnswer": "Kie",
+    "translation": "今、どこにいるの？",
+    "explanation": "現在の場所を尋ねる時は「kie」を使います"
+  },
+  {
+    "sentence": "_____ vi lernis Esperanton?",
+    "blanks": ["Kie", "Kiam", "Kial", "Kiel"],
+    "correctAnswer": "Kie",
+    "translation": "どこでエスペラントを学びましたか？",
+    "explanation": "場所を尋ねる時は「kie」を使います"
+  },
+  {
+    "sentence": "_____ vi fartas?",
+    "blanks": ["Kiel", "Kio", "Kiu", "Kie"],
+    "correctAnswer": "Kiel",
+    "translation": "ご機嫌いかがですか？",
+    "explanation": "状態や方法を尋ねる時は「kiel」を使います"
+  },
+  {
+    "sentence": "_____ vi esploris la aferon?",
+    "blanks": ["Kiel", "Kiam", "Kie", "Kial"],
+    "correctAnswer": "Kiel",
+    "translation": "どのようにあのことを調べましたか？",
+    "explanation": "方法や手段を尋ねる時は「kiel」を使います"
+  },
+  {
+    "sentence": "_____ vi venis al la stacidomo?",
+    "blanks": ["Kiel", "Kiam", "Kie", "Kial"],
+    "correctAnswer": "Kiel",
+    "translation": "どのようにして駅に来ましたか？",
+    "explanation": "方法や手段を尋ねる時は「kiel」を使います"
+  },
+  {
+    "sentence": "_____ longe vi lernas Esperanton?",
+    "blanks": ["Kiel", "Kiom", "Kiam", "Kie"],
+    "correctAnswer": "Kiel",
+    "translation": "どれくらい長くエスペラントを学んでいますか？",
+    "explanation": "「kiel longe」は期間を尋ねる表現です"
+  },
+  {
+    "sentence": "_____ vi ploras?",
+    "blanks": ["Kial", "Kiam", "Kie", "Kiel"],
+    "correctAnswer": "Kial",
+    "translation": "なぜ泣いているのですか？",
+    "explanation": "理由を尋ねる時は「kial」を使います"
+  },
+  {
+    "sentence": "_____ vi malfruiĝis?",
+    "blanks": ["Kial", "Kiam", "Kie", "Kiom"],
+    "correctAnswer": "Kial",
+    "translation": "なぜ遅れたのですか？",
+    "explanation": "理由を尋ねる時は「kial」を使います"
+  },
+  {
+    "sentence": "_____ vi dormis?",
+    "blanks": ["Kial", "Kiam", "Kie", "Kiel"],
+    "correctAnswer": "Kial",
+    "translation": "なぜ眠っていたのですか？",
+    "explanation": "理由を尋ねる時は「kial」を使います"
+  },
+  {
+    "sentence": "_____ vi ne venis?",
+    "blanks": ["Kial", "Kiam", "Kie", "Kio"],
+    "correctAnswer": "Kial",
+    "translation": "なぜ来なかったのですか？",
+    "explanation": "理由を尋ねる時は「kial」を使います"
+  },
+  {
+    "sentence": "_____ vi venos?",
+    "blanks": ["Kiam", "Kie", "Kial", "Kiel"],
+    "correctAnswer": "Kiam",
+    "translation": "いつ来ますか？",
+    "explanation": "時間を尋ねる時は「kiam」を使います"
+  },
+  {
+    "sentence": "_____ vi ekiros?",
+    "blanks": ["Kiam", "Kie", "Kial", "Kiom"],
+    "correctAnswer": "Kiam",
+    "translation": "いつ出発しますか？",
+    "explanation": "時間を尋ねる時は「kiam」を使います"
+  },
+  {
+    "sentence": "_____ vi naskiĝis?",
+    "blanks": ["Kiam", "Kie", "Kiel", "Kial"],
+    "correctAnswer": "Kiam",
+    "translation": "いつ生まれましたか？",
+    "explanation": "出生時期を尋ねる時は「kiam」を使います"
+  },
+  {
+    "sentence": "_____ vi komencis lerni Esperanton?",
+    "blanks": ["Kiam", "Kie", "Kial", "Kiel"],
+    "correctAnswer": "Kiam",
+    "translation": "いつエスペラントを学び始めたのですか？",
+    "explanation": "開始時期を尋ねる時は「kiam」を使います"
+  },
+  {
+    "sentence": "_____ da tempo?",
+    "blanks": ["Kiom", "Kio", "Kiu", "Kie"],
+    "correctAnswer": "Kiom",
+    "translation": "どれくらいの時間？",
+    "explanation": "「da」と組み合わせて量を尋ねる時は「kiom」を使います"
+  },
+  {
+    "sentence": "_____ kostas tiu vino?",
+    "blanks": ["Kiom", "Kio", "Kiu", "Kiel"],
+    "correctAnswer": "Kiom",
+    "translation": "このワインはいくらしますか？",
+    "explanation": "値段を尋ねる時は「kiom」を使います"
+  },
+  {
+    "sentence": "_____ da gelernantoj estas en la klaso?",
+    "blanks": ["Kiom", "Kio", "Kiu", "Kie"],
+    "correctAnswer": "Kiom",
+    "translation": "何人の生徒がそのクラスにいますか？",
+    "explanation": "「da」と組み合わせて数量を尋ねる時は「kiom」を使います"
+  },
+  {
+    "sentence": "_____ da loĝantoj troviĝas en Japanio?",
+    "blanks": ["Kiom", "Kio", "Kiu", "Kie"],
+    "correctAnswer": "Kiom",
+    "translation": "日本には何人の住民がいますか？",
+    "explanation": "「da」と組み合わせて数量を尋ねる時は「kiom」を使います"
+  }
+]

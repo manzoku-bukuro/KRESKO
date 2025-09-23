@@ -7,7 +7,8 @@
       "Bash(convert:*)",
       "Bash(npm install:*)",
       "Bash(npm run build:*)",
-      "Bash(git restore:*)"
+      "Bash(git restore:*)",
+      "Bash(npm run dev:*)"
     ],
     "deny": [],
     "ask": []

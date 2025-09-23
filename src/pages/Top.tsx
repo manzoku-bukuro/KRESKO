@@ -18,6 +18,12 @@ function Top() {
               🏆 エス検4級
             </button>
             <button
+              className="btn btn-secondary btn-large btn-full"
+              onClick={() => navigate("/interrogative-level")}
+            >
+              ❓ 疑問詞
+            </button>
+            <button
               className="btn btn-accent btn-large btn-full"
               onClick={() => navigate("/number-game")}
             >
