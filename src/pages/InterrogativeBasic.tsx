@@ -82,7 +82,6 @@ function InterrogativeBasic() {
   }
 
   const currentWord = shuffledQuestions[currentIndex];
-  const isCorrect = selectedAnswer === currentWord.meaning;
 
   // 結果表示画面
   if (finished) {
