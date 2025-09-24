@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import vortaro from "../data/vortaro.json";
 import esuken4 from "../data/esuken4.json";
 import { useAuth } from "../contexts/AuthContext";
-import { saveWeakQuestion, updateQuizStats } from "../utils/firestore";
+import { saveWeakQuestion } from "../utils/firestore";
 
 interface Word {
   esperanto: string;
@@ -142,7 +142,6 @@ function Quiz() {
 
     try {
       await saveWeakQuestion({
-        category: category!,
         esperanto: question.esperanto,
         japanese: question.japanese,
         extra: question.extra
@@ -169,10 +168,6 @@ function Quiz() {
       } else {
         // 終了
         setFinished(true);
-        // クイズ終了時に統計を更新
-        if (user) {
-          updateQuizStats(category!);
-        }
       }
     }
   };
@@ -185,9 +180,17 @@ function Quiz() {
     const isCorrect = choice === questions[index].japanese;
     setShowResult(true);
 
+    console.log('handleChoiceClick: 選択された答え:', choice);
+    console.log('handleChoiceClick: 正解:', questions[index].japanese);
+    console.log('handleChoiceClick: 正解かどうか:', isCorrect);
+
     // 間違えた場合は記録
     if (!isCorrect) {
-      setIncorrectQuestions(prev => [...prev, index]);
+      setIncorrectQuestions(prev => {
+        const newIncorrect = [...prev, index];
+        console.log('handleChoiceClick: 間違いリストに追加:', index, 'リスト:', newIncorrect);
+        return newIncorrect;
+      });
     }
   };
 
@@ -213,16 +216,12 @@ function Quiz() {
         console.log('saveIncorrectQuestions: 保存中の問題:', question);
 
         await saveWeakQuestion({
-          category: category!,
           esperanto: question.esperanto,
           japanese: question.japanese,
           extra: question.extra
         });
       }
 
-      // クイズ統計を更新
-      console.log('saveIncorrectQuestions: 統計を更新中...');
-      await updateQuizStats(category!);
       console.log('saveIncorrectQuestions: 全ての保存処理が完了');
     } catch (error) {
       console.error('saveIncorrectQuestions: 苦手問題の保存に失敗:', error);
@@ -439,6 +438,19 @@ function Quiz() {
                   {questions[index]?.extra && (
                     <div className="choice-extra-meaning">
                       {questions[index]?.extra}
+                    </div>
+                  )}
+
+                  {/* 苦手登録ボタン（ログイン時のみ） */}
+                  {user && (
+                    <div style={{ marginBottom: "1rem" }}>
+                      <button
+                        className={`btn btn-small ${incorrectQuestions.includes(index) ? 'btn-danger' : 'btn-outline'}`}
+                        onClick={markAsWeak}
+                        disabled={incorrectQuestions.includes(index)}
+                      >
+                        {incorrectQuestions.includes(index) ? '💾 苦手登録済み' : '💾 苦手に登録'}
+                      </button>
                     </div>
                   )}
 

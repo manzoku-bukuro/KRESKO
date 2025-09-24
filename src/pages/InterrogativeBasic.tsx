@@ -22,7 +22,6 @@ const interrogativeWords: InterrogativeWord[] = [
 function InterrogativeBasic() {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [incorrectQuestions, setIncorrectQuestions] = useState<number[]>([]);
   const [finished, setFinished] = useState(false);
   const [showAnswer, setShowAnswer] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
@@ -62,12 +61,8 @@ function InterrogativeBasic() {
 
     setSelectedAnswer(choice);
     setShowAnswer(true);
-
-    const currentWord = shuffledQuestions[currentIndex];
-    if (choice !== currentWord.meaning) {
-      setIncorrectQuestions([...incorrectQuestions, currentIndex]);
-    }
   };
+
 
   const nextQuestion = () => {
     if (currentIndex < shuffledQuestions.length - 1) {
@@ -98,15 +93,12 @@ function InterrogativeBasic() {
           <div className="word-review">
             <h4>📖 学習した疑問詞一覧 ({shuffledQuestions.length}語)</h4>
             <div className="word-grid">
-              {shuffledQuestions.map((word, idx) => {
-                const wasIncorrect = incorrectQuestions.includes(idx);
-                return (
-                  <div key={idx} className={`word-item ${wasIncorrect ? 'word-item-incorrect' : ''}`}>
-                    <div className="word-esperanto">{word.word}</div>
-                    <div className="word-japanese">{word.meaning}</div>
-                  </div>
-                );
-              })}
+              {shuffledQuestions.map((word, idx) => (
+                <div key={idx} className="word-item">
+                  <div className="word-esperanto">{word.word}</div>
+                  <div className="word-japanese">{word.meaning}</div>
+                </div>
+              ))}
             </div>
           </div>
 

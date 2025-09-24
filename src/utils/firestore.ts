@@ -11,7 +11,6 @@ import { db } from '../config/firebase';
 import { getCurrentUser } from './auth';
 
 export interface WeakQuestion {
-  category: string;
   esperanto: string;
   japanese: string;
   extra?: string;
@@ -24,7 +23,6 @@ export interface UserProgress {
   weakQuestions: WeakQuestion[];
   lastUpdated: Date;
   totalQuizzesTaken: number;
-  categoriesStudied: string[];
 }
 
 // ユーザーの苦手問題を保存
@@ -51,7 +49,7 @@ export const saveWeakQuestion = async (question: Omit<WeakQuestion, 'addedAt' | 
     if (userDoc.exists()) {
       const userData = userDoc.data() as UserProgress;
       const existingIndex = userData.weakQuestions?.findIndex(
-        wq => wq.esperanto === question.esperanto && wq.category === question.category
+        wq => wq.esperanto === question.esperanto
       );
 
       console.log('saveWeakQuestion: 既存問題チェック, インデックス:', existingIndex);
@@ -76,8 +74,7 @@ export const saveWeakQuestion = async (question: Omit<WeakQuestion, 'addedAt' | 
         console.log('saveWeakQuestion: 新しい苦手問題を追加中...');
         await updateDoc(userDocRef, {
           weakQuestions: arrayUnion(weakQuestion),
-          lastUpdated: serverTimestamp(),
-          categoriesStudied: arrayUnion(question.category)
+          lastUpdated: serverTimestamp()
         });
         console.log('saveWeakQuestion: 新しい苦手問題の追加完了');
       }
@@ -87,8 +84,7 @@ export const saveWeakQuestion = async (question: Omit<WeakQuestion, 'addedAt' | 
       const newUserProgress: Omit<UserProgress, 'lastUpdated'> = {
         userId: user.uid,
         weakQuestions: [weakQuestion],
-        totalQuizzesTaken: 0,
-        categoriesStudied: [question.category]
+        totalQuizzesTaken: 0
       };
 
       await setDoc(userDocRef, {
@@ -106,7 +102,7 @@ export const saveWeakQuestion = async (question: Omit<WeakQuestion, 'addedAt' | 
 };
 
 // ユーザーの苦手問題を取得
-export const getWeakQuestions = async (category?: string): Promise<WeakQuestion[]> => {
+export const getWeakQuestions = async (): Promise<WeakQuestion[]> => {
   const user = getCurrentUser();
   if (!user) return [];
 
@@ -119,10 +115,6 @@ export const getWeakQuestions = async (category?: string): Promise<WeakQuestion[
     const userData = userDoc.data() as UserProgress;
     const weakQuestions = userData.weakQuestions || [];
 
-    if (category) {
-      return weakQuestions.filter(wq => wq.category === category);
-    }
-
     return weakQuestions;
   } catch (error) {
     console.error('苦手問題の取得に失敗:', error);
@@ -131,7 +123,7 @@ export const getWeakQuestions = async (category?: string): Promise<WeakQuestion[
 };
 
 // 苦手問題を削除（理解できた時）
-export const removeWeakQuestion = async (esperanto: string, category: string) => {
+export const removeWeakQuestion = async (esperanto: string) => {
   const user = getCurrentUser();
   if (!user) {
     throw new Error('ログインが必要です');
@@ -145,7 +137,7 @@ export const removeWeakQuestion = async (esperanto: string, category: string) =>
 
     const userData = userDoc.data() as UserProgress;
     const updatedWeakQuestions = (userData.weakQuestions || []).filter(
-      wq => !(wq.esperanto === esperanto && wq.category === category)
+      wq => wq.esperanto !== esperanto
     );
 
     await updateDoc(userDocRef, {
@@ -158,36 +150,6 @@ export const removeWeakQuestion = async (esperanto: string, category: string) =>
   }
 };
 
-// クイズ完了時の統計更新
-export const updateQuizStats = async (category: string) => {
-  const user = getCurrentUser();
-  if (!user) return;
-
-  const userDocRef = doc(db, 'userProgress', user.uid);
-
-  try {
-    const userDoc = await getDoc(userDocRef);
-
-    if (userDoc.exists()) {
-      const userData = userDoc.data() as UserProgress;
-      await updateDoc(userDocRef, {
-        totalQuizzesTaken: (userData.totalQuizzesTaken || 0) + 1,
-        categoriesStudied: arrayUnion(category),
-        lastUpdated: serverTimestamp()
-      });
-    } else {
-      await setDoc(userDocRef, {
-        userId: user.uid,
-        weakQuestions: [],
-        totalQuizzesTaken: 1,
-        categoriesStudied: [category],
-        lastUpdated: serverTimestamp()
-      });
-    }
-  } catch (error) {
-    console.error('統計の更新に失敗:', error);
-  }
-};
 
 // ユーザーの学習進捗を取得
 export const getUserProgress = async (): Promise<UserProgress | null> => {

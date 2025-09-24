@@ -15,7 +15,6 @@ interface QuizQuestion {
 function InterrogativeAdvanced() {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [incorrectQuestions, setIncorrectQuestions] = useState<number[]>([]);
   const [finished, setFinished] = useState(false);
   const [showAnswer, setShowAnswer] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
@@ -37,11 +36,6 @@ function InterrogativeAdvanced() {
     setSelectedAnswer(choice);
     setShowAnswer(true);
     setShowResult(true);
-
-    const currentQuestion = shuffledQuestions[currentIndex];
-    if (choice !== currentQuestion.correctAnswer) {
-      setIncorrectQuestions([...incorrectQuestions, currentIndex]);
-    }
   };
 
   const handleClick = () => {
@@ -88,15 +82,12 @@ function InterrogativeAdvanced() {
           <div className="word-review">
             <h4>📖 学習した問題一覧 ({shuffledQuestions.length}問)</h4>
             <div className="word-grid">
-              {shuffledQuestions.map((question, idx) => {
-                const wasIncorrect = incorrectQuestions.includes(idx);
-                return (
-                  <div key={idx} className={`word-item ${wasIncorrect ? 'word-item-incorrect' : ''}`}>
-                    <div className="word-esperanto">{question.sentence.replace('_____', question.correctAnswer)}</div>
-                    <div className="word-japanese">{question.translation}</div>
-                  </div>
-                );
-              })}
+              {shuffledQuestions.map((question, idx) => (
+                <div key={idx} className="word-item">
+                  <div className="word-esperanto">{question.sentence.replace('_____', question.correctAnswer)}</div>
+                  <div className="word-japanese">{question.translation}</div>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -208,6 +199,7 @@ function InterrogativeAdvanced() {
                     {currentQuestion.explanation}
                   </div>
                 )}
+
 
                 <div className="choice-result-button">
                   <button
