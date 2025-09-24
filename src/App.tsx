@@ -9,6 +9,7 @@ import InterrogativeMenu from "./pages/InterrogativeLevel";
 import InterrogativeExplanation from "./pages/InterrogativeExplanation";
 import InterrogativeBasic from "./pages/InterrogativeBasic";
 import InterrogativeAdvanced from "./pages/InterrogativeAdvanced";
+import WeakQuestions from "./pages/WeakQuestions";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/interrogative-explanation" element={<InterrogativeExplanation />} />
         <Route path="/interrogative-basic" element={<InterrogativeBasic />} />
         <Route path="/interrogative-advanced" element={<InterrogativeAdvanced />} />
+        <Route path="/weak-questions" element={<WeakQuestions />} />
       </Routes>
     </AuthProvider>
   );

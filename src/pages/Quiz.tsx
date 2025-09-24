@@ -2,6 +2,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import vortaro from "../data/vortaro.json";
 import esuken4 from "../data/esuken4.json";
+import { useAuth } from "../contexts/AuthContext";
+import { saveWeakQuestion, updateQuizStats } from "../utils/firestore";
 
 interface Word {
   esperanto: string;
@@ -32,6 +34,7 @@ const normalizeWords = (category: string): Word[] => {
 function Quiz() {
   const { category, rangeStart, rangeSize } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const [dataError, setDataError] = useState<string | null>(null);
 
@@ -127,6 +130,34 @@ function Quiz() {
     updateChoicesForCurrentQuestion();
   }, [index, quizMode, questions]);
 
+  // 従来モードで苦手問題をマーク
+  const markAsWeak = async () => {
+    if (!user) {
+      console.log('markAsWeak: ユーザーがログインしていません');
+      return;
+    }
+
+    const question = questions[index];
+    console.log('markAsWeak: 手動で苦手問題に登録:', question);
+
+    try {
+      await saveWeakQuestion({
+        category: category!,
+        esperanto: question.esperanto,
+        japanese: question.japanese,
+        extra: question.extra
+      });
+
+      // 苦手リストに追加（重複チェック）
+      if (!incorrectQuestions.includes(index)) {
+        setIncorrectQuestions(prev => [...prev, index]);
+        console.log('markAsWeak: 苦手リストに追加完了');
+      }
+    } catch (error) {
+      console.error('markAsWeak: 苦手問題の保存に失敗:', error);
+    }
+  };
+
   // 従来モードのクリック処理
   const handleClick = () => {
     if (!show) {
@@ -138,6 +169,10 @@ function Quiz() {
       } else {
         // 終了
         setFinished(true);
+        // クイズ終了時に統計を更新
+        if (user) {
+          updateQuizStats(category!);
+        }
       }
     }
   };
@@ -156,6 +191,44 @@ function Quiz() {
     }
   };
 
+  // 苦手問題を保存
+  const saveIncorrectQuestions = async () => {
+    if (!user) {
+      console.log('saveIncorrectQuestions: ユーザーがログインしていません');
+      return;
+    }
+
+    if (incorrectQuestions.length === 0) {
+      console.log('saveIncorrectQuestions: 間違えた問題がありません');
+      return;
+    }
+
+    console.log('saveIncorrectQuestions: 間違えた問題数:', incorrectQuestions.length);
+    console.log('saveIncorrectQuestions: 間違えた問題インデックス:', incorrectQuestions);
+
+    try {
+      // 間違えた問題をFirestoreに保存
+      for (const questionIndex of incorrectQuestions) {
+        const question = questions[questionIndex];
+        console.log('saveIncorrectQuestions: 保存中の問題:', question);
+
+        await saveWeakQuestion({
+          category: category!,
+          esperanto: question.esperanto,
+          japanese: question.japanese,
+          extra: question.extra
+        });
+      }
+
+      // クイズ統計を更新
+      console.log('saveIncorrectQuestions: 統計を更新中...');
+      await updateQuizStats(category!);
+      console.log('saveIncorrectQuestions: 全ての保存処理が完了');
+    } catch (error) {
+      console.error('saveIncorrectQuestions: 苦手問題の保存に失敗:', error);
+    }
+  };
+
   // 4択モードで次の問題へ進む
   const handleNextQuestion = () => {
     if (index < questions.length - 1) {
@@ -164,6 +237,8 @@ function Quiz() {
       setShowResult(false);
     } else {
       setFinished(true);
+      // クイズ終了時に苦手問題を保存
+      saveIncorrectQuestions();
     }
   };
 
@@ -310,6 +385,17 @@ function Quiz() {
                   <p className="japanese-word">{questions[index]?.japanese}</p>
                   {questions[index]?.extra && (
                     <p className="japanese-extra">{questions[index]?.extra}</p>
+                  )}
+                  {user && (
+                    <div style={{ marginTop: "1rem" }}>
+                      <button
+                        className={`btn btn-small ${incorrectQuestions.includes(index) ? 'btn-danger' : 'btn-outline'}`}
+                        onClick={markAsWeak}
+                        disabled={incorrectQuestions.includes(index)}
+                      >
+                        {incorrectQuestions.includes(index) ? '💾 苦手登録済み' : '💾 苦手に登録'}
+                      </button>
+                    </div>
                   )}
                 </>
               )}
