@@ -1,45 +1,69 @@
 import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { signOutUser, isAnonymousUser } from '../utils/auth';
+import AuthModal from './AuthModal';
 
 const AuthButton = () => {
-  const { user, signInAsGuestHandler } = useAuth();
-  const [loading, setLoading] = useState(false);
+  const { user, signOutHandler } = useAuth();
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
 
   const handleSignOut = async () => {
     try {
-      setLoading(true);
-      await signOutUser();
+      await signOutHandler();
     } catch (error) {
       console.error('ログアウトエラー:', error);
-    } finally {
-      setLoading(false);
     }
+  };
+
+  const openLoginModal = () => {
+    setAuthMode('login');
+    setShowAuthModal(true);
+  };
+
+  const openSignupModal = () => {
+    setAuthMode('signup');
+    setShowAuthModal(true);
+  };
+
+  const closeAuthModal = () => {
+    setShowAuthModal(false);
   };
 
   if (!user) {
     return (
-      <button
-        className="btn btn-primary"
-        onClick={signInAsGuestHandler}
-        disabled={loading}
-      >
-        🎮 ゲストで始める
-      </button>
+      <>
+        <div className="auth-buttons">
+          <button
+            className="btn btn-primary"
+            onClick={openSignupModal}
+          >
+            👤 新規登録
+          </button>
+          <button
+            className="btn btn-secondary"
+            onClick={openLoginModal}
+          >
+            🔑 ログイン
+          </button>
+        </div>
+
+        <AuthModal
+          isOpen={showAuthModal}
+          onClose={closeAuthModal}
+          defaultMode={authMode}
+        />
+      </>
     );
   }
-
-  const isGuest = isAnonymousUser();
 
   return (
     <div className="auth-status">
       <span className="user-info">
-        {isGuest ? '🎮 ゲストユーザー' : `👤 ${user.email}`}
+        👤 {user.email}
       </span>
       <button
         className="btn btn-secondary btn-small"
         onClick={handleSignOut}
-        disabled={loading}
       >
         ログアウト
       </button>

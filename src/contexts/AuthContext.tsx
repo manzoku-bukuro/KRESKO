@@ -1,12 +1,21 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { User } from 'firebase/auth';
-import { onAuthStateChange, signInAsGuest } from '../utils/auth';
+import {
+  onAuthStateChange,
+  createEmailAccount,
+  signInWithEmail,
+  signInWithGoogle,
+  signOutUser
+} from '../utils/auth';
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  signInAsGuestHandler: () => Promise<void>;
+  signUpWithEmail: (email: string, password: string) => Promise<void>;
+  signInWithEmailHandler: (email: string, password: string) => Promise<void>;
+  signInWithGoogleHandler: () => Promise<void>;
+  signOutHandler: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -36,18 +45,49 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     return unsubscribe;
   }, []);
 
-  const signInAsGuestHandler = async () => {
+  const signUpWithEmail = async (email: string, password: string) => {
     try {
-      await signInAsGuest();
+      await createEmailAccount(email, password);
     } catch (error) {
-      console.error('ゲストログインエラー:', error);
+      console.error('メール登録エラー:', error);
+      throw error;
+    }
+  };
+
+  const signInWithEmailHandler = async (email: string, password: string) => {
+    try {
+      await signInWithEmail(email, password);
+    } catch (error) {
+      console.error('メールログインエラー:', error);
+      throw error;
+    }
+  };
+
+  const signInWithGoogleHandler = async () => {
+    try {
+      await signInWithGoogle();
+    } catch (error) {
+      console.error('Googleログインエラー:', error);
+      throw error;
+    }
+  };
+
+  const signOutHandler = async () => {
+    try {
+      await signOutUser();
+    } catch (error) {
+      console.error('ログアウトエラー:', error);
+      throw error;
     }
   };
 
   const value = {
     user,
     loading,
-    signInAsGuestHandler
+    signUpWithEmail,
+    signInWithEmailHandler,
+    signInWithGoogleHandler,
+    signOutHandler
   };
 
   return (
