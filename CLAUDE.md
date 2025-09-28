@@ -19,6 +19,15 @@ npm run preview
 
 # Deploy to Netlify (runs build)
 npm run deploy
+
+# Run tests
+npm test
+
+# Run tests with UI (optional)
+npm run test:ui
+
+# Run tests with coverage (optional)
+npm run test:coverage
 ```
 
 ## Architecture Overview
