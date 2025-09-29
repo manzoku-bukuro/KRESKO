@@ -5,6 +5,7 @@ import esuken4 from "../data/esuken4.json";
 import { useAuth } from "../contexts/AuthContext";
 import { saveWeakQuestion } from "../utils/firestore";
 import { AnswerResult } from "../components/AnswerResult";
+import { WordList } from "../components/WordList";
 
 interface Word {
   esperanto: string;
@@ -294,22 +295,16 @@ function Quiz() {
           <p>お疲れ様でした。{questions.length}問の単語を学習しました。</p>
 
           {/* 学習した単語一覧 */}
-          <div className="word-review">
-            <h4>📖 学習した単語一覧 ({questions.length}語)</h4>
-            <div className="word-grid">
-              {questions.map((word, idx) => {
-                const wasIncorrect = incorrectQuestions.includes(idx);
-                return (
-                  <div key={idx} className={`word-item ${wasIncorrect ? 'word-item-incorrect' : ''}`}>
-                    <div className="word-esperanto">{word.esperanto}</div>
-                    <div className="word-japanese">{word.japanese}</div>
-                    {word.extra && <div className="word-extra">{word.extra}</div>}
-                    {wasIncorrect && <div className="incorrect-marker">❌ 間違い</div>}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+          <WordList
+            title="学習した単語一覧"
+            words={questions.map((word, idx) => ({
+              primary: word.esperanto,
+              secondary: word.japanese,
+              extra: word.extra,
+              isIncorrect: incorrectQuestions.includes(idx),
+              incorrectLabel: "❌ 間違い"
+            }))}
+          />
 
           <div style={{ marginTop: "2rem" }}>
             <button

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { getWeakQuestions, removeWeakQuestion, type WeakQuestion } from '../utils/firestore';
+import { WordList } from '../components/WordList';
 
 const WeakQuestionsReview = () => {
   const { user } = useAuth();
@@ -167,17 +168,13 @@ const WeakQuestionsReview = () => {
 
           {/* 理解できた問題一覧 */}
           {correctedQuestions.length > 0 && (
-            <div className="word-review">
-              <h4>✅ 理解できた問題一覧 ({correctedQuestions.length}問)</h4>
-              <div className="word-grid">
-                {correctedQuestions.map((question, index) => (
-                  <div key={index} className="word-item">
-                    <div className="word-esperanto">{question.esperanto}</div>
-                    <div className="word-japanese">{question.japanese}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <WordList
+              title="理解できた問題一覧"
+              words={correctedQuestions.map((question) => ({
+                primary: question.esperanto,
+                secondary: question.japanese
+              }))}
+            />
           )}
 
           <div style={{ marginTop: "2rem" }}>

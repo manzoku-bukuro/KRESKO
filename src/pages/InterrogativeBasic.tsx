@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { updatePageMeta, seoData } from "../utils/seo";
 import { AnswerResult } from "../components/AnswerResult";
+import { WordList } from "../components/WordList";
 
 interface InterrogativeWord {
   word: string;
@@ -91,17 +92,13 @@ function InterrogativeBasic() {
           <p>お疲れ様でした。{shuffledQuestions.length}問の疑問詞を学習しました。</p>
 
           {/* 学習した疑問詞一覧 */}
-          <div className="word-review">
-            <h4>📖 学習した疑問詞一覧 ({shuffledQuestions.length}語)</h4>
-            <div className="word-grid">
-              {shuffledQuestions.map((word, idx) => (
-                <div key={idx} className="word-item">
-                  <div className="word-esperanto">{word.word}</div>
-                  <div className="word-japanese">{word.meaning}</div>
-                </div>
-              ))}
-            </div>
-          </div>
+          <WordList
+            title="学習した疑問詞一覧"
+            words={shuffledQuestions.map((word) => ({
+              primary: word.word,
+              secondary: word.meaning
+            }))}
+          />
 
           <div style={{ marginTop: "2rem" }}>
             <button

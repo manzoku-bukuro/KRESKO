@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import interrogativeQuestionsData from "../data/interrogative-questions.json";
 import { updatePageMeta, seoData } from "../utils/seo";
 import { AnswerResult } from "../components/AnswerResult";
+import { WordList } from "../components/WordList";
 
 interface QuizQuestion {
   sentence: string;
@@ -80,17 +81,13 @@ function InterrogativeAdvanced() {
           <p>お疲れ様でした。{shuffledQuestions.length}問の疑問詞問題を学習しました。</p>
 
           {/* 学習した問題一覧 */}
-          <div className="word-review">
-            <h4>📖 学習した問題一覧 ({shuffledQuestions.length}問)</h4>
-            <div className="word-grid">
-              {shuffledQuestions.map((question, idx) => (
-                <div key={idx} className="word-item">
-                  <div className="word-esperanto">{question.sentence.replace('_____', question.correctAnswer)}</div>
-                  <div className="word-japanese">{question.translation}</div>
-                </div>
-              ))}
-            </div>
-          </div>
+          <WordList
+            title="学習した問題一覧"
+            words={shuffledQuestions.map((question) => ({
+              primary: question.sentence.replace('_____', question.correctAnswer),
+              secondary: question.translation
+            }))}
+          />
 
           <div style={{ marginTop: "2rem" }}>
             <button
