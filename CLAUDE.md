@@ -28,6 +28,12 @@ npm run test:ui
 
 # Run tests with coverage (optional)
 npm run test:coverage
+
+# Start Storybook
+npm run storybook
+
+# Build Storybook for production
+npm run build-storybook
 ```
 
 ## Architecture Overview

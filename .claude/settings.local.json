@@ -10,7 +10,13 @@
       "Bash(git restore:*)",
       "Bash(npm run dev:*)",
       "Bash(npm run lint)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(python3:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm test)",
+      "mcp__ide__getDiagnostics",
+      "Bash(npx storybook@latest init:*)",
+      "Bash(timeout 10s npm run storybook)"
     ],
     "deny": [],
     "ask": []
