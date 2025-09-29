@@ -6,7 +6,9 @@ import { useAuth } from "../contexts/AuthContext";
 import { saveWeakQuestion } from "../utils/firestore";
 import { AnswerResult } from "../components/AnswerResult";
 import { WordList } from "../components/WordList";
-import { ModeToggle, type QuizMode } from "../components/ModeToggle";
+import { type QuizMode } from "../components/ModeToggle";
+import { QuizHeader } from "../components/QuizHeader";
+import { ChoiceButtons } from "../components/ChoiceButtons";
 
 interface Word {
   esperanto: string;
@@ -345,18 +347,17 @@ function Quiz() {
         </div>
 
         {/* Header */}
-        <div className="quiz-header">
-          <h2>{getCategoryEmoji(category!)} {getCategoryName(category!)}</h2>
-          <p className="quiz-counter">
-            問題 {index + 1} / {questions.length} ({rangeStart} - {Math.min(Number(rangeStart) + Number(rangeSize) - 1, words.length)})
-          </p>
-
-          {/* Mode Toggle */}
-          <ModeToggle
-            currentMode={quizMode}
-            onModeChange={setQuizMode}
-          />
-        </div>
+        <QuizHeader
+          title={`${getCategoryEmoji(category!)} ${getCategoryName(category!)}`}
+          currentQuestion={index + 1}
+          totalQuestions={questions.length}
+          subtitle={`範囲: ${rangeStart} - ${Math.min(Number(rangeStart) + Number(rangeSize) - 1, words.length)}`}
+          showModeToggle={true}
+          modeToggleProps={{
+            currentMode: quizMode,
+            onModeChange: setQuizMode
+          }}
+        />
 
         {/* Quiz Content */}
         <div className="quiz-content">
@@ -391,33 +392,15 @@ function Quiz() {
 
           {/* 4択モード：選択肢 */}
           {quizMode === 'multiple-choice' && (
-            <div className="multiple-choice-area">
-              {choices.map((choice, idx) => {
-                const isSelected = selectedAnswer === choice;
-                const isCorrect = choice === questions[index]?.japanese;
-                let buttonClass = "btn choice-btn";
-
-                if (showResult && isSelected) {
-                  buttonClass += isCorrect ? " choice-correct" : " choice-wrong";
-                } else if (showResult && isCorrect) {
-                  buttonClass += " choice-correct";
-                } else if (isSelected) {
-                  buttonClass += " btn-primary";
-                } else {
-                  buttonClass += " btn-secondary";
-                }
-
-                return (
-                  <button
-                    key={idx}
-                    className={buttonClass}
-                    onClick={() => handleChoiceClick(choice)}
-                    disabled={!!selectedAnswer}
-                  >
-                    {choice}
-                  </button>
-                );
-              })}
+            <div>
+              <ChoiceButtons
+                choices={choices}
+                selectedAnswer={selectedAnswer}
+                correctAnswer={questions[index]?.japanese}
+                showResult={showResult}
+                onChoiceClick={handleChoiceClick}
+                instruction="この単語の意味を選んでください"
+              />
 
               {/* 結果表示 */}
               <AnswerResult

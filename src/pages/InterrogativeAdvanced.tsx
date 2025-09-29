@@ -4,7 +4,9 @@ import interrogativeQuestionsData from "../data/interrogative-questions.json";
 import { updatePageMeta, seoData } from "../utils/seo";
 import { AnswerResult } from "../components/AnswerResult";
 import { WordList } from "../components/WordList";
-import { ModeToggle, type QuizMode } from "../components/ModeToggle";
+import { type QuizMode } from "../components/ModeToggle";
+import { QuizHeader } from "../components/QuizHeader";
+import { ChoiceButtons } from "../components/ChoiceButtons";
 
 interface QuizQuestion {
   sentence: string;
@@ -115,18 +117,17 @@ function InterrogativeAdvanced() {
         </div>
 
         {/* Header */}
-        <div className="quiz-header">
-          <h2>❓ 疑問詞 - 応用問題</h2>
-          <p className="quiz-counter">
-            問題 {currentIndex + 1} / {shuffledQuestions.length}
-          </p>
-
-          {/* Mode Toggle */}
-          <ModeToggle
-            currentMode={quizMode}
-            onModeChange={setQuizMode}
-          />
-        </div>
+        <QuizHeader
+          title="❓ 疑問詞 - 応用問題"
+          currentQuestion={currentIndex + 1}
+          totalQuestions={shuffledQuestions.length}
+          subtitle="日本語文の穴埋めで疑問詞を選択する実践問題"
+          showModeToggle={true}
+          modeToggleProps={{
+            currentMode: quizMode,
+            onModeChange: setQuizMode
+          }}
+        />
 
         {/* Quiz Content */}
         <div className="quiz-content">
@@ -148,34 +149,15 @@ function InterrogativeAdvanced() {
 
         {/* 4択モード：選択肢 */}
         {quizMode === 'multiple-choice' && (
-          <div className="multiple-choice-area">
-            <p className="quiz-instruction">適切な疑問詞を選んでください</p>
-            {currentQuestion.blanks.map((choice, index) => {
-              const isSelected = selectedAnswer === choice;
-              const isCorrect = choice === currentQuestion.correctAnswer;
-              let buttonClass = "btn choice-btn";
-
-              if (showResult && isSelected) {
-                buttonClass += isCorrect ? " choice-correct" : " choice-wrong";
-              } else if (showResult && isCorrect) {
-                buttonClass += " choice-correct";
-              } else if (isSelected) {
-                buttonClass += " btn-primary";
-              } else {
-                buttonClass += " btn-secondary";
-              }
-
-              return (
-                <button
-                  key={index}
-                  className={buttonClass}
-                  onClick={() => handleChoice(choice)}
-                  disabled={!!selectedAnswer}
-                >
-                  {choice}
-                </button>
-              );
-            })}
+          <div>
+            <ChoiceButtons
+              choices={currentQuestion.blanks}
+              selectedAnswer={selectedAnswer}
+              correctAnswer={currentQuestion.correctAnswer}
+              showResult={showResult}
+              onChoiceClick={handleChoice}
+              instruction="適切な疑問詞を選んでください"
+            />
 
             {/* 結果表示 */}
             <AnswerResult

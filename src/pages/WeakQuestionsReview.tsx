@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { getWeakQuestions, removeWeakQuestion, type WeakQuestion } from '../utils/firestore';
 import { WordList } from '../components/WordList';
-import { ModeToggle, type QuizMode } from '../components/ModeToggle';
+import { type QuizMode } from '../components/ModeToggle';
+import { QuizHeader } from '../components/QuizHeader';
+import { ChoiceButtons } from '../components/ChoiceButtons';
 
 const WeakQuestionsReview = () => {
   const { user } = useAuth();
@@ -264,23 +266,22 @@ const WeakQuestionsReview = () => {
         </div>
 
         {/* Header */}
-        <div className="quiz-header">
-          <h2>📚 苦手問題復習</h2>
-          <p className="quiz-counter">
-            問題 {currentIndex + 1} / {reviewQuestions.length}
-          </p>
-
-          {/* Mode Toggle */}
-          <ModeToggle
-            currentMode={quizMode}
-            onModeChange={(mode) => {
+        <QuizHeader
+          title="📚 苦手問題復習"
+          currentQuestion={currentIndex + 1}
+          totalQuestions={reviewQuestions.length}
+          subtitle="間違えた問題を復習しましょう"
+          showModeToggle={true}
+          modeToggleProps={{
+            currentMode: quizMode,
+            onModeChange: (mode) => {
               setQuizMode(mode);
               setShowAnswer(false);
               setSelectedAnswer(null);
               setShowResult(false);
-            }}
-          />
-        </div>
+            }
+          }}
+        />
 
         {/* Quiz Content */}
         <div className="quiz-content">
@@ -306,37 +307,16 @@ const WeakQuestionsReview = () => {
 
           {/* 4択モード：選択肢 */}
           {quizMode === 'multiple-choice' && (
-            <div className="multiple-choice-area">
-              <p className="quiz-instruction">この単語の意味を選んでください</p>
-              {choices.length === 0 && (
-                <p>選択肢を生成中...</p>
-              )}
-              {choices.map((choice, idx) => {
-                const isSelected = selectedAnswer === choice;
-                const isCorrect = choice === currentQuestion.japanese;
-                let buttonClass = "btn choice-btn";
-
-                if (showResult && isSelected) {
-                  buttonClass += isCorrect ? " choice-correct" : " choice-wrong";
-                } else if (showResult && isCorrect) {
-                  buttonClass += " choice-correct";
-                } else if (isSelected) {
-                  buttonClass += " btn-primary";
-                } else {
-                  buttonClass += " btn-secondary";
-                }
-
-                return (
-                  <button
-                    key={idx}
-                    className={buttonClass}
-                    onClick={() => handleChoiceClick(choice)}
-                    disabled={showResult}
-                  >
-                    {choice}
-                  </button>
-                );
-              })}
+            <div>
+              <ChoiceButtons
+                choices={choices}
+                selectedAnswer={selectedAnswer}
+                correctAnswer={currentQuestion.japanese}
+                showResult={showResult}
+                onChoiceClick={handleChoiceClick}
+                instruction="この単語の意味を選んでください"
+                loadingMessage="選択肢を生成中..."
+              />
 
               {/* 4択モード結果表示 */}
               {showResult && (

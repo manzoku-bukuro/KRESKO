@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { updatePageMeta, seoData } from "../utils/seo";
 import { AnswerResult } from "../components/AnswerResult";
 import { WordList } from "../components/WordList";
+import { QuizHeader } from "../components/QuizHeader";
+import { ChoiceButtons } from "../components/ChoiceButtons";
 
 interface InterrogativeWord {
   word: string;
@@ -124,12 +126,12 @@ function InterrogativeBasic() {
         </div>
 
         {/* Header */}
-        <div className="quiz-header">
-          <h2>❓ 疑問詞 - 基本学習</h2>
-          <p className="quiz-counter">
-            問題 {currentIndex + 1} / {shuffledQuestions.length}
-          </p>
-        </div>
+        <QuizHeader
+          title="❓ 疑問詞 - 基本学習"
+          currentQuestion={currentIndex + 1}
+          totalQuestions={shuffledQuestions.length}
+          subtitle="疑問詞の意味を覚える練習問題"
+        />
 
         {/* Quiz Content */}
         <div className="quiz-content">
@@ -138,44 +140,24 @@ function InterrogativeBasic() {
         </div>
 
         {/* Multiple Choice */}
-        <div className="multiple-choice-area">
-          {choices.map((choice, index) => {
-            const isSelected = selectedAnswer === choice;
-            const isCorrect = choice === currentWord.meaning;
-            let buttonClass = "btn choice-btn";
+        <ChoiceButtons
+          choices={choices}
+          selectedAnswer={selectedAnswer}
+          correctAnswer={currentWord.meaning}
+          showResult={showAnswer}
+          onChoiceClick={handleChoice}
+          instruction="この疑問詞の意味を選んでください"
+        />
 
-            if (showAnswer && isSelected) {
-              buttonClass += isCorrect ? " choice-correct" : " choice-wrong";
-            } else if (showAnswer && isCorrect) {
-              buttonClass += " choice-correct";
-            } else if (isSelected) {
-              buttonClass += " btn-primary";
-            } else {
-              buttonClass += " btn-secondary";
-            }
-
-            return (
-              <button
-                key={index}
-                className={buttonClass}
-                onClick={() => handleChoice(choice)}
-                disabled={!!selectedAnswer}
-              >
-                {choice}
-              </button>
-            );
-          })}
-
-          {/* 結果表示 */}
-          <AnswerResult
-            variant="choice"
-            resultType={selectedAnswer === currentWord.meaning ? 'correct' : 'wrong'}
-            isVisible={showAnswer}
-            message={selectedAnswer === currentWord.meaning ? '🎉 正解です！' : '❌ 不正解です'}
-            onNext={nextQuestion}
-            nextButtonText={currentIndex < shuffledQuestions.length - 1 ? "➡️ 次の問題へ" : "🎉 完了！"}
-          />
-        </div>
+        {/* 結果表示 */}
+        <AnswerResult
+          variant="choice"
+          resultType={selectedAnswer === currentWord.meaning ? 'correct' : 'wrong'}
+          isVisible={showAnswer}
+          message={selectedAnswer === currentWord.meaning ? '🎉 正解です！' : '❌ 不正解です'}
+          onNext={nextQuestion}
+          nextButtonText={currentIndex < shuffledQuestions.length - 1 ? "➡️ 次の問題へ" : "🎉 完了！"}
+        />
 
         {/* 戻るボタン */}
         <button
