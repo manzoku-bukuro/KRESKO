@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Footer from "../components/Footer";
-import AuthButton from "../components/AuthButton";
+import { Footer } from "../components/Footer";
+import { AuthButton } from "../components/AuthButton";
 import { updatePageMeta, seoData } from "../utils/seo";
 import { useAuth } from "../contexts/AuthContext";
 import { getWeakQuestions } from "../utils/firestore";

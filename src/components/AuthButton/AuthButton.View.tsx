@@ -1,33 +1,22 @@
-import { useState } from 'react';
-import { useAuth } from '../contexts/AuthContext';
-import AuthModal from './AuthModal';
+import AuthModal from '../AuthModal'
+import type { AuthButtonData, AuthButtonActions } from './hooks/useAuthButton'
 
-const AuthButton = () => {
-  const { user, signOutHandler } = useAuth();
-  const [showAuthModal, setShowAuthModal] = useState(false);
-  const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
+interface AuthButtonViewProps {
+  data: AuthButtonData
+  actions: AuthButtonActions
+}
 
-  const handleSignOut = async () => {
-    try {
-      await signOutHandler();
-    } catch (error) {
-      console.error('ログアウトエラー:', error);
-    }
-  };
+export const AuthButtonView = ({ data, actions }: AuthButtonViewProps) => {
+  const { user, showAuthModal, authMode, loading } = data
+  const { handleSignOut, openLoginModal, openSignupModal, closeAuthModal } = actions
 
-  const openLoginModal = () => {
-    setAuthMode('login');
-    setShowAuthModal(true);
-  };
-
-  const openSignupModal = () => {
-    setAuthMode('signup');
-    setShowAuthModal(true);
-  };
-
-  const closeAuthModal = () => {
-    setShowAuthModal(false);
-  };
+  if (loading) {
+    return (
+      <div className="auth-status">
+        <span className="user-info">読み込み中...</span>
+      </div>
+    )
+  }
 
   if (!user) {
     return (
@@ -53,7 +42,7 @@ const AuthButton = () => {
           defaultMode={authMode}
         />
       </>
-    );
+    )
   }
 
   return (
@@ -68,7 +57,5 @@ const AuthButton = () => {
         ログアウト
       </button>
     </div>
-  );
-};
-
-export default AuthButton;
+  )
+}

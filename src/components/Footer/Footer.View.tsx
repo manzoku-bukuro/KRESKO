@@ -1,6 +1,11 @@
 import { Link } from 'react-router-dom'
+import type { FooterData } from './hooks/useFooterData'
 
-export default function Footer() {
+interface FooterViewProps {
+  data: FooterData
+}
+
+export const FooterView = ({ data }: FooterViewProps) => {
   return (
     <footer style={{
       marginTop: 'auto',
@@ -25,7 +30,7 @@ export default function Footer() {
           gap: 'var(--spacing-lg)'
         }}>
           <Link
-            to="/privacy-policy"
+            to={data.links.privacy.to}
             style={{
               color: 'var(--color-muted)',
               textDecoration: 'none',
@@ -34,13 +39,13 @@ export default function Footer() {
             onMouseEnter={(e) => (e.target as HTMLElement).style.color = 'var(--color-primary)'}
             onMouseLeave={(e) => (e.target as HTMLElement).style.color = 'var(--color-muted)'}
           >
-            プライバシーポリシー
+            {data.links.privacy.text}
           </Link>
           <span>|</span>
           <a
-            href="https://github.com/manzoku-bukuro/MEMORU"
-            target="_blank"
-            rel="noopener noreferrer"
+            href={data.links.github.href}
+            target={data.links.github.target}
+            rel={data.links.github.rel}
             style={{
               color: 'var(--color-muted)',
               textDecoration: 'none',
@@ -49,11 +54,11 @@ export default function Footer() {
             onMouseEnter={(e) => (e.target as HTMLElement).style.color = 'var(--color-primary)'}
             onMouseLeave={(e) => (e.target as HTMLElement).style.color = 'var(--color-muted)'}
           >
-            GitHub
+            {data.links.github.text}
           </a>
         </div>
         <div>
-          <p style={{ margin: 0 }}>&copy; 2025 MEMORU. All rights reserved.</p>
+          <p style={{ margin: 0 }}>{data.copyright}</p>
         </div>
       </div>
     </footer>

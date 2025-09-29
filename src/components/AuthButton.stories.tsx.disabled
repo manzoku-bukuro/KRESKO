@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import AuthButton from './AuthButton'
-import { AuthProvider } from '../contexts/AuthContext'
 
 // Mock user data
 const mockUser = {
@@ -9,15 +8,7 @@ const mockUser = {
 }
 
 // Mock AuthProvider for stories
-const MockAuthProvider = ({ children, user = null }: { children: React.ReactNode, user?: any }) => {
-  const mockValue = {
-    user,
-    signInWithEmailPassword: async () => {},
-    signUpWithEmailPassword: async () => {},
-    signInWithGoogle: async () => {},
-    signOutHandler: async () => {},
-    loading: false
-  }
+const MockAuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div style={{
@@ -37,9 +28,8 @@ const MockAuthProvider = ({ children, user = null }: { children: React.ReactNode
       '--font-weight-semibold': '600',
       '--transition-fast': '0.15s ease'
     } as React.CSSProperties}>
-      <AuthProvider value={mockValue as any}>
+        <div>Mock AuthButton (TODO: Fix AuthProvider props)</div>
         {children}
-      </AuthProvider>
     </div>
   )
 }
