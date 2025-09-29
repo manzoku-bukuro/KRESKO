@@ -4,6 +4,7 @@ import vortaro from "../data/vortaro.json";
 import esuken4 from "../data/esuken4.json";
 import { useAuth } from "../contexts/AuthContext";
 import { saveWeakQuestion } from "../utils/firestore";
+import { AnswerResult } from "../components/AnswerResult";
 
 interface Word {
   esperanto: string;
@@ -378,26 +379,27 @@ function Quiz() {
 
           {/* 従来モード：回答表示部分 */}
           {quizMode === 'traditional' && (
-            <div className="answer-area">
-              {show && (
-                <>
-                  <p className="japanese-word">{questions[index]?.japanese}</p>
-                  {questions[index]?.extra && (
-                    <p className="japanese-extra">{questions[index]?.extra}</p>
-                  )}
-                  {user && (
-                    <div style={{ marginTop: "1rem" }}>
-                      <button
-                        className={`btn btn-small ${incorrectQuestions.includes(index) ? 'btn-danger' : 'btn-outline'}`}
-                        onClick={markAsWeak}
-                        disabled={incorrectQuestions.includes(index)}
-                      >
-                        {incorrectQuestions.includes(index) ? '💾 苦手登録済み' : '💾 苦手に登録'}
-                      </button>
-                    </div>
-                  )}
-                </>
-              )}
+            <AnswerResult
+              variant="traditional"
+              isVisible={show}
+              wordDisplay={{
+                primary: questions[index]?.esperanto,
+                secondary: questions[index]?.japanese,
+                extra: questions[index]?.extra
+              }}
+            />
+          )}
+
+          {/* 苦手登録ボタン (従来モード専用) */}
+          {quizMode === 'traditional' && show && user && (
+            <div style={{ marginTop: "1rem", textAlign: "center" }}>
+              <button
+                className={`btn btn-small ${incorrectQuestions.includes(index) ? 'btn-danger' : 'btn-outline'}`}
+                onClick={markAsWeak}
+                disabled={incorrectQuestions.includes(index)}
+              >
+                {incorrectQuestions.includes(index) ? '💾 苦手登録済み' : '💾 苦手に登録'}
+              </button>
             </div>
           )}
 
@@ -432,37 +434,28 @@ function Quiz() {
               })}
 
               {/* 結果表示 */}
-              {showResult && (
-                <div className={`choice-result ${selectedAnswer === questions[index]?.japanese ? 'correct' : 'wrong'}`}>
-                  {/* 正解の意味続きを表示 */}
-                  {questions[index]?.extra && (
-                    <div className="choice-extra-meaning">
-                      {questions[index]?.extra}
-                    </div>
-                  )}
+              <AnswerResult
+                variant="choice"
+                resultType={selectedAnswer === questions[index]?.japanese ? 'correct' : 'wrong'}
+                isVisible={showResult}
+                message={selectedAnswer === questions[index]?.japanese ? '🎉 正解です！' : '❌ 不正解です'}
+                wordDisplay={{
+                  extra: questions[index]?.extra
+                }}
+                onNext={handleNextQuestion}
+                nextButtonText={isLastQuestion ? "🎉 完了！" : "➡️ 次の問題へ"}
+              />
 
-                  {/* 苦手登録ボタン（ログイン時のみ） */}
-                  {user && (
-                    <div style={{ marginBottom: "1rem" }}>
-                      <button
-                        className={`btn btn-small ${incorrectQuestions.includes(index) ? 'btn-danger' : 'btn-outline'}`}
-                        onClick={markAsWeak}
-                        disabled={incorrectQuestions.includes(index)}
-                      >
-                        {incorrectQuestions.includes(index) ? '💾 苦手登録済み' : '💾 苦手に登録'}
-                      </button>
-                    </div>
-                  )}
-
-                  {/* 次へボタン */}
-                  <div className="choice-result-button">
-                    <button
-                      className="btn btn-primary btn-large"
-                      onClick={handleNextQuestion}
-                    >
-                      {isLastQuestion ? "🎉 完了！" : "➡️ 次の問題へ"}
-                    </button>
-                  </div>
+              {/* 苦手登録ボタン（選択モード専用） */}
+              {showResult && user && (
+                <div style={{ marginBottom: "1rem", textAlign: "center" }}>
+                  <button
+                    className={`btn btn-small ${incorrectQuestions.includes(index) ? 'btn-danger' : 'btn-outline'}`}
+                    onClick={markAsWeak}
+                    disabled={incorrectQuestions.includes(index)}
+                  >
+                    {incorrectQuestions.includes(index) ? '💾 苦手登録済み' : '💾 苦手に登録'}
+                  </button>
                 </div>
               )}
             </div>

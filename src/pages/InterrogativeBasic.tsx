@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { updatePageMeta, seoData } from "../utils/seo";
+import { AnswerResult } from "../components/AnswerResult";
 
 interface InterrogativeWord {
   word: string;
@@ -169,18 +170,14 @@ function InterrogativeBasic() {
           })}
 
           {/* 結果表示 */}
-          {showAnswer && (
-            <div className={`choice-result ${selectedAnswer === currentWord.meaning ? 'correct' : 'wrong'}`}>
-              <div className="choice-result-button">
-                <button
-                  className="btn btn-primary btn-large"
-                  onClick={nextQuestion}
-                >
-                  {currentIndex < shuffledQuestions.length - 1 ? "➡️ 次の問題へ" : "🎉 完了！"}
-                </button>
-              </div>
-            </div>
-          )}
+          <AnswerResult
+            variant="choice"
+            resultType={selectedAnswer === currentWord.meaning ? 'correct' : 'wrong'}
+            isVisible={showAnswer}
+            message={selectedAnswer === currentWord.meaning ? '🎉 正解です！' : '❌ 不正解です'}
+            onNext={nextQuestion}
+            nextButtonText={currentIndex < shuffledQuestions.length - 1 ? "➡️ 次の問題へ" : "🎉 完了！"}
+          />
         </div>
 
         {/* 戻るボタン */}

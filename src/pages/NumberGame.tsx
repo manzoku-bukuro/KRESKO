@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { updatePageMeta, seoData } from "../utils/seo";
+import { AnswerResult } from "../components/AnswerResult";
 
 interface Card {
   value: number;
@@ -188,11 +189,12 @@ function NumberGame() {
         </div>
 
         {/* Result */}
-        {result.show && (
-          <div className={`game-result ${result.correct ? 'correct' : 'wrong'}`}>
-            {result.message}
-          </div>
-        )}
+        <AnswerResult
+          variant="game"
+          resultType={result.correct ? 'correct' : 'wrong'}
+          isVisible={result.show}
+          message={result.message}
+        />
 
 
         {/* Action Buttons */}

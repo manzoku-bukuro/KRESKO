@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import interrogativeQuestionsData from "../data/interrogative-questions.json";
 import { updatePageMeta, seoData } from "../utils/seo";
+import { AnswerResult } from "../components/AnswerResult";
 
 interface QuizQuestion {
   sentence: string;
@@ -146,16 +147,14 @@ function InterrogativeAdvanced() {
 
           {/* 従来モード：回答表示部分 */}
           {quizMode === 'traditional' && (
-            <div className="answer-area">
-              {showAnswer && (
-                <>
-                  <p className="japanese-word">正解: {currentQuestion.correctAnswer}</p>
-                  {currentQuestion.explanation && (
-                    <p className="japanese-extra">{currentQuestion.explanation}</p>
-                  )}
-                </>
-              )}
-            </div>
+            <AnswerResult
+              variant="traditional"
+              isVisible={showAnswer}
+              wordDisplay={{
+                primary: `正解: ${currentQuestion.correctAnswer}`,
+                extra: currentQuestion.explanation
+              }}
+            />
           )}
         </div>
 
@@ -191,26 +190,17 @@ function InterrogativeAdvanced() {
             })}
 
             {/* 結果表示 */}
-            {showResult && (
-              <div className={`choice-result ${selectedAnswer === currentQuestion.correctAnswer ? 'correct' : 'wrong'}`}>
-                {/* 解説表示 */}
-                {currentQuestion.explanation && (
-                  <div className="choice-extra-meaning">
-                    {currentQuestion.explanation}
-                  </div>
-                )}
-
-
-                <div className="choice-result-button">
-                  <button
-                    className="btn btn-primary btn-large"
-                    onClick={nextQuestion}
-                  >
-                    {isLastQuestion ? "🎉 完了！" : "➡️ 次の問題へ"}
-                  </button>
-                </div>
-              </div>
-            )}
+            <AnswerResult
+              variant="choice"
+              resultType={selectedAnswer === currentQuestion.correctAnswer ? 'correct' : 'wrong'}
+              isVisible={showResult}
+              message={selectedAnswer === currentQuestion.correctAnswer ? '🎉 正解です！' : '❌ 不正解です'}
+              wordDisplay={{
+                extra: currentQuestion.explanation
+              }}
+              onNext={nextQuestion}
+              nextButtonText={isLastQuestion ? "🎉 完了！" : "➡️ 次の問題へ"}
+            />
           </div>
         )}
 
