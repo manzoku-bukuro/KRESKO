@@ -4,6 +4,7 @@ import interrogativeQuestionsData from "../data/interrogative-questions.json";
 import { updatePageMeta, seoData } from "../utils/seo";
 import { AnswerResult } from "../components/AnswerResult";
 import { WordList } from "../components/WordList";
+import { ModeToggle, type QuizMode } from "../components/ModeToggle";
 
 interface QuizQuestion {
   sentence: string;
@@ -23,7 +24,7 @@ function InterrogativeAdvanced() {
   const [shuffledQuestions, setShuffledQuestions] = useState<QuizQuestion[]>([]);
 
   // モード切り替え用の状態
-  const [quizMode, setQuizMode] = useState<'traditional' | 'multiple-choice'>('multiple-choice');
+  const [quizMode, setQuizMode] = useState<QuizMode>('multiple-choice');
   const [showResult, setShowResult] = useState(false);
 
   useEffect(() => {
@@ -121,20 +122,10 @@ function InterrogativeAdvanced() {
           </p>
 
           {/* Mode Toggle */}
-          <div className="quiz-mode-toggle">
-            <button
-              className={`btn btn-small ${quizMode === 'traditional' ? 'btn-primary' : 'btn-secondary'}`}
-              onClick={() => setQuizMode('traditional')}
-            >
-              👁️ 表示形式
-            </button>
-            <button
-              className={`btn btn-small ${quizMode === 'multiple-choice' ? 'btn-primary' : 'btn-secondary'}`}
-              onClick={() => setQuizMode('multiple-choice')}
-            >
-              ✅ 4択形式
-            </button>
-          </div>
+          <ModeToggle
+            currentMode={quizMode}
+            onModeChange={setQuizMode}
+          />
         </div>
 
         {/* Quiz Content */}

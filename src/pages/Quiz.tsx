@@ -6,6 +6,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { saveWeakQuestion } from "../utils/firestore";
 import { AnswerResult } from "../components/AnswerResult";
 import { WordList } from "../components/WordList";
+import { ModeToggle, type QuizMode } from "../components/ModeToggle";
 
 interface Word {
   esperanto: string;
@@ -81,7 +82,7 @@ function Quiz() {
   const [finished, setFinished] = useState(false);
 
   // 4択モード用状態
-  const [quizMode, setQuizMode] = useState<'traditional' | 'multiple-choice'>('traditional');
+  const [quizMode, setQuizMode] = useState<QuizMode>('traditional');
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [choices, setChoices] = useState<string[]>([]);
   const [showResult, setShowResult] = useState(false);
@@ -351,20 +352,10 @@ function Quiz() {
           </p>
 
           {/* Mode Toggle */}
-          <div className="quiz-mode-toggle">
-            <button
-              className={`btn btn-small ${quizMode === 'traditional' ? 'btn-primary' : 'btn-secondary'}`}
-              onClick={() => setQuizMode('traditional')}
-            >
-              👁️ 表示形式
-            </button>
-            <button
-              className={`btn btn-small ${quizMode === 'multiple-choice' ? 'btn-primary' : 'btn-secondary'}`}
-              onClick={() => setQuizMode('multiple-choice')}
-            >
-              ✅ 4択形式
-            </button>
-          </div>
+          <ModeToggle
+            currentMode={quizMode}
+            onModeChange={setQuizMode}
+          />
         </div>
 
         {/* Quiz Content */}

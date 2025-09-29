@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { getWeakQuestions, removeWeakQuestion, type WeakQuestion } from '../utils/firestore';
 import { WordList } from '../components/WordList';
+import { ModeToggle, type QuizMode } from '../components/ModeToggle';
 
 const WeakQuestionsReview = () => {
   const { user } = useAuth();
@@ -14,7 +15,7 @@ const WeakQuestionsReview = () => {
   const [finished, setFinished] = useState(false);
 
   // クイズ状態
-  const [quizMode, setQuizMode] = useState<'traditional' | 'multiple-choice'>('traditional');
+  const [quizMode, setQuizMode] = useState<QuizMode>('traditional');
   const [showAnswer, setShowAnswer] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showResult, setShowResult] = useState(false);
@@ -270,30 +271,15 @@ const WeakQuestionsReview = () => {
           </p>
 
           {/* Mode Toggle */}
-          <div className="quiz-mode-toggle">
-            <button
-              className={`btn btn-small ${quizMode === 'traditional' ? 'btn-primary' : 'btn-secondary'}`}
-              onClick={() => {
-                setQuizMode('traditional');
-                setShowAnswer(false);
-                setSelectedAnswer(null);
-                setShowResult(false);
-              }}
-            >
-              👁️ 表示形式
-            </button>
-            <button
-              className={`btn btn-small ${quizMode === 'multiple-choice' ? 'btn-primary' : 'btn-secondary'}`}
-              onClick={() => {
-                setQuizMode('multiple-choice');
-                setShowAnswer(false);
-                setSelectedAnswer(null);
-                setShowResult(false);
-              }}
-            >
-              ✅ 4択形式
-            </button>
-          </div>
+          <ModeToggle
+            currentMode={quizMode}
+            onModeChange={(mode) => {
+              setQuizMode(mode);
+              setShowAnswer(false);
+              setSelectedAnswer(null);
+              setShowResult(false);
+            }}
+          />
         </div>
 
         {/* Quiz Content */}
