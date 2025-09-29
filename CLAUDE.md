@@ -42,6 +42,7 @@ MEMORU is a React-based Esperanto language learning application with three main 
 
 ### Core Architecture
 - **React 19** with TypeScript and Vite
+- **Tailwind CSS v4** for styling with existing CSS variables integration
 - **Client-side routing** using React Router DOM with these routes:
   - `/` - Category selection (Top component)
   - `/range/:category` - Range selection for drill/esuken4

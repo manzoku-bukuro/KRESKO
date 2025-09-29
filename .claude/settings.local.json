@@ -16,7 +16,9 @@
       "Bash(npm test)",
       "mcp__ide__getDiagnostics",
       "Bash(npx storybook@latest init:*)",
-      "Bash(timeout 10s npm run storybook)"
+      "Bash(timeout 10s npm run storybook)",
+      "Bash(npm test:*)",
+      "Bash(npx tailwindcss init:*)"
     ],
     "deny": [],
     "ask": []
