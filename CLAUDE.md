@@ -234,11 +234,17 @@ ComponentName/
 ├── ComponentName.test.tsx      # Tests (REQUIRED)
 ├── ComponentName.stories.tsx   # Storybook (optional)
 ├── hooks/
-│   └── useComponentName.ts     # Component-specific hooks
+│   ├── useComponentName.ts     # Component-specific hooks
+│   └── useComponentName.test.ts # Hook tests (REQUIRED)
+├── utils/
+│   ├── helpers.ts              # Utility functions
+│   └── helpers.test.ts         # Utility tests (REQUIRED)
 └── index.tsx                   # Exports
 ```
 
-**Note**: Use lowercase `.view.tsx` for consistency with other extensions (`.types.ts`, `.test.tsx`, etc.)
+**Note**:
+- Use lowercase `.view.tsx` for consistency with other extensions (`.types.ts`, `.test.tsx`, etc.)
+- **All hooks and utility functions MUST have test files in the same directory**
 
 ### Code Review Checklist
 

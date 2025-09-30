@@ -402,13 +402,16 @@ src/hooks/
 4. **Test**: `ComponentName.test.tsx` - テストコード（**必須**）
 5. **Stories**: `ComponentName.stories.tsx` - Storybook定義（オプション）
 6. **Hook**: `hooks/useComponentName.ts` - このコンポーネント専用フック
-7. **Utils**: `utils/componentNameUtils.ts` - このコンポーネント専用ユーティリティ
-8. **Export**: `index.tsx` - モジュールエクスポート
+7. **Hook Test**: `hooks/useComponentName.test.ts` - フックのテスト（**必須**）
+8. **Utils**: `utils/componentNameUtils.ts` - このコンポーネント専用ユーティリティ
+9. **Utils Test**: `utils/componentNameUtils.test.ts` - ユーティリティのテスト（**必須**）
+10. **Export**: `index.tsx` - モジュールエクスポート
 
 **重要**:
 - `.view.tsx` は小文字を推奨（他の拡張子と統一）
 - 既存の `.View.tsx` は段階的に移行
 - **テストファイルは必須**。コンポーネント作成時に同時に作成すること
+- **hooks と utils にも必ずテストファイルを同じディレクトリに配置**
 
 ### コンポーネント内専用 vs 共有の判断基準
 
