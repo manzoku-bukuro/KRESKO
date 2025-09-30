@@ -539,23 +539,28 @@ src/components/
 
 ### 1. テストの必須化
 
-**全てのコンポーネント、フック、ユーティリティにテストファイルを作成すること**
+**Containerコンポーネント、フック、ユーティリティにテストファイルを作成すること**
 
 ```
 ✅ Good:
 ComponentName/
-├── ComponentName.tsx
-└── ComponentName.test.tsx    # 必ず作成
+├── ComponentName.tsx         # Container
+├── ComponentName.view.tsx    # View
+├── ComponentName.test.tsx    # Containerのテスト（必須）
+└── ComponentName.stories.tsx # View層の視覚確認（必須）
 
 ❌ Bad:
 ComponentName/
-└── ComponentName.tsx          # テストなし
+├── ComponentName.tsx
+└── ComponentName.view.tsx
+# テストもStorybookもなし
 ```
 
 **テスト作成のタイミング**:
 - コンポーネント作成時に同時にテストファイルを作成
 - 実装前にテストケースを書く（TDD推奨）
-- 最低限、レンダリングテストとプロップスのバリデーションを含める
+- Containerのロジックと統合をテスト
+- View層は**テスト不要**（Storybookで視覚確認）
 
 ### 2. 型安全性の徹底
 
