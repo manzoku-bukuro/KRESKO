@@ -295,12 +295,14 @@ ComponentName/
 ├── ComponentName.tsx           # メインコンポーネント (Container)
 ├── ComponentName.view.tsx      # View層 (プレゼンテーショナル)
 ├── ComponentName.types.ts      # 型定義
-├── ComponentName.test.tsx      # テスト (必須)
-├── ComponentName.stories.tsx   # Storybook (必須)
+├── ComponentName.test.tsx      # Containerのテスト (必須)
+├── ComponentName.stories.tsx   # Storybook (必須、View層を使用)
 ├── hooks/
 │   ├── useComponentName.ts     # カスタムフック
 │   └── useComponentName.test.ts # フックのテスト (必須)
 └── index.tsx                   # エクスポート
+
+注: View層のテストは不要（Storybookで視覚確認）
 ```
 
 この構成を全てのコンポーネントで統一する。
@@ -400,8 +402,8 @@ src/hooks/
 1. **Container**: `ComponentName.tsx` - ロジックとstate管理
 2. **View**: `ComponentName.view.tsx` - UIレンダリングのみ（小文字推奨）
 3. **Types**: `ComponentName.types.ts` - 型定義
-4. **Test**: `ComponentName.test.tsx` - テストコード（**必須**）
-5. **Stories**: `ComponentName.stories.tsx` - Storybook定義（**必須**）
+4. **Test**: `ComponentName.test.tsx` - Containerのテスト（**必須**）
+5. **Stories**: `ComponentName.stories.tsx` - Storybook定義（**必須**、View層を使用）
 6. **Hook**: `hooks/useComponentName.ts` - このコンポーネント専用フック
 7. **Hook Test**: `hooks/useComponentName.test.ts` - フックのテスト（**必須**）
 8. **Utils**: `utils/componentNameUtils.ts` - このコンポーネント専用ユーティリティ
@@ -411,7 +413,8 @@ src/hooks/
 **重要**:
 - `.view.tsx` は小文字を推奨（他の拡張子と統一）
 - 既存の `.View.tsx` は段階的に移行
-- **テストファイルは必須**。コンポーネント作成時に同時に作成すること
+- **Containerのテストファイルは必須**。ロジックと統合をテスト
+- **View層のテストは不要**。Storybookで視覚的に確認
 - **Storybookファイルは必須**。視覚的パターン確認のため全コンポーネントに作成
 - **hooks と utils にも必ずテストファイルを同じディレクトリに配置**
 
