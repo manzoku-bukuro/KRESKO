@@ -7,8 +7,8 @@ import NumberGame from "./pages/NumberGame";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import InterrogativeMenu from "./pages/Topics/Interrogative/Menu";
 import InterrogativeExplanation from "./pages/Topics/Interrogative/Explanation";
-import InterrogativeBasic from "./pages/InterrogativeBasic";
-import InterrogativeAdvanced from "./pages/InterrogativeAdvanced";
+import InterrogativeBasic from "./pages/Topics/Interrogative/Basic";
+import InterrogativeAdvanced from "./pages/Topics/Interrogative/Advanced";
 import WeakQuestions from "./pages/SavedQuestions/List";
 import WeakQuestionsReview from "./pages/SavedQuestions/Review";
 
