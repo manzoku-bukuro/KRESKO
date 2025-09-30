@@ -232,7 +232,7 @@ ComponentName/
 ├── ComponentName.view.tsx      # View (presentation only)
 ├── ComponentName.types.ts      # Type definitions
 ├── ComponentName.test.tsx      # Tests (REQUIRED)
-├── ComponentName.stories.tsx   # Storybook (optional)
+├── ComponentName.stories.tsx   # Storybook (REQUIRED for components)
 ├── hooks/
 │   ├── useComponentName.ts     # Component-specific hooks
 │   └── useComponentName.test.ts # Hook tests (REQUIRED)
@@ -242,15 +242,74 @@ ComponentName/
 └── index.tsx                   # Exports
 ```
 
-**Note**:
+**Notes**:
 - Use lowercase `.view.tsx` for consistency with other extensions (`.types.ts`, `.test.tsx`, etc.)
 - **All hooks and utility functions MUST have test files in the same directory**
+- **All components MUST have Storybook stories** for visual testing and documentation
+
+### Storybook Guidelines
+
+**All components must have `.stories.tsx` files for:**
+- Visual documentation of component patterns
+- Isolated component testing
+- Design system consistency
+
+**Story requirements**:
+```typescript
+// Minimum required stories
+export const Default: Story = {
+  args: {
+    // Basic props to show default state
+  }
+}
+
+export const WithVariations: Story = {
+  args: {
+    // Show common variations (different props combinations)
+  }
+}
+```
+
+**Keep stories simple**:
+- Focus on showing visual patterns, not complex interactions
+- 2-4 stories per component is sufficient
+- Use `args` for static examples
+- Use `render` function only for interactive demos
+- Add decorators for consistent styling/layout
+
+**Example minimal story**:
+```typescript
+import type { Meta, StoryObj } from '@storybook/react'
+import { ComponentName } from './ComponentName'
+
+const meta: Meta<typeof ComponentName> = {
+  title: 'Components/ComponentName',
+  component: ComponentName,
+}
+
+export default meta
+type Story = StoryObj<typeof ComponentName>
+
+export const Default: Story = {
+  args: {
+    title: 'Example Title',
+    subtitle: 'Example Subtitle',
+  }
+}
+
+export const Loading: Story = {
+  args: {
+    loading: true,
+  }
+}
+```
 
 ### Code Review Checklist
 
 Before submitting code, verify:
 
 - [ ] Test file (.test.tsx) created
+- [ ] Storybook story (.stories.tsx) created for components
 - [ ] No `any` types used
 - [ ] No eslint-disable without comments
 - [ ] useEffect usage justified (can't use useMemo instead?)

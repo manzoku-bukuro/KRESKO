@@ -296,17 +296,22 @@ export const TOPICS: TopicConfig[] = [
 
 ```
 ComponentName/
-├── ComponentName.tsx         # メインコンポーネント (Container)
-├── ComponentName.View.tsx    # View層 (プレゼンテーショナル)
-├── ComponentName.types.ts    # 型定義
-├── ComponentName.test.tsx    # テスト
-├── ComponentName.stories.tsx # Storybook (オプション)
+├── ComponentName.tsx           # メインコンポーネント (Container)
+├── ComponentName.view.tsx      # View層 (プレゼンテーショナル)
+├── ComponentName.types.ts      # 型定義
+├── ComponentName.test.tsx      # テスト (必須)
+├── ComponentName.stories.tsx   # Storybook (必須)
 ├── hooks/
-│   └── useComponentName.ts   # カスタムフック
-└── index.tsx                 # エクスポート
+│   ├── useComponentName.ts     # カスタムフック
+│   └── useComponentName.test.ts # フックのテスト (必須)
+└── index.tsx                   # エクスポート
 ```
 
 この構成を全てのコンポーネントで統一する。
+
+**重要**:
+- `.stories.tsx` は全てのコンポーネントで必須
+- 視覚的なパターン確認とデザインシステムの統一のため
 
 ### 例: UnifiedQuizコンポーネント（現状の構成を維持）
 
@@ -400,7 +405,7 @@ src/hooks/
 2. **View**: `ComponentName.view.tsx` - UIレンダリングのみ（小文字推奨）
 3. **Types**: `ComponentName.types.ts` - 型定義
 4. **Test**: `ComponentName.test.tsx` - テストコード（**必須**）
-5. **Stories**: `ComponentName.stories.tsx` - Storybook定義（オプション）
+5. **Stories**: `ComponentName.stories.tsx` - Storybook定義（**必須**）
 6. **Hook**: `hooks/useComponentName.ts` - このコンポーネント専用フック
 7. **Hook Test**: `hooks/useComponentName.test.ts` - フックのテスト（**必須**）
 8. **Utils**: `utils/componentNameUtils.ts` - このコンポーネント専用ユーティリティ
@@ -411,6 +416,7 @@ src/hooks/
 - `.view.tsx` は小文字を推奨（他の拡張子と統一）
 - 既存の `.View.tsx` は段階的に移行
 - **テストファイルは必須**。コンポーネント作成時に同時に作成すること
+- **Storybookファイルは必須**。視覚的パターン確認のため全コンポーネントに作成
 - **hooks と utils にも必ずテストファイルを同じディレクトリに配置**
 
 ### コンポーネント内専用 vs 共有の判断基準
@@ -696,6 +702,7 @@ const simpleValue = useMemo(() => a + b, [a, b])  // 単純な計算
 新しいコンポーネントを追加する際のチェック項目:
 
 - [ ] テストファイル（.test.tsx）を作成したか
+- [ ] Storybookファイル（.stories.tsx）を作成したか
 - [ ] `any` 型を使用していないか
 - [ ] eslint-disable を使用していないか（使用している場合は理由をコメント）
 - [ ] useEffect は本当に必要か（useMemoで代替できないか）
