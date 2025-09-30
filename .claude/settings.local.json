@@ -27,7 +27,8 @@
       "Bash(npm run lint:*)",
       "Bash(pkill:*)",
       "Bash(for component in AdBanner AnswerResult AuthButton AuthModal ChoiceButtons Footer LoginForm ModeToggle QuizHeader SignupForm UnifiedQuiz WordList)",
-      "Bash(do echo \"=== $component ===\" grep -r \"from.*components/$component\" /Users/bukuro/src/KRESKO/src/pages --include=\"*.tsx\" --include=\"*.ts\")"
+      "Bash(do echo \"=== $component ===\" grep -r \"from.*components/$component\" /Users/bukuro/src/KRESKO/src/pages --include=\"*.tsx\" --include=\"*.ts\")",
+      "Bash(xargs sed:*)"
     ],
     "deny": [],
     "ask": []

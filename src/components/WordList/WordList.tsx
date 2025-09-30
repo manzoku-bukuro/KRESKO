@@ -1,4 +1,4 @@
-import { WordListView } from './WordList.View'
+import { WordListView } from './WordList.view'
 import { useWordList } from './hooks/useWordList'
 import type { WordListProps } from './WordList.types'
 

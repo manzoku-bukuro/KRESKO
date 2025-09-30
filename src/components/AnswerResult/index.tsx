@@ -1,5 +1,5 @@
 export { AnswerResult } from './AnswerResult'
-export { AnswerResultView } from './AnswerResult.View'
+export { AnswerResultView } from './AnswerResult.view'
 export { useAnswerResult } from './hooks/useAnswerResult'
 export type {
   AnswerResultProps,

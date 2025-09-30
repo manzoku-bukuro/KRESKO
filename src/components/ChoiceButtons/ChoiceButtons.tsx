@@ -1,4 +1,4 @@
-import { ChoiceButtonsView } from './ChoiceButtons.View'
+import { ChoiceButtonsView } from './ChoiceButtons.view'
 import { useChoiceButtons } from './hooks/useChoiceButtons'
 import type { ChoiceButtonsProps } from './ChoiceButtons.types'
 

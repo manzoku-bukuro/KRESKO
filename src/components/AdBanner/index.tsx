@@ -1,5 +1,5 @@
 export { AdBanner } from './AdBanner'
-export { AdBannerView } from './AdBanner.View'
+export { AdBannerView } from './AdBanner.view'
 export { useAdBanner } from './hooks/useAdBanner'
 export type { AdBannerProps } from './AdBanner.types'
 export type { AdBannerConfig, AdBannerData } from './hooks/useAdBanner'

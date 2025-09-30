@@ -1,4 +1,4 @@
-import { LoginFormView } from './LoginForm.View'
+import { LoginFormView } from './LoginForm.view'
 import { useLoginForm } from './hooks/useLoginForm'
 import type { LoginFormProps } from './LoginForm.types'
 

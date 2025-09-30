@@ -1,4 +1,4 @@
-import { AnswerResultView } from './AnswerResult.View'
+import { AnswerResultView } from './AnswerResult.view'
 import { useAnswerResult } from './hooks/useAnswerResult'
 import type { AnswerResultProps } from './AnswerResult.types'
 

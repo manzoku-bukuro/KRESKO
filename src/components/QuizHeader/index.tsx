@@ -1,5 +1,5 @@
 export { QuizHeader } from './QuizHeader'
-export { QuizHeaderView } from './QuizHeader.View'
+export { QuizHeaderView } from './QuizHeader.view'
 export { useQuizHeader } from './hooks/useQuizHeader'
 export type {
   QuizHeaderProps,

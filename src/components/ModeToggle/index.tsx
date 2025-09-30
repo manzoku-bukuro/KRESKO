@@ -1,5 +1,5 @@
 export { ModeToggle } from './ModeToggle'
-export { ModeToggleView } from './ModeToggle.View'
+export { ModeToggleView } from './ModeToggle.view'
 export { useModeToggle } from './hooks/useModeToggle'
 export type {
   ModeToggleProps,

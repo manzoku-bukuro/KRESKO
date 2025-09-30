@@ -1,4 +1,4 @@
-import { SignupFormView } from './SignupForm.View'
+import { SignupFormView } from './SignupForm.view'
 import { useSignupForm } from './hooks/useSignupForm'
 import type { SignupFormProps } from './SignupForm.types'
 

@@ -1,4 +1,4 @@
-import { QuizHeaderView } from './QuizHeader.View'
+import { QuizHeaderView } from './QuizHeader.view'
 import { useQuizHeader } from './hooks/useQuizHeader'
 import type { QuizHeaderProps } from './QuizHeader.types'
 

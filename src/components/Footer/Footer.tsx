@@ -1,4 +1,4 @@
-import { FooterView } from './Footer.View'
+import { FooterView } from './Footer.view'
 import { useFooterData } from './hooks/useFooterData'
 
 export const Footer = () => {

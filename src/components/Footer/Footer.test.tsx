@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 import { Footer } from './Footer'
-import { FooterView } from './Footer.View'
+import { FooterView } from './Footer.view'
 import { useFooterData } from './hooks/useFooterData'
 
 const FooterWithRouter = ({ children }: { children: React.ReactNode }) => (

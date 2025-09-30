@@ -1,4 +1,4 @@
-import { AdBannerView } from './AdBanner.View'
+import { AdBannerView } from './AdBanner.view'
 import { useAdBanner } from './hooks/useAdBanner'
 import type { AdBannerProps } from './AdBanner.types'
 

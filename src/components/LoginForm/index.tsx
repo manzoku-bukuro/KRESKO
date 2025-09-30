@@ -1,5 +1,5 @@
 export { LoginForm } from './LoginForm'
-export { LoginFormView } from './LoginForm.View'
+export { LoginFormView } from './LoginForm.view'
 export { useLoginForm } from './hooks/useLoginForm'
 export type {
   LoginFormProps,

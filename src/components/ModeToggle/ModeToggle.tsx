@@ -1,4 +1,4 @@
-import { ModeToggleView } from './ModeToggle.View'
+import { ModeToggleView } from './ModeToggle.view'
 import { useModeToggle } from './hooks/useModeToggle'
 import type { ModeToggleProps } from './ModeToggle.types'
 
