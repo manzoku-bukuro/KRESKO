@@ -3,26 +3,62 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { getWeakQuestions, removeWeakQuestion, type WeakQuestion } from '../utils/firestore';
 import { WordList } from '../components/WordList';
-import { type QuizMode } from '../components/ModeToggle';
 import { QuizHeader } from '../components/QuizHeader';
 import { ChoiceButtons } from '../components/ChoiceButtons';
+import { useQuizEngine, type QuizQuestion } from '../hooks';
 
 const WeakQuestionsReview = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [allWeakQuestions, setAllWeakQuestions] = useState<WeakQuestion[]>([]);
-  const [reviewQuestions, setReviewQuestions] = useState<WeakQuestion[]>([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [finished, setFinished] = useState(false);
-
-  // クイズ状態
-  const [quizMode, setQuizMode] = useState<QuizMode>('traditional');
-  const [showAnswer, setShowAnswer] = useState(false);
-  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-  const [showResult, setShowResult] = useState(false);
-  const [choices, setChoices] = useState<string[]>([]);
   const [correctedQuestions, setCorrectedQuestions] = useState<WeakQuestion[]>([]);
+
+  // useQuizEngine フックを使用
+  const { state, actions } = useQuizEngine({
+    initialMode: 'traditional',
+    maxQuestions: 10,
+    shuffleQuestions: true,
+    enableIncorrectTracking: false,
+    choiceGeneration: {
+      choiceCount: 4,
+      generateCustomChoices: (currentQuestion: QuizQuestion) => {
+        // 他の苦手問題から選択肢を生成
+        const otherQuestions = allWeakQuestions.filter(q => q.japanese !== currentQuestion.japanese);
+        let wrongChoices: string[] = [];
+
+        if (otherQuestions.length >= 3) {
+          wrongChoices = otherQuestions
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 3)
+            .map(q => q.japanese);
+        } else {
+          wrongChoices = otherQuestions.map(q => q.japanese);
+          const dummyChoices = ['約束', '希望', '勇気', '友情', '真実', '平和', '美しさ', '知識', '感謝', '愛情'];
+
+          while (wrongChoices.length < 3) {
+            const dummyChoice = dummyChoices[Math.floor(Math.random() * dummyChoices.length)];
+            if (!wrongChoices.includes(dummyChoice) && dummyChoice !== currentQuestion.japanese) {
+              wrongChoices.push(dummyChoice);
+            }
+          }
+        }
+
+        return [currentQuestion.japanese, ...wrongChoices].sort(() => Math.random() - 0.5);
+      }
+    }
+  });
+
+  const {
+    questions: reviewQuestions,
+    currentIndex,
+    finished,
+    quizMode,
+    showAnswer,
+    selectedAnswer,
+    showResult,
+    choices
+  } = state;
 
   // 苦手問題を取得してランダムに10問選択
   useEffect(() => {
@@ -41,14 +77,18 @@ const WeakQuestionsReview = () => {
           return;
         }
 
-        // ランダムに最大10問選択
+        // ランダムに最大10問選択してQuizEngineに初期化
         const shuffled = [...questions].sort(() => Math.random() - 0.5);
         const selected = shuffled.slice(0, Math.min(10, questions.length));
-        setReviewQuestions(selected);
 
-        // 初期は4択モードに設定
-        console.log('初期クイズモード: multiple-choice');
-        setQuizMode('multiple-choice');
+        // WeakQuestion を QuizQuestion 形式に変換
+        const quizQuestions: QuizQuestion[] = selected.map(q => ({
+          esperanto: q.esperanto,
+          japanese: q.japanese,
+          extra: q.extra
+        }));
+
+        actions.initializeQuiz(quizQuestions, { initialMode: 'multiple-choice' });
       } catch (error) {
         console.error('苦手問題の取得に失敗:', error);
       } finally {
@@ -57,56 +97,7 @@ const WeakQuestionsReview = () => {
     };
 
     fetchWeakQuestions();
-  }, [user]);
-
-  // 選択肢を生成（4択モード用）
-  useEffect(() => {
-    if (quizMode === 'multiple-choice' && reviewQuestions.length > 0 && allWeakQuestions.length > 0 && currentIndex < reviewQuestions.length) {
-      console.log('useEffect: 選択肢生成を開始');
-      generateChoices();
-    }
-  }, [currentIndex, quizMode, reviewQuestions, allWeakQuestions]);
-
-  const generateChoices = () => {
-    const currentQuestion = reviewQuestions[currentIndex];
-    console.log('generateChoices: 現在の問題:', currentQuestion);
-    console.log('generateChoices: 全苦手問題数:', allWeakQuestions.length);
-
-    // 他の問題から3つの選択肢を選ぶ
-    const otherQuestions = allWeakQuestions.filter(q => q.japanese !== currentQuestion.japanese);
-    console.log('generateChoices: 他の問題数:', otherQuestions.length);
-
-    let wrongChoices: string[] = [];
-
-    if (otherQuestions.length >= 3) {
-      // 十分な選択肢がある場合
-      wrongChoices = otherQuestions
-        .sort(() => Math.random() - 0.5)
-        .slice(0, 3)
-        .map(q => q.japanese);
-    } else {
-      // 苦手問題が少ない場合は、既存の問題を使用
-      wrongChoices = otherQuestions.map(q => q.japanese);
-
-      // 足りない分はダミー選択肢を追加
-      const dummyChoices = ['約束', '希望', '勇気', '友情', '真実', '平和', '美しさ', '知識', '感謝', '愛情'];
-
-      while (wrongChoices.length < 3) {
-        const dummyChoice = dummyChoices[Math.floor(Math.random() * dummyChoices.length)];
-        if (!wrongChoices.includes(dummyChoice) && dummyChoice !== currentQuestion.japanese) {
-          wrongChoices.push(dummyChoice);
-        }
-      }
-    }
-
-    // 正解と間違い選択肢をシャッフル
-    const allChoices = [currentQuestion.japanese, ...wrongChoices]
-      .sort(() => Math.random() - 0.5);
-
-    console.log('generateChoices: 生成された選択肢:', allChoices);
-    console.log('generateChoices: 正解:', currentQuestion.japanese);
-    setChoices(allChoices);
-  };
+  }, [user, actions]);
 
   // ログインしていない場合
   if (!user) {
@@ -201,7 +192,6 @@ const WeakQuestionsReview = () => {
   }
 
   if (reviewQuestions.length === 0 || currentIndex >= reviewQuestions.length) {
-    setFinished(true);
     return null;
   }
 
@@ -217,40 +207,27 @@ const WeakQuestionsReview = () => {
 
   // 4択モードの選択肢クリック
   const handleChoiceClick = (choice: string) => {
-    if (selectedAnswer) return;
-
-    setSelectedAnswer(choice);
-    setShowResult(true);
-    setShowAnswer(true);
+    actions.handleChoiceClick(choice);
   };
 
   // 次の問題へ
   const nextQuestion = () => {
-    if (currentIndex < reviewQuestions.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-      setShowAnswer(false);
-      setSelectedAnswer(null);
-      setShowResult(false);
-      setChoices([]); // 選択肢をリセット
-    } else {
-      setFinished(true);
-    }
-  };
-
-  // 従来モードのクリック処理
-  const handleClick = () => {
-    if (!showAnswer) {
-      setShowAnswer(true);
-    } else {
-      nextQuestion();
-    }
+    actions.nextQuestion();
   };
 
   // 理解できた問題を削除
   const handleUnderstood = async () => {
     try {
       await removeWeakQuestion(currentQuestion.esperanto);
-      setCorrectedQuestions(prev => [...prev, currentQuestion]);
+      // QuizQuestion を WeakQuestion として扱う（型を明示的にキャスト）
+      const weakQuestion: WeakQuestion = {
+        esperanto: currentQuestion.esperanto,
+        japanese: currentQuestion.japanese,
+        extra: currentQuestion.extra,
+        addedAt: new Date(),
+        incorrectCount: 1
+      };
+      setCorrectedQuestions(prev => [...prev, weakQuestion]);
       nextQuestion();
     } catch (error) {
       console.error('苦手問題の削除に失敗:', error);
@@ -274,12 +251,7 @@ const WeakQuestionsReview = () => {
           showModeToggle={true}
           modeToggleProps={{
             currentMode: quizMode,
-            onModeChange: (mode) => {
-              setQuizMode(mode);
-              setShowAnswer(false);
-              setSelectedAnswer(null);
-              setShowResult(false);
-            }
+            onModeChange: actions.setQuizMode
           }}
         />
 
@@ -357,7 +329,7 @@ const WeakQuestionsReview = () => {
           <div style={{ marginTop: "auto" }}>
             <button
               className="btn btn-primary btn-large btn-full"
-              onClick={handleClick}
+              onClick={actions.handleTraditionalClick}
               style={{ marginBottom: "1rem" }}
             >
               {!showAnswer

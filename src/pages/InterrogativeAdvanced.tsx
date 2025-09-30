@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import interrogativeQuestionsData from "../data/interrogative-questions.json";
 import { updatePageMeta, seoData } from "../utils/seo";
 import { AnswerResult } from "../components/AnswerResult";
 import { WordList } from "../components/WordList";
-import { type QuizMode } from "../components/ModeToggle";
 import { QuizHeader } from "../components/QuizHeader";
 import { ChoiceButtons } from "../components/ChoiceButtons";
+import { useQuizEngine, type QuizQuestion } from "../hooks";
 
-interface QuizQuestion {
+interface InterrogativeQuestion {
   sentence: string;
   blanks: string[];
   correctAnswer: string;
@@ -19,60 +19,61 @@ interface QuizQuestion {
 
 function InterrogativeAdvanced() {
   const navigate = useNavigate();
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [finished, setFinished] = useState(false);
-  const [showAnswer, setShowAnswer] = useState(false);
-  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-  const [shuffledQuestions, setShuffledQuestions] = useState<QuizQuestion[]>([]);
 
-  // モード切り替え用の状態
-  const [quizMode, setQuizMode] = useState<QuizMode>('multiple-choice');
-  const [showResult, setShowResult] = useState(false);
+  // InterrogativeQuestion を QuizQuestion 形式に変換
+  const quizQuestions: QuizQuestion[] = (interrogativeQuestionsData as InterrogativeQuestion[]).map(q => ({
+    esperanto: q.sentence,
+    japanese: q.correctAnswer,
+    extra: q.explanation,
+    // カスタムプロパティ
+    translation: q.translation,
+    blanks: q.blanks
+  }));
+
+  // useQuizEngine フックを使用
+  const { state, actions } = useQuizEngine({
+    initialMode: 'multiple-choice',
+    maxQuestions: 5,
+    shuffleQuestions: true,
+    enableIncorrectTracking: false,
+    choiceGeneration: {
+      choiceCount: 4,
+      generateFromPool: (questions) => {
+        // 選択肢は各問題の blanks から生成
+        return questions.flatMap(q => (q as any).blanks || []);
+      }
+    }
+  });
+
+  const {
+    questions,
+    currentIndex,
+    finished,
+    quizMode,
+    showAnswer,
+    selectedAnswer,
+    showResult,
+    choices
+  } = state;
 
   useEffect(() => {
     updatePageMeta(seoData.interrogativeAdvanced.title, seoData.interrogativeAdvanced.description);
-    const shuffled = [...interrogativeQuestionsData].sort(() => Math.random() - 0.5).slice(0, 5);
-    setShuffledQuestions(shuffled);
-  }, []);
+    actions.initializeQuiz(quizQuestions);
+  }, [actions, quizQuestions]);
 
   const handleChoice = (choice: string) => {
-    if (showAnswer) return;
-
-    setSelectedAnswer(choice);
-    setShowAnswer(true);
-    setShowResult(true);
-  };
-
-  const handleClick = () => {
-    if (quizMode === 'traditional') {
-      if (!showAnswer) {
-        setShowAnswer(true);
-      } else {
-        handleNextQuestion();
-      }
-    }
-  };
-
-  const handleNextQuestion = () => {
-    if (currentIndex < shuffledQuestions.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-      setShowAnswer(false);
-      setSelectedAnswer(null);
-      setShowResult(false);
-    } else {
-      setFinished(true);
-    }
+    actions.handleChoiceClick(choice);
   };
 
   const nextQuestion = () => {
-    handleNextQuestion();
+    actions.nextQuestion();
   };
 
-  if (shuffledQuestions.length === 0) {
+  if (questions.length === 0) {
     return <div>読み込み中...</div>;
   }
 
-  const currentQuestion = shuffledQuestions[currentIndex];
+  const currentQuestion = questions[currentIndex];
 
   // 結果表示画面
   if (finished) {
@@ -81,14 +82,14 @@ function InterrogativeAdvanced() {
         <div className="card quiz-completion">
           <h1>🎉 完了！</h1>
           <h3>応用問題が完了しました！</h3>
-          <p>お疲れ様でした。{shuffledQuestions.length}問の疑問詞問題を学習しました。</p>
+          <p>お疲れ様でした。{questions.length}問の疑問詞問題を学習しました。</p>
 
           {/* 学習した問題一覧 */}
           <WordList
             title="学習した問題一覧"
-            words={shuffledQuestions.map((question) => ({
-              primary: question.sentence.replace('_____', question.correctAnswer),
-              secondary: question.translation
+            words={questions.map((question) => ({
+              primary: question.esperanto.replace('_____', question.japanese),
+              secondary: (question as any).translation
             }))}
           />
 
@@ -105,8 +106,8 @@ function InterrogativeAdvanced() {
     );
   }
 
-  const progress = ((currentIndex + 1) / shuffledQuestions.length) * 100;
-  const isLastQuestion = currentIndex === shuffledQuestions.length - 1;
+  const progress = ((currentIndex + 1) / questions.length) * 100;
+  const isLastQuestion = currentIndex === questions.length - 1;
 
   return (
     <div className="app-container">
@@ -120,19 +121,19 @@ function InterrogativeAdvanced() {
         <QuizHeader
           title="❓ 疑問詞 - 応用問題"
           currentQuestion={currentIndex + 1}
-          totalQuestions={shuffledQuestions.length}
+          totalQuestions={questions.length}
           subtitle="日本語文の穴埋めで疑問詞を選択する実践問題"
           showModeToggle={true}
           modeToggleProps={{
             currentMode: quizMode,
-            onModeChange: setQuizMode
+            onModeChange: actions.setQuizMode
           }}
         />
 
         {/* Quiz Content */}
         <div className="quiz-content">
-          <p className="esperanto-word">{currentQuestion.sentence}</p>
-          <p className="quiz-instruction">（{currentQuestion.translation}）</p>
+          <p className="esperanto-word">{currentQuestion.esperanto}</p>
+          <p className="quiz-instruction">（{(currentQuestion as any).translation}）</p>
 
           {/* 従来モード：回答表示部分 */}
           {quizMode === 'traditional' && (
@@ -140,8 +141,8 @@ function InterrogativeAdvanced() {
               variant="traditional"
               isVisible={showAnswer}
               wordDisplay={{
-                primary: `正解: ${currentQuestion.correctAnswer}`,
-                extra: currentQuestion.explanation
+                primary: `正解: ${currentQuestion.japanese}`,
+                extra: currentQuestion.extra
               }}
             />
           )}
@@ -151,9 +152,9 @@ function InterrogativeAdvanced() {
         {quizMode === 'multiple-choice' && (
           <div>
             <ChoiceButtons
-              choices={currentQuestion.blanks}
+              choices={choices}
               selectedAnswer={selectedAnswer}
-              correctAnswer={currentQuestion.correctAnswer}
+              correctAnswer={currentQuestion.japanese}
               showResult={showResult}
               onChoiceClick={handleChoice}
               instruction="適切な疑問詞を選んでください"
@@ -162,11 +163,11 @@ function InterrogativeAdvanced() {
             {/* 結果表示 */}
             <AnswerResult
               variant="choice"
-              resultType={selectedAnswer === currentQuestion.correctAnswer ? 'correct' : 'wrong'}
+              resultType={selectedAnswer === currentQuestion.japanese ? 'correct' : 'wrong'}
               isVisible={showResult}
-              message={selectedAnswer === currentQuestion.correctAnswer ? '🎉 正解です！' : '❌ 不正解です'}
+              message={selectedAnswer === currentQuestion.japanese ? '🎉 正解です！' : '❌ 不正解です'}
               wordDisplay={{
-                extra: currentQuestion.explanation
+                extra: currentQuestion.extra
               }}
               onNext={nextQuestion}
               nextButtonText={isLastQuestion ? "🎉 完了！" : "➡️ 次の問題へ"}
@@ -179,7 +180,7 @@ function InterrogativeAdvanced() {
           <div style={{ marginTop: "auto" }}>
             <button
               className="btn btn-primary btn-large btn-full"
-              onClick={handleClick}
+              onClick={actions.handleTraditionalClick}
               style={{ marginBottom: "1rem" }}
             >
               {!showAnswer

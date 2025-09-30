@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { updatePageMeta, seoData } from "../utils/seo";
 import { AnswerResult } from "../components/AnswerResult";
 import { WordList } from "../components/WordList";
 import { QuizHeader } from "../components/QuizHeader";
 import { ChoiceButtons } from "../components/ChoiceButtons";
+import { useQuizEngine, type QuizQuestion } from "../hooks";
 
 interface InterrogativeWord {
   word: string;
@@ -25,64 +26,52 @@ const interrogativeWords: InterrogativeWord[] = [
 
 function InterrogativeBasic() {
   const navigate = useNavigate();
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [finished, setFinished] = useState(false);
-  const [showAnswer, setShowAnswer] = useState(false);
-  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-  const [shuffledQuestions, setShuffledQuestions] = useState<InterrogativeWord[]>([]);
-  const [choices, setChoices] = useState<string[]>([]);
+
+  // InterrogativeWord を QuizQuestion 形式に変換
+  const interrogativeQuestions: QuizQuestion[] = interrogativeWords.map(word => ({
+    esperanto: word.word,
+    japanese: word.meaning
+  }));
+
+  // useQuizEngine フックを使用
+  const { state, actions } = useQuizEngine({
+    initialMode: 'multiple-choice',
+    shuffleQuestions: true,
+    enableIncorrectTracking: false,
+    choiceGeneration: {
+      choiceCount: 4,
+      generateFromPool: () => interrogativeWords.map(w => w.meaning)
+    }
+  });
+
+  const {
+    questions,
+    currentIndex,
+    finished,
+    showAnswer,
+    selectedAnswer,
+    choices,
+    showResult
+  } = state;
 
   useEffect(() => {
     updatePageMeta(seoData.interrogativeBasic.title, seoData.interrogativeBasic.description);
-    const shuffled = [...interrogativeWords].sort(() => Math.random() - 0.5);
-    setShuffledQuestions(shuffled);
-  }, []);
-
-  useEffect(() => {
-    if (shuffledQuestions.length > 0) {
-      generateChoices();
-    }
-  }, [currentIndex, shuffledQuestions]);
-
-  const generateChoices = () => {
-    if (shuffledQuestions.length === 0) return;
-
-    const currentWord = shuffledQuestions[currentIndex];
-    const otherMeanings = interrogativeWords
-      .filter(w => w.word !== currentWord.word)
-      .map(w => w.meaning)
-      .sort(() => Math.random() - 0.5)
-      .slice(0, 3);
-
-    const allChoices = [currentWord.meaning, ...otherMeanings]
-      .sort(() => Math.random() - 0.5);
-
-    setChoices(allChoices);
-  };
+    actions.initializeQuiz(interrogativeQuestions);
+  }, [actions, interrogativeQuestions]);
 
   const handleChoice = (choice: string) => {
-    if (showAnswer) return;
-
-    setSelectedAnswer(choice);
-    setShowAnswer(true);
+    actions.handleChoiceClick(choice);
   };
-
 
   const nextQuestion = () => {
-    if (currentIndex < shuffledQuestions.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-      setShowAnswer(false);
-      setSelectedAnswer(null);
-    } else {
-      setFinished(true);
-    }
+    actions.nextQuestion();
   };
 
-  if (shuffledQuestions.length === 0) {
+  if (questions.length === 0) {
     return <div>読み込み中...</div>;
   }
 
-  const currentWord = shuffledQuestions[currentIndex];
+  const currentWord = questions[currentIndex];
 
   // 結果表示画面
   if (finished) {
@@ -91,14 +80,14 @@ function InterrogativeBasic() {
         <div className="card quiz-completion">
           <h1>🎉 完了！</h1>
           <h3>基本学習が完了しました！</h3>
-          <p>お疲れ様でした。{shuffledQuestions.length}問の疑問詞を学習しました。</p>
+          <p>お疲れ様でした。{questions.length}問の疑問詞を学習しました。</p>
 
           {/* 学習した疑問詞一覧 */}
           <WordList
             title="学習した疑問詞一覧"
-            words={shuffledQuestions.map((word) => ({
-              primary: word.word,
-              secondary: word.meaning
+            words={questions.map((word) => ({
+              primary: word.esperanto,
+              secondary: word.japanese
             }))}
           />
 
@@ -115,7 +104,7 @@ function InterrogativeBasic() {
     );
   }
 
-  const progress = ((currentIndex + 1) / shuffledQuestions.length) * 100;
+  const progress = ((currentIndex + 1) / questions.length) * 100;
 
   return (
     <div className="app-container">
@@ -129,13 +118,13 @@ function InterrogativeBasic() {
         <QuizHeader
           title="❓ 疑問詞 - 基本学習"
           currentQuestion={currentIndex + 1}
-          totalQuestions={shuffledQuestions.length}
+          totalQuestions={questions.length}
           subtitle="疑問詞の意味を覚える練習問題"
         />
 
         {/* Quiz Content */}
         <div className="quiz-content">
-          <p className="esperanto-word">{currentWord.word}</p>
+          <p className="esperanto-word">{currentWord.esperanto}</p>
           <p className="quiz-instruction">この疑問詞の意味は？</p>
         </div>
 
@@ -143,8 +132,8 @@ function InterrogativeBasic() {
         <ChoiceButtons
           choices={choices}
           selectedAnswer={selectedAnswer}
-          correctAnswer={currentWord.meaning}
-          showResult={showAnswer}
+          correctAnswer={currentWord.japanese}
+          showResult={showResult}
           onChoiceClick={handleChoice}
           instruction="この疑問詞の意味を選んでください"
         />
@@ -152,11 +141,11 @@ function InterrogativeBasic() {
         {/* 結果表示 */}
         <AnswerResult
           variant="choice"
-          resultType={selectedAnswer === currentWord.meaning ? 'correct' : 'wrong'}
-          isVisible={showAnswer}
-          message={selectedAnswer === currentWord.meaning ? '🎉 正解です！' : '❌ 不正解です'}
+          resultType={selectedAnswer === currentWord.japanese ? 'correct' : 'wrong'}
+          isVisible={showResult}
+          message={selectedAnswer === currentWord.japanese ? '🎉 正解です！' : '❌ 不正解です'}
           onNext={nextQuestion}
-          nextButtonText={currentIndex < shuffledQuestions.length - 1 ? "➡️ 次の問題へ" : "🎉 完了！"}
+          nextButtonText={currentIndex < questions.length - 1 ? "➡️ 次の問題へ" : "🎉 完了！"}
         />
 
         {/* 戻るボタン */}
