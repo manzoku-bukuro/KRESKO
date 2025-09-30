@@ -21,7 +21,8 @@
       "Bash(npx tailwindcss init:*)",
       "Bash(npm run test:*)",
       "Bash(npx vitest run:*)",
-      "Bash(npm run test:unit:*)"
+      "Bash(npm run test:unit:*)",
+      "Bash(npm run test:coverage:*)"
     ],
     "deny": [],
     "ask": []
