@@ -28,3 +28,5 @@ storybook-static
 
 # Test coverage
 coverage
+
+.clangd

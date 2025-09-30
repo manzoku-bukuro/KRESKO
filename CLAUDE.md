@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+**Last updated**: 2025-10-01 (YYYY-MM-DD format)
+
+**Note**: When referencing dates in this project, always use the current date from the system environment.
+
 ## Development Commands
 
 ```bash
@@ -100,3 +104,151 @@ Deployed on Netlify with automatic builds from Git. Vite config uses base path `
 - `src/pages/` - Route components (Top, RangeSelect, Quiz, NumberGame)
 - `src/data/` - JSON word datasets
 - Main app logic resides in Quiz.tsx (350+ lines handling both quiz modes)
+
+**Note**: This structure is being refactored. See `ARCHITECTURE_REFACTORING.md` for the new structure.
+
+## Code Quality Guidelines
+
+### Testing Requirements
+**All components, hooks, and utilities MUST have test files.**
+
+```
+✅ Required:
+ComponentName/
+├── ComponentName.tsx
+└── ComponentName.test.tsx
+
+❌ Prohibited:
+ComponentName/
+└── ComponentName.tsx  (no test file)
+```
+
+**Testing approach**:
+- Create test file simultaneously with component creation
+- Use TDD (Test-Driven Development) when possible
+- Minimum requirements: rendering tests and props validation
+- Run `npm test` before committing
+
+### Type Safety Rules
+**The use of `any` type is prohibited.**
+
+```typescript
+❌ Prohibited:
+const data: any = fetchData()
+const item = (data as any).items[0]
+
+✅ Required:
+interface FetchResponse {
+  items: Item[]
+}
+const data: FetchResponse = fetchData()
+const item = data.items[0]
+
+✅ Acceptable (with type guard):
+function processData(data: unknown) {
+  if (isValidData(data)) {
+    return data.items
+  }
+}
+```
+
+### ESLint Compliance
+**Do not disable ESLint rules without justification.**
+
+```typescript
+❌ Prohibited:
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const data: any = response
+
+✅ Required:
+// Fix the issue by defining proper types
+interface ResponseData {
+  items: Item[]
+}
+const data: ResponseData = response
+
+✅ Acceptable (with explanation):
+useEffect(() => {
+  // actions has stable reference, intentionally excluded
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [questions])
+```
+
+### React Best Practices
+
+**Minimize useEffect usage.**
+
+```typescript
+❌ Bad: Excessive useEffect
+function Component() {
+  const [data, setData] = useState(null)
+  const [filtered, setFiltered] = useState([])
+
+  useEffect(() => {
+    setFiltered(data?.filter(...))
+  }, [data])
+}
+
+✅ Good: Use useMemo for derived state
+function Component() {
+  const [data, setData] = useState(null)
+
+  const filtered = useMemo(() =>
+    data?.filter(...) ?? []
+  , [data])
+}
+```
+
+**When to use useEffect**:
+1. Synchronization with external systems (API calls, localStorage, DOM manipulation)
+2. Subscription management
+3. Timers and event listeners
+
+**When NOT to use useEffect**:
+1. Derived state calculation → Use `useMemo`
+2. Event handler logic → Implement directly
+3. Props transformation → Calculate in component body
+
+**State management principles**:
+```typescript
+✅ Good: Single source of truth
+const [items, setItems] = useState([])
+const selectedItem = useMemo(() =>
+  items.find(item => item.id === selectedId)
+, [items, selectedId])
+
+❌ Bad: Duplicate state
+const [items, setItems] = useState([])
+const [selectedItem, setSelectedItem] = useState(null)
+// Requires manual synchronization
+```
+
+### Component Structure
+
+**Standard file pattern**:
+```
+ComponentName/
+├── ComponentName.tsx           # Container (logic & state)
+├── ComponentName.view.tsx      # View (presentation only)
+├── ComponentName.types.ts      # Type definitions
+├── ComponentName.test.tsx      # Tests (REQUIRED)
+├── ComponentName.stories.tsx   # Storybook (optional)
+├── hooks/
+│   └── useComponentName.ts     # Component-specific hooks
+└── index.tsx                   # Exports
+```
+
+**Note**: Use lowercase `.view.tsx` for consistency with other extensions (`.types.ts`, `.test.tsx`, etc.)
+
+### Code Review Checklist
+
+Before submitting code, verify:
+
+- [ ] Test file (.test.tsx) created
+- [ ] No `any` types used
+- [ ] No eslint-disable without comments
+- [ ] useEffect usage justified (can't use useMemo instead?)
+- [ ] No duplicate state (single source of truth)
+- [ ] Container/View properly separated
+- [ ] Types defined in .types.ts file
+- [ ] Imports organized and minimal
