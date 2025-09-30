@@ -18,7 +18,10 @@
       "Bash(npx storybook@latest init:*)",
       "Bash(timeout 10s npm run storybook)",
       "Bash(npm test:*)",
-      "Bash(npx tailwindcss init:*)"
+      "Bash(npx tailwindcss init:*)",
+      "Bash(npm run test:*)",
+      "Bash(npx vitest run:*)",
+      "Bash(npm run test:unit:*)"
     ],
     "deny": [],
     "ask": []
