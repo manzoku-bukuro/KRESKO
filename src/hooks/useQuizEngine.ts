@@ -273,7 +273,7 @@ export const useQuizEngine = (config: Partial<QuizEngineConfig> = {}): UseQuizEn
   }
 
   // アクションオブジェクト
-  const actions: QuizEngineActions = {
+  const actions: QuizEngineActions = useMemo(() => ({
     initializeQuiz,
     resetQuiz,
     setQuizMode: handleModeChange,
@@ -283,7 +283,17 @@ export const useQuizEngine = (config: Partial<QuizEngineConfig> = {}): UseQuizEn
     generateChoices,
     markAsIncorrect,
     markAsCorrect,
-  }
+  }), [
+    initializeQuiz,
+    resetQuiz,
+    handleModeChange,
+    handleChoiceClick,
+    handleTraditionalClick,
+    nextQuestion,
+    generateChoices,
+    markAsIncorrect,
+    markAsCorrect,
+  ])
 
   return { state, actions }
 }

@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuizEngine } from '../../hooks'
 import { QuizHeader } from '../QuizHeader'
@@ -21,6 +21,7 @@ export const UnifiedQuiz = ({
   onQuizExit
 }: UnifiedQuizProps) => {
   const navigate = useNavigate()
+  const initializedRef = useRef(false)
 
   // useQuizEngine with provided config
   const { state, actions } = useQuizEngine({
@@ -46,13 +47,13 @@ export const UnifiedQuiz = ({
     isLastQuestion
   } = state
 
-  // Initialize quiz when questions are provided
+  // Initialize quiz when questions are provided (once per mount)
   useEffect(() => {
-    if (questions.length > 0) {
-      actions.initializeQuiz(questions, engineConfig)
+    if (questions.length > 0 && !initializedRef.current) {
+      actions.initializeQuiz(questions)
+      initializedRef.current = true
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [questions])
+  }, [questions, actions])
 
   // Calculate results
   const results: QuizResults = useMemo(() => ({
@@ -81,12 +82,26 @@ export const UnifiedQuiz = ({
     }
   }
 
+  // Current question (always accessed, even for error/loading states)
+  const currentQuestion = activeQuestions[currentIndex]
+
+  // Memoize wordDisplay objects to prevent unnecessary re-renders
+  const traditionalWordDisplay = useMemo(() => ({
+    primary: currentQuestion?.esperanto || '',
+    secondary: currentQuestion?.japanese || '',
+    extra: currentQuestion?.extra
+  }), [currentQuestion])
+
+  const choiceWordDisplay = useMemo(() => ({
+    extra: currentQuestion?.extra
+  }), [currentQuestion])
+
   // Filter custom actions by condition
-  const getFilteredActions = (condition: string) => {
+  const getFilteredActions = useCallback((condition: string) => {
     return customActions.filter(action =>
       !action.condition || action.condition === 'always' || action.condition === condition
     )
-  }
+  }, [customActions])
 
   // Error state
   if (error) {
@@ -193,8 +208,6 @@ export const UnifiedQuiz = ({
     )
   }
 
-  const currentQuestion = activeQuestions[currentIndex]
-
   return (
     <div className="app-container">
       <div className="card quiz-container">
@@ -242,11 +255,7 @@ export const UnifiedQuiz = ({
               <AnswerResult
                 variant="traditional"
                 isVisible={showAnswer}
-                wordDisplay={{
-                  primary: currentQuestion.esperanto,
-                  secondary: currentQuestion.japanese,
-                  extra: currentQuestion.extra
-                }}
+                wordDisplay={traditionalWordDisplay}
               />
 
               {/* Custom actions for traditional mode */}
@@ -284,9 +293,7 @@ export const UnifiedQuiz = ({
                 resultType={selectedAnswer === currentQuestion.japanese ? 'correct' : 'wrong'}
                 isVisible={showResult}
                 message={selectedAnswer === currentQuestion.japanese ? '🎉 正解です！' : '❌ 不正解です'}
-                wordDisplay={{
-                  extra: currentQuestion.extra
-                }}
+                wordDisplay={choiceWordDisplay}
                 onNext={actions.nextQuestion}
                 nextButtonText={isLastQuestion ? '🎉 完了！' : '➡️ 次の問題へ'}
               />
