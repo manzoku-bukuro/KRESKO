@@ -9,8 +9,8 @@ import InterrogativeMenu from "./pages/InterrogativeLevel";
 import InterrogativeExplanation from "./pages/InterrogativeExplanation";
 import InterrogativeBasic from "./pages/InterrogativeBasic";
 import InterrogativeAdvanced from "./pages/InterrogativeAdvanced";
-import WeakQuestions from "./pages/WeakQuestions";
-import WeakQuestionsReview from "./pages/WeakQuestionsReview";
+import WeakQuestions from "./pages/SavedQuestions/List";
+import WeakQuestionsReview from "./pages/SavedQuestions/Review";
 
 function App() {
   return (
