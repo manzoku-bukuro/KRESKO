@@ -7,9 +7,15 @@ export interface BaseQuestion {
   extra?: string
 }
 
+// 疑問詞応用問題用の追加フィールド
+export interface InterrogativeQuestionFields {
+  translation?: string  // 日本語訳
+  blanks?: string[]     // 選択肢候補
+}
+
 // 拡張可能な問題型（各ページで独自フィールドを追加可能）
-export interface QuizQuestion extends BaseQuestion {
-  [key: string]: any
+export interface QuizQuestion extends BaseQuestion, Partial<InterrogativeQuestionFields> {
+  [key: string]: unknown
 }
 
 // 選択肢生成の設定

@@ -4,11 +4,8 @@ import vortaro from "../data/vortaro.json";
 import esuken4 from "../data/esuken4.json";
 import { useAuth } from "../contexts/AuthContext";
 import { saveWeakQuestion } from "../utils/firestore";
-import { AnswerResult } from "../components/AnswerResult";
-import { WordList } from "../components/WordList";
-import { QuizHeader } from "../components/QuizHeader";
-import { ChoiceButtons } from "../components/ChoiceButtons";
-import { useQuizEngine, type QuizQuestion } from "../hooks";
+import { UnifiedQuiz } from "../components/UnifiedQuiz";
+import type { QuizQuestion } from "../hooks";
 
 interface Word {
   esperanto: string;
@@ -77,72 +74,27 @@ function Quiz() {
 
   const slice = words.slice(start, start + size);
 
-  // useQuizEngine フックを使用
-  const { state, actions } = useQuizEngine({
-    initialMode: 'traditional',
-    maxQuestions: 10,
-    shuffleQuestions: true,
-    enableIncorrectTracking: true,
-    choiceGeneration: {
-      choiceCount: 4,
-      generateCustomChoices: (currentQuestion: QuizQuestion) => {
-        // Quiz用のカスタム選択肢生成（全単語データから選択）
-        const otherWords = words.filter(word => word.japanese !== currentQuestion.japanese);
-        const wrongChoices = [...otherWords]
-          .sort(() => 0.5 - Math.random())
-          .slice(0, 3)
-          .map(word => word.japanese);
+  // クイズの質問データを準備
+  const quizQuestions: QuizQuestion[] = slice.map(word => ({
+    esperanto: word.esperanto,
+    japanese: word.japanese,
+    extra: word.extra
+  }));
 
-        return [currentQuestion.japanese, ...wrongChoices].sort(() => 0.5 - Math.random());
-      }
-    },
-    onIncorrectAnswer: async (question: QuizQuestion) => {
-      if (user) {
-        try {
-          await saveWeakQuestion({
-            esperanto: question.esperanto,
-            japanese: question.japanese,
-            extra: question.extra
-          });
-        } catch (error) {
-          console.error('苦手問題の保存に失敗:', error);
-        }
+  // 苦手問題をマーク
+  const markAsWeak = async (currentQuestion: QuizQuestion) => {
+    if (user) {
+      try {
+        await saveWeakQuestion({
+          esperanto: currentQuestion.esperanto,
+          japanese: currentQuestion.japanese,
+          extra: currentQuestion.extra
+        });
+      } catch (error) {
+        console.error('苦手問題の保存に失敗:', error);
       }
     }
-  });
-
-  const {
-    questions,
-    currentIndex: index,
-    finished,
-    quizMode,
-    showAnswer: show,
-    selectedAnswer,
-    choices,
-    showResult,
-    incorrectQuestions,
-    progress,
-    isLastQuestion
-  } = state;
-
-  // クイズ開始/リセット処理
-  const startQuiz = () => {
-    const shuffled = [...slice].sort(() => 0.5 - Math.random());
-    actions.initializeQuiz(shuffled);
   };
-
-  // 初期化
-  useEffect(() => {
-    startQuiz();
-  }, [category, rangeStart, rangeSize]);
-
-
-  // 従来モードで苦手問題をマーク
-  const markAsWeak = () => {
-    actions.markAsIncorrect();
-  };
-
-
 
   // 次の範囲へ進む処理
   const handleNextRange = () => {
@@ -170,189 +122,95 @@ function Quiz() {
   // エラー表示
   if (dataError) {
     return (
-      <div className="app-container">
-        <div className="card error-card">
-          <h1>⚠️ エラー</h1>
-          <p>{dataError}</p>
-          <button
-            className="btn btn-primary"
-            onClick={() => navigate('/')}
-          >
-            🏠 ホームに戻る
-          </button>
-        </div>
-      </div>
+      <UnifiedQuiz
+        questions={[]}
+        metadata={{
+          title: "⚠️ エラー",
+          subtitle: dataError,
+          backButtonText: "🏠 ホームに戻る",
+          backButtonPath: "/"
+        }}
+        error={dataError}
+        errorConfig={{
+          title: "エラー",
+          message: dataError,
+          onAction: () => navigate('/'),
+          actionLabel: "🏠 ホームに戻る"
+        }}
+        onQuizExit={() => navigate('/')}
+      />
     );
   }
-
-  if (finished) {
-    return (
-      <div className="app-container">
-        <div className="card quiz-completion">
-          <h1>🎉 完了！</h1>
-          <h3>この範囲の学習が完了しました！</h3>
-          <p>お疲れ様でした。{questions.length}問の単語を学習しました。</p>
-
-          {/* 学習した単語一覧 */}
-          <WordList
-            title="学習した単語一覧"
-            words={questions.map((word, idx) => ({
-              primary: word.esperanto,
-              secondary: word.japanese,
-              extra: word.extra,
-              isIncorrect: incorrectQuestions.includes(idx),
-              incorrectLabel: "❌ 間違い"
-            }))}
-          />
-
-          <div style={{ marginTop: "2rem" }}>
-            <button
-              className="btn btn-primary btn-large btn-full"
-              onClick={startQuiz}
-              style={{ marginBottom: "1rem" }}
-            >
-              🔄 同じ範囲をもう一度
-            </button>
-            <button
-              className="btn btn-accent btn-large btn-full"
-              onClick={handleNextRange}
-              style={{ marginBottom: "1rem" }}
-            >
-              ➡️ 次の範囲へ進む
-            </button>
-            <button
-              className="btn btn-secondary"
-              onClick={() => navigate(`/range/${category}`)}
-            >
-              📋 範囲選択に戻る
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
 
   return (
-    <div className="app-container">
-      <div className="card quiz-container">
-        {/* Progress Bar */}
-        <div className="quiz-progress">
-          <div className="quiz-progress-bar" style={{ width: `${progress}%` }}></div>
-        </div>
+    <UnifiedQuiz
+      questions={quizQuestions}
+      metadata={{
+        title: `${getCategoryEmoji(category!)} ${getCategoryName(category!)}`,
+        subtitle: `範囲: ${rangeStart} - ${Math.min(Number(rangeStart) + Number(rangeSize) - 1, words.length)}`,
+        backButtonText: "← 範囲選択に戻る",
+        backButtonPath: `/range/${category}`
+      }}
+      engineConfig={{
+        initialMode: 'traditional',
+        maxQuestions: 10,
+        shuffleQuestions: true,
+        enableIncorrectTracking: true,
+        choiceGeneration: {
+          choiceCount: 4,
+          generateCustomChoices: (currentQuestion: QuizQuestion) => {
+            // Quiz用のカスタム選択肢生成（全単語データから選択）
+            const otherWords = words.filter(word => word.japanese !== currentQuestion.japanese);
+            const wrongChoices = [...otherWords]
+              .sort(() => 0.5 - Math.random())
+              .slice(0, 3)
+              .map(word => word.japanese);
 
-        {/* Header */}
-        <QuizHeader
-          title={`${getCategoryEmoji(category!)} ${getCategoryName(category!)}`}
-          currentQuestion={index + 1}
-          totalQuestions={questions.length}
-          subtitle={`範囲: ${rangeStart} - ${Math.min(Number(rangeStart) + Number(rangeSize) - 1, words.length)}`}
-          showModeToggle={true}
-          modeToggleProps={{
-            currentMode: quizMode,
-            onModeChange: actions.setQuizMode
-          }}
-        />
-
-        {/* Quiz Content */}
-        <div className="quiz-content">
-          {/* 出題単語 */}
-          <p className="esperanto-word">{questions[index]?.esperanto}</p>
-
-          {/* 従来モード：回答表示部分 */}
-          {quizMode === 'traditional' && (
-            <AnswerResult
-              variant="traditional"
-              isVisible={show}
-              wordDisplay={{
-                primary: questions[index]?.esperanto,
-                secondary: questions[index]?.japanese,
-                extra: questions[index]?.extra
-              }}
-            />
-          )}
-
-          {/* 苦手登録ボタン (従来モード専用) */}
-          {quizMode === 'traditional' && show && user && (
-            <div style={{ marginTop: "1rem", textAlign: "center" }}>
-              <button
-                className={`btn btn-small ${incorrectQuestions.includes(index) ? 'btn-danger' : 'btn-outline'}`}
-                onClick={markAsWeak}
-                disabled={incorrectQuestions.includes(index)}
-              >
-                {incorrectQuestions.includes(index) ? '💾 苦手登録済み' : '💾 苦手に登録'}
-              </button>
-            </div>
-          )}
-
-          {/* 4択モード：選択肢 */}
-          {quizMode === 'multiple-choice' && (
-            <div>
-              <ChoiceButtons
-                choices={choices}
-                selectedAnswer={selectedAnswer}
-                correctAnswer={questions[index]?.japanese}
-                showResult={showResult}
-                onChoiceClick={actions.handleChoiceClick}
-                instruction="この単語の意味を選んでください"
-              />
-
-              {/* 結果表示 */}
-              <AnswerResult
-                variant="choice"
-                resultType={selectedAnswer === questions[index]?.japanese ? 'correct' : 'wrong'}
-                isVisible={showResult}
-                message={selectedAnswer === questions[index]?.japanese ? '🎉 正解です！' : '❌ 不正解です'}
-                wordDisplay={{
-                  extra: questions[index]?.extra
-                }}
-                onNext={actions.nextQuestion}
-                nextButtonText={isLastQuestion ? "🎉 完了！" : "➡️ 次の問題へ"}
-              />
-
-              {/* 苦手登録ボタン（選択モード専用） */}
-              {showResult && user && (
-                <div style={{ marginBottom: "1rem", textAlign: "center" }}>
-                  <button
-                    className={`btn btn-small ${incorrectQuestions.includes(index) ? 'btn-danger' : 'btn-outline'}`}
-                    onClick={markAsWeak}
-                    disabled={incorrectQuestions.includes(index)}
-                  >
-                    {incorrectQuestions.includes(index) ? '💾 苦手登録済み' : '💾 苦手に登録'}
-                  </button>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* Action Buttons - 従来モードのみ */}
-        {quizMode === 'traditional' && (
-          <div style={{ marginTop: "auto" }}>
-            <button
-              className="btn btn-primary btn-large btn-full"
-              onClick={actions.handleTraditionalClick}
-              style={{ marginBottom: "1rem" }}
-            >
-              {!show
-                ? "👁️ 回答を表示"
-                : isLastQuestion
-                  ? "🎉 完了！"
-                  : "➡️ 次の問題へ"
-              }
-            </button>
-          </div>
-        )}
-
-        {/* 戻るボタン - 両モード共通 */}
-        <button
-          className="btn btn-accent btn-small"
-          onClick={() => navigate(`/range/${category}`)}
-        >
-          ← 範囲選択に戻る
-        </button>
-      </div>
-    </div>
+            return [currentQuestion.japanese, ...wrongChoices].sort(() => 0.5 - Math.random());
+          }
+        },
+        onIncorrectAnswer: async (question: QuizQuestion) => {
+          await markAsWeak(question);
+        }
+      }}
+      completionConfig={{
+        title: "完了！",
+        subtitle: "この範囲の学習が完了しました！",
+        showWordList: true,
+        wordListTitle: "学習した単語一覧",
+        onRestart: () => window.location.reload(),
+        restartButtonText: "🔄 同じ範囲をもう一度",
+        additionalActions: [
+          {
+            label: "➡️ 次の範囲へ進む",
+            variant: "accent",
+            onClick: handleNextRange
+          }
+        ]
+      }}
+      customActions={[
+        ...(user ? [{
+          id: "mark-weak",
+          label: "💾 苦手に登録",
+          variant: "secondary" as const,
+          condition: "traditional-only" as const,
+          position: "after-result" as const,
+          onClick: async (currentQuestion: QuizQuestion) => {
+            await markAsWeak(currentQuestion);
+          }
+        }, {
+          id: "mark-weak-choice",
+          label: "💾 苦手に登録",
+          variant: "secondary" as const,
+          condition: "choice-only" as const,
+          position: "after-result" as const,
+          onClick: async (currentQuestion: QuizQuestion) => {
+            await markAsWeak(currentQuestion);
+          }
+        }] : [])
+      ]}
+      onQuizExit={() => navigate(`/range/${category}`)}
+    />
   );
 }
 
