@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { BrowserRouter } from 'react-router-dom'
+import { AuthProvider } from '../../../contexts/AuthContext'
 import { ReviewView } from './Review.view'
 import type { WeakQuestion } from '../../../utils/firestore'
 import type { QuizQuestion } from '../../../hooks'
@@ -9,9 +10,11 @@ const meta: Meta<typeof ReviewView> = {
   component: ReviewView,
   decorators: [
     (Story) => (
-      <BrowserRouter>
-        <Story />
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <Story />
+        </BrowserRouter>
+      </AuthProvider>
     ),
   ],
 }

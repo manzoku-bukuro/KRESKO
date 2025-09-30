@@ -1,8 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import Top from "./pages/Top";
-import RangeSelect from "./pages/RangeSelect";
-import Quiz from "./pages/Quiz";
+import RangeSelect from "./pages/Exam/RangeSelect";
+import Quiz from "./pages/Exam/Quiz";
 import NumberGame from "./pages/NumberGame";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import InterrogativeMenu from "./pages/InterrogativeLevel";

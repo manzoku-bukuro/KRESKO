@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { BrowserRouter } from 'react-router-dom'
+import { AuthProvider } from '../../contexts/AuthContext'
 import { TopView } from './Top.view'
 
 const meta: Meta<typeof TopView> = {
@@ -7,9 +8,11 @@ const meta: Meta<typeof TopView> = {
   component: TopView,
   decorators: [
     (Story) => (
-      <BrowserRouter>
-        <Story />
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <Story />
+        </BrowserRouter>
+      </AuthProvider>
     ),
   ],
 }

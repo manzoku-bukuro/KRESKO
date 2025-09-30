@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { BrowserRouter } from 'react-router-dom'
+import { AuthProvider } from '../../../contexts/AuthContext'
 import { ListView } from './List.view'
 import type { WeakQuestion } from '../../../utils/firestore'
 
@@ -8,9 +9,11 @@ const meta: Meta<typeof ListView> = {
   component: ListView,
   decorators: [
     (Story) => (
-      <BrowserRouter>
-        <Story />
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <Story />
+        </BrowserRouter>
+      </AuthProvider>
     ),
   ],
 }
