@@ -1,44 +1,11 @@
-# アーキテクチャリファクタリング計画
+# MEMORUアーキテクチャ設計書
 
 **最終更新日**: 2025-10-01
 
-## リファクタリング進捗状況
-
-### 完了済み ✅
-1. **Top** - トップページ (/, 2025-10-01完了)
-2. **PrivacyPolicy** - プライバシーポリシー (/privacy-policy, 2025-10-01完了)
-3. **NumberGame** - 数字当てゲーム (/number-game, 2025-10-01完了)
-4. **SavedQuestions/List** - 苦手問題一覧 (/weak-questions, 2025-10-01完了)
-5. **SavedQuestions/Review** - 苦手問題復習 (/weak-questions-review, 2025-10-01完了)
-6. **Exam/RangeSelect** - 範囲選択 (/range/:category, 2025-10-01完了)
-7. **Exam/Quiz** - クイズ実行 (/quiz/:category/:rangeStart/:rangeSize, 2025-10-01完了)
-8. **Topics/Interrogative/Menu** - 疑問詞メニュー (/interrogative-menu, 2025-10-01完了)
-9. **Topics/Interrogative/Explanation** - 疑問詞説明 (/interrogative-explanation, 2025-10-01完了)
-
-### 完了済み（続き） ✅
-10. **Topics/Interrogative/Basic** - 疑問詞基本学習 (/interrogative-basic, 2025-10-01完了)
-11. **Topics/Interrogative/Advanced** - 疑問詞応用問題 (/interrogative-advanced, 2025-10-01完了)
-
-### 全体進捗
-- **完了**: 11/11 ページ (100%) 🎉
-- **残り**: 0 ページ
-
-### 検証結果
-- ✅ TypeScript: エラーなし
-- ⚠️ ESLint: 既存の components/ 内の問題のみ（新規コードにエラーなし）
+> このドキュメントは、MEMORUプロジェクトのアーキテクチャ設計を記述した生きたドキュメントです。
+> 変更履歴は [docs/changes/](./docs/changes/) を参照してください。
 
 ---
-
-## 目的
-
-現在のフラットなディレクトリ構造を、機能ごとにグループ化された階層構造にリファクタリングする。
-将来的な拡張性を考慮し、新しい学習コンテンツやゲームモードを追加しやすい設計にする。
-
-## 現状の問題点
-
-1. **フラットなルーティング**: 11個のルートが平坦に並んでおり、関連性が見えにくい
-2. **スケーラビリティの欠如**: 新しいカテゴリ（エス検3級、発音、時制など）を追加する際の構造が不明確
-3. **ディレクトリ構造の不一致**: ルーティングとファイル配置の関係性が弱い
 
 ## 新しいディレクトリ構造
 
