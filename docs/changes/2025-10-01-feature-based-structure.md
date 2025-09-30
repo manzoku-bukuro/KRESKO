@@ -59,5 +59,5 @@
 
 ## 参考
 
-- 詳細設計書: `/ARCHITECTURE_REFACTORING.md`
+- 詳細設計書: `/ARCHITECTURE.md`
 - コーディング規約: `/CLAUDE.md`
