@@ -10,6 +10,8 @@
     "preview": "vite preview",
     "deploy": "npm run build",
     "test": "vitest",
+    "test:unit": "vitest run --config vitest.unit.config.ts",
+    "test:unit:watch": "vitest --config vitest.unit.config.ts",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
     "storybook": "storybook dev -p 6006",
