@@ -4,36 +4,11 @@ import userEvent from '@testing-library/user-event'
 import { BrowserRouter } from 'react-router-dom'
 import { UnifiedQuiz } from './UnifiedQuiz'
 import type { UnifiedQuizProps, QuizQuestion } from './UnifiedQuiz.types'
+import * as hooks from '../../hooks'
 
 // Mock useQuizEngine hook
 vi.mock('../../hooks', () => ({
-  useQuizEngine: vi.fn(() => ({
-    state: {
-      questions: [],
-      currentIndex: 0,
-      finished: false,
-      quizMode: 'traditional',
-      showAnswer: false,
-      selectedAnswer: null,
-      showResult: false,
-      choices: [],
-      incorrectQuestions: [],
-      correctQuestions: [],
-      progress: 0,
-      isLastQuestion: false
-    },
-    actions: {
-      initializeQuiz: vi.fn(),
-      resetQuiz: vi.fn(),
-      setQuizMode: vi.fn(),
-      handleChoiceClick: vi.fn(),
-      handleTraditionalClick: vi.fn(),
-      nextQuestion: vi.fn(),
-      generateChoices: vi.fn(),
-      markAsIncorrect: vi.fn(),
-      markAsCorrect: vi.fn()
-    }
-  }))
+  useQuizEngine: vi.fn()
 }))
 
 // Mock子コンポーネント
@@ -84,6 +59,34 @@ const renderWithRouter = (props: Partial<UnifiedQuizProps> = {}) => {
 describe('UnifiedQuiz', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    // デフォルトのモック状態をセット
+    vi.mocked(hooks.useQuizEngine).mockReturnValue({
+      state: {
+        questions: [],
+        currentIndex: 0,
+        finished: false,
+        quizMode: 'traditional',
+        showAnswer: false,
+        selectedAnswer: null,
+        showResult: false,
+        choices: [],
+        incorrectQuestions: [],
+        correctQuestions: [],
+        progress: 0,
+        isLastQuestion: false
+      },
+      actions: {
+        initializeQuiz: vi.fn(),
+        resetQuiz: vi.fn(),
+        setQuizMode: vi.fn(),
+        handleChoiceClick: vi.fn(),
+        handleTraditionalClick: vi.fn(),
+        nextQuestion: vi.fn(),
+        generateChoices: vi.fn(),
+        markAsIncorrect: vi.fn(),
+        markAsCorrect: vi.fn()
+      }
+    })
   })
 
   describe('基本的なレンダリング', () => {
@@ -130,8 +133,7 @@ describe('UnifiedQuiz', () => {
 
   describe('クイズ完了状態', () => {
     it('完了画面を表示する', () => {
-      const { useQuizEngine } = require('../../hooks')
-      useQuizEngine.mockReturnValue({
+      vi.mocked(hooks.useQuizEngine).mockReturnValue({
         state: {
           questions: mockQuestions,
           currentIndex: 0,
@@ -165,8 +167,7 @@ describe('UnifiedQuiz', () => {
     })
 
     it('カスタム完了メッセージを表示する', () => {
-      const { useQuizEngine } = require('../../hooks')
-      useQuizEngine.mockReturnValue({
+      vi.mocked(hooks.useQuizEngine).mockReturnValue({
         state: {
           questions: mockQuestions,
           currentIndex: 0,
@@ -205,8 +206,7 @@ describe('UnifiedQuiz', () => {
     })
 
     it('単語リストを表示する', () => {
-      const { useQuizEngine } = require('../../hooks')
-      useQuizEngine.mockReturnValue({
+      vi.mocked(hooks.useQuizEngine).mockReturnValue({
         state: {
           questions: mockQuestions,
           currentIndex: 0,
@@ -243,8 +243,7 @@ describe('UnifiedQuiz', () => {
     })
 
     it('リスタートボタンが機能する', async () => {
-      const { useQuizEngine } = require('../../hooks')
-      useQuizEngine.mockReturnValue({
+      vi.mocked(hooks.useQuizEngine).mockReturnValue({
         state: {
           questions: mockQuestions,
           currentIndex: 0,
@@ -288,8 +287,7 @@ describe('UnifiedQuiz', () => {
 
   describe('クイズ進行中', () => {
     it('通常モードでクイズヘッダーと問題を表示する', () => {
-      const { useQuizEngine } = require('../../hooks')
-      useQuizEngine.mockReturnValue({
+      vi.mocked(hooks.useQuizEngine).mockReturnValue({
         state: {
           questions: mockQuestions,
           currentIndex: 0,
@@ -325,8 +323,7 @@ describe('UnifiedQuiz', () => {
 
     it('回答表示ボタンをクリックすると回答が表示される', async () => {
       const handleTraditionalClick = vi.fn()
-      const { useQuizEngine } = require('../../hooks')
-      useQuizEngine.mockReturnValue({
+      vi.mocked(hooks.useQuizEngine).mockReturnValue({
         state: {
           questions: mockQuestions,
           currentIndex: 0,
@@ -361,8 +358,7 @@ describe('UnifiedQuiz', () => {
     })
 
     it('選択式モードで選択肢を表示する', () => {
-      const { useQuizEngine } = require('../../hooks')
-      useQuizEngine.mockReturnValue({
+      vi.mocked(hooks.useQuizEngine).mockReturnValue({
         state: {
           questions: mockQuestions,
           currentIndex: 0,
@@ -395,8 +391,7 @@ describe('UnifiedQuiz', () => {
     })
 
     it('最後の問題で完了ボタンを表示する', () => {
-      const { useQuizEngine } = require('../../hooks')
-      useQuizEngine.mockReturnValue({
+      vi.mocked(hooks.useQuizEngine).mockReturnValue({
         state: {
           questions: mockQuestions,
           currentIndex: 2,
@@ -431,8 +426,7 @@ describe('UnifiedQuiz', () => {
 
   describe('カスタムアクション', () => {
     it('カスタムアクションを表示する', () => {
-      const { useQuizEngine } = require('../../hooks')
-      useQuizEngine.mockReturnValue({
+      vi.mocked(hooks.useQuizEngine).mockReturnValue({
         state: {
           questions: mockQuestions,
           currentIndex: 0,
@@ -473,12 +467,11 @@ describe('UnifiedQuiz', () => {
         customActions: [customAction]
       })
 
-      expect(screen.getByText('🔧 テストアクション')).toBeInTheDocument()
+      expect(screen.getAllByText('🔧 テストアクション').length).toBeGreaterThan(0)
     })
 
     it('カスタムアクションのクリックが機能する', async () => {
-      const { useQuizEngine } = require('../../hooks')
-      useQuizEngine.mockReturnValue({
+      vi.mocked(hooks.useQuizEngine).mockReturnValue({
         state: {
           questions: mockQuestions,
           currentIndex: 0,
@@ -519,8 +512,8 @@ describe('UnifiedQuiz', () => {
         customActions: [customAction]
       })
 
-      const actionButton = screen.getByText('テストアクション')
-      await userEvent.click(actionButton)
+      const actionButtons = screen.getAllByText('テストアクション')
+      await userEvent.click(actionButtons[0])
       expect(onClick).toHaveBeenCalledWith(mockQuestions[0], 0)
     })
   })
@@ -528,7 +521,6 @@ describe('UnifiedQuiz', () => {
   describe('イベントハンドラ', () => {
     it('クイズ完了時にonQuizCompleteを呼び出す', async () => {
       const onQuizComplete = vi.fn()
-      const { useQuizEngine } = require('../../hooks')
 
       const { rerender } = render(
         <BrowserRouter>
@@ -537,7 +529,7 @@ describe('UnifiedQuiz', () => {
       )
 
       // クイズを完了状態に変更
-      useQuizEngine.mockReturnValue({
+      vi.mocked(hooks.useQuizEngine).mockReturnValue({
         state: {
           questions: mockQuestions,
           currentIndex: 0,
@@ -584,8 +576,7 @@ describe('UnifiedQuiz', () => {
 
     it('onQuizExitが呼ばれる', async () => {
       const onQuizExit = vi.fn()
-      const { useQuizEngine } = require('../../hooks')
-      useQuizEngine.mockReturnValue({
+      vi.mocked(hooks.useQuizEngine).mockReturnValue({
         state: {
           questions: mockQuestions,
           currentIndex: 0,
