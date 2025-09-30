@@ -23,7 +23,8 @@
       "Bash(npx vitest run:*)",
       "Bash(npm run test:unit:*)",
       "Bash(npm run test:coverage:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(npm run lint:*)"
     ],
     "deny": [],
     "ask": []
