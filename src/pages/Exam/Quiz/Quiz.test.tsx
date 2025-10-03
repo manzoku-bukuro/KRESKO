@@ -6,7 +6,7 @@ import * as useQuizModule from './hooks/useQuiz'
 // Mock UnifiedQuiz component
 vi.mock('../../../components/UnifiedQuiz', () => ({
   UnifiedQuiz: ({ metadata, error, errorConfig }: { metadata?: { title: string; subtitle: string }; error?: string; errorConfig?: { title: string; message: string; onAction: () => void; actionLabel: string } }) => {
-    if (error) {
+    if (error && errorConfig) {
       return (
         <div>
           <h1>{errorConfig.title}</h1>
@@ -15,12 +15,15 @@ vi.mock('../../../components/UnifiedQuiz', () => ({
         </div>
       )
     }
-    return (
-      <div>
-        <h1>{metadata.title}</h1>
-        <p>{metadata.subtitle}</p>
-      </div>
-    )
+    if (metadata) {
+      return (
+        <div>
+          <h1>{metadata.title}</h1>
+          <p>{metadata.subtitle}</p>
+        </div>
+      )
+    }
+    return <div>No data</div>
   },
 }))
 

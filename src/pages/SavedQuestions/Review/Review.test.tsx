@@ -5,28 +5,34 @@ import { ReviewView } from './Review.view'
 import type { ReviewViewProps } from './Review.types'
 import type { WeakQuestion } from '../../../utils/firestore'
 import type { QuizQuestion } from '../../../hooks'
+import { createMockUser } from '../../../test/mockHelpers'
 
 // Mock UnifiedQuiz component
 vi.mock('../../../components/UnifiedQuiz', () => ({
-  UnifiedQuiz: ({ metadata, loading, error, errorConfig }: { metadata?: { title: string; subtitle: string }; loading?: boolean; error?: string; errorConfig?: { title: string; message: string; onAction: () => void; actionLabel: string } }) => {
+  UnifiedQuiz: ({ metadata, loading, error, errorConfig }: { metadata?: { title: string; subtitle: string }; loading?: boolean; error?: string; errorConfig?: { title: string; message: string; onAction?: () => void; actionLabel?: string } }) => {
     if (loading) {
       return <div>Loading...</div>
     }
-    if (error) {
+    if (error && errorConfig) {
       return (
         <div>
           <h1>{errorConfig.title}</h1>
           <p>{errorConfig.message}</p>
-          <button onClick={errorConfig.onAction}>{errorConfig.actionLabel}</button>
+          {errorConfig.onAction && errorConfig.actionLabel && (
+            <button onClick={errorConfig.onAction}>{errorConfig.actionLabel}</button>
+          )}
         </div>
       )
     }
-    return (
-      <div>
-        <h1>{metadata.title}</h1>
-        <p>{metadata.subtitle}</p>
-      </div>
-    )
+    if (metadata) {
+      return (
+        <div>
+          <h1>{metadata.title}</h1>
+          <p>{metadata.subtitle}</p>
+        </div>
+      )
+    }
+    return <div>No data</div>
   }
 }))
 
@@ -60,7 +66,7 @@ describe('ReviewView', () => {
   ]
 
   const defaultProps: ReviewViewProps = {
-    user: { uid: 'test-user' },
+    user: createMockUser({ uid: 'test-user' }),
     loading: false,
     error: null,
     allWeakQuestions: mockWeakQuestions,

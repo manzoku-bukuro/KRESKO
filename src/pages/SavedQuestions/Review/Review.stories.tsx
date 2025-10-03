@@ -4,6 +4,7 @@ import { AuthProvider } from '../../../contexts/AuthContext'
 import { ReviewView } from './Review.view'
 import type { WeakQuestion } from '../../../utils/firestore'
 import type { QuizQuestion } from '../../../hooks'
+import { createMockUser } from '../../../test/mockHelpers'
 
 const meta: Meta<typeof ReviewView> = {
   title: 'Pages/SavedQuestions/Review',
@@ -52,7 +53,7 @@ const mockQuizQuestions: QuizQuestion[] = [
 
 export const EmptyState: Story = {
   args: {
-    user: { uid: 'test-user' },
+    user: createMockUser({ uid: 'test-user' }),
     loading: false,
     error: null,
     allWeakQuestions: [],
@@ -65,7 +66,7 @@ export const EmptyState: Story = {
 
 export const Loading: Story = {
   args: {
-    user: { uid: 'test-user' },
+    user: createMockUser({ uid: 'test-user' }),
     loading: true,
     error: null,
     allWeakQuestions: mockWeakQuestions,
@@ -78,7 +79,7 @@ export const Loading: Story = {
 
 export const WithError: Story = {
   args: {
-    user: { uid: 'test-user' },
+    user: createMockUser({ uid: 'test-user' }),
     loading: false,
     error: 'ネットワークエラーが発生しました',
     allWeakQuestions: [],
@@ -91,7 +92,7 @@ export const WithError: Story = {
 
 export const WithQuestions: Story = {
   args: {
-    user: { uid: 'test-user' },
+    user: createMockUser({ uid: 'test-user' }),
     loading: false,
     error: null,
     allWeakQuestions: mockWeakQuestions,

@@ -19,6 +19,6 @@ type Story = StoryObj<typeof PrivacyPolicyView>
 
 export const Default: Story = {
   args: {
-    onNavigateToTop: () => console.log('Navigate to Top'),
+    onBack: () => console.log('Navigate to Top'),
   }
 }

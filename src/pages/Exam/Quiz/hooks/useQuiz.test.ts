@@ -75,7 +75,7 @@ describe('useQuiz', () => {
       japanese: '猫',
     }
 
-    const choices = result.current.generateCustomChoices(question)
+    const choices = result.current.generateCustomChoices(question, result.current.quizQuestions)
 
     expect(choices).toHaveLength(4)
     expect(choices).toContain('猫')

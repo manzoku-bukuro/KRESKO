@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { AuthProvider } from '../../../contexts/AuthContext'
 import { ListView } from './List.view'
 import type { WeakQuestion } from '../../../utils/firestore'
+import { createMockUser } from '../../../test/mockHelpers'
 
 const meta: Meta<typeof ListView> = {
   title: 'Pages/SavedQuestions/List',
@@ -56,7 +57,7 @@ export const NotAuthenticated: Story = {
 
 export const Loading: Story = {
   args: {
-    user: { uid: 'test-user' },
+    user: createMockUser({ uid: 'test-user' }),
     loading: true,
     weakQuestions: [],
     onRemoveQuestion: async (esperanto: string) => console.log('Remove:', esperanto),
@@ -67,7 +68,7 @@ export const Loading: Story = {
 
 export const EmptyList: Story = {
   args: {
-    user: { uid: 'test-user' },
+    user: createMockUser({ uid: 'test-user' }),
     loading: false,
     weakQuestions: [],
     onRemoveQuestion: async (esperanto: string) => console.log('Remove:', esperanto),
@@ -78,7 +79,7 @@ export const EmptyList: Story = {
 
 export const WithQuestions: Story = {
   args: {
-    user: { uid: 'test-user' },
+    user: createMockUser({ uid: 'test-user' }),
     loading: false,
     weakQuestions: mockWeakQuestions,
     onRemoveQuestion: async (esperanto: string) => console.log('Remove:', esperanto),

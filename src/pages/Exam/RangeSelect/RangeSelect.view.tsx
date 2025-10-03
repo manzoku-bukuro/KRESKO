@@ -1,7 +1,6 @@
 import type { RangeSelectViewProps } from './RangeSelect.types'
 
 export const RangeSelectView = ({
-  category,
   total,
   rangeOptions10,
   rangeOptions100,

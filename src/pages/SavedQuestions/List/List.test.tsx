@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event'
 import { ListView } from './List.view'
 import type { ListViewProps } from './List.types'
 import type { WeakQuestion } from '../../../utils/firestore'
+import { createMockUser } from '../../../test/mockHelpers'
 
 describe('ListView', () => {
   const mockWeakQuestions: WeakQuestion[] = [
@@ -23,7 +24,7 @@ describe('ListView', () => {
   ]
 
   const defaultProps: ListViewProps = {
-    user: { uid: 'test-user' },
+    user: createMockUser({ uid: 'test-user' }),
     loading: false,
     weakQuestions: mockWeakQuestions,
     onRemoveQuestion: vi.fn(),
