@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { WordList } from './WordList'
 import type { WordListProps } from './WordList.types'
+import * as useWordListModule from './hooks/useWordList'
 
 // Mock the view component
 vi.mock('./WordList.view', () => ({
@@ -25,6 +26,8 @@ vi.mock('./hooks/useWordList', () => ({
     actions: {},
   })),
 }))
+
+const mockedUseWordList = vi.mocked(useWordListModule.useWordList)
 
 describe('WordList', () => {
   const defaultProps: WordListProps = {
@@ -70,10 +73,8 @@ describe('WordList', () => {
   })
 
   it('passes props to hook', () => {
-    const { useWordList } = require('./hooks/useWordList')
-
     render(<WordList {...defaultProps} />)
 
-    expect(useWordList).toHaveBeenCalledWith(defaultProps)
+    expect(mockedUseWordList).toHaveBeenCalledWith(defaultProps)
   })
 })

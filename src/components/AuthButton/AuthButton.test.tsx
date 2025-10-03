@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { AuthButton } from './AuthButton'
+import * as useAuthButtonModule from './hooks/useAuthButton'
 
 // Mock the view component
 vi.mock('./AuthButton.view', () => ({
@@ -29,6 +30,8 @@ vi.mock('./hooks/useAuthButton', () => ({
   })),
 }))
 
+const mockedUseAuthButton = vi.mocked(useAuthButtonModule.useAuthButton)
+
 describe('AuthButton', () => {
   it('renders correctly', () => {
     render(<AuthButton />)
@@ -41,10 +44,9 @@ describe('AuthButton', () => {
   })
 
   it('renders when user is logged in', () => {
-    const { useAuthButton } = require('./hooks/useAuthButton')
-    useAuthButton.mockReturnValue({
+    mockedUseAuthButton.mockReturnValue({
       data: {
-        user: { uid: '123', email: 'test@example.com' },
+        user: { uid: '123', email: 'test@example.com' } as unknown as import('firebase/auth').User,
         showAuthModal: false,
         authMode: 'login',
         loading: false,

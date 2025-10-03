@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { ChoiceButtons } from './ChoiceButtons'
 import type { ChoiceButtonsProps } from './ChoiceButtons.types'
+import * as useChoiceButtonsModule from './hooks/useChoiceButtons'
 
 // Mock the view component
 vi.mock('./ChoiceButtons.view', () => ({
@@ -23,6 +24,8 @@ vi.mock('./hooks/useChoiceButtons', () => ({
     actions: { handleChoiceClick: vi.fn() },
   })),
 }))
+
+const mockedUseChoiceButtons = vi.mocked(useChoiceButtonsModule.useChoiceButtons)
 
 describe('ChoiceButtons', () => {
   const defaultProps: ChoiceButtonsProps = {
@@ -53,12 +56,11 @@ describe('ChoiceButtons', () => {
   })
 
   it('passes onChoiceClick to hook', () => {
-    const { useChoiceButtons } = require('./hooks/useChoiceButtons')
     const onChoiceClick = vi.fn()
 
     render(<ChoiceButtons {...defaultProps} onChoiceClick={onChoiceClick} />)
 
-    expect(useChoiceButtons).toHaveBeenCalledWith({
+    expect(mockedUseChoiceButtons).toHaveBeenCalledWith({
       onChoiceClick,
     })
   })

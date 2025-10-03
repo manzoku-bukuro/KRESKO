@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { AnswerResult } from './AnswerResult'
 import type { AnswerResultProps } from './AnswerResult.types'
+import * as useAnswerResultModule from './hooks/useAnswerResult'
 
 // Mock the view component
 vi.mock('./AnswerResult.view', () => ({
@@ -21,6 +22,8 @@ vi.mock('./hooks/useAnswerResult', () => ({
     actions: { handleNext: vi.fn() },
   })),
 }))
+
+const mockedUseAnswerResult = vi.mocked(useAnswerResultModule.useAnswerResult)
 
 describe('AnswerResult', () => {
   const defaultProps: AnswerResultProps = {
@@ -65,12 +68,11 @@ describe('AnswerResult', () => {
   })
 
   it('passes onNext handler to hook', () => {
-    const { useAnswerResult } = require('./hooks/useAnswerResult')
     const onNext = vi.fn()
 
     render(<AnswerResult {...defaultProps} onNext={onNext} />)
 
-    expect(useAnswerResult).toHaveBeenCalledWith({
+    expect(mockedUseAnswerResult).toHaveBeenCalledWith({
       onNext,
       isVisible: true,
     })

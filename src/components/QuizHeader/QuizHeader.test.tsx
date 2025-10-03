@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { QuizHeader } from './QuizHeader'
 import type { QuizHeaderProps } from './QuizHeader.types'
+import * as useQuizHeaderModule from './hooks/useQuizHeader'
 
 // Mock the view component
 vi.mock('./QuizHeader.view', () => ({
@@ -22,6 +23,8 @@ vi.mock('./hooks/useQuizHeader', () => ({
     actions: {},
   })),
 }))
+
+const mockedUseQuizHeader = vi.mocked(useQuizHeaderModule.useQuizHeader)
 
 describe('QuizHeader', () => {
   const defaultProps: QuizHeaderProps = {
@@ -67,7 +70,6 @@ describe('QuizHeader', () => {
   })
 
   it('passes props to hook', () => {
-    const { useQuizHeader } = require('./hooks/useQuizHeader')
     const props: QuizHeaderProps = {
       title: 'Test',
       currentQuestion: 3,
@@ -76,6 +78,6 @@ describe('QuizHeader', () => {
 
     render(<QuizHeader {...props} />)
 
-    expect(useQuizHeader).toHaveBeenCalledWith(props)
+    expect(mockedUseQuizHeader).toHaveBeenCalledWith(props)
   })
 })

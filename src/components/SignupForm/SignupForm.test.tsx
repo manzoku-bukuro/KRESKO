@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { SignupForm } from './SignupForm'
+import * as useSignupFormModule from './hooks/useSignupForm'
 
 // Mock the view component
 vi.mock('./SignupForm.view', () => ({
@@ -28,6 +29,8 @@ vi.mock('./hooks/useSignupForm', () => ({
   })),
 }))
 
+const mockedUseSignupForm = vi.mocked(useSignupFormModule.useSignupForm)
+
 describe('SignupForm', () => {
   it('renders correctly', () => {
     render(<SignupForm />)
@@ -35,8 +38,7 @@ describe('SignupForm', () => {
   })
 
   it('renders with loading state', () => {
-    const { useSignupForm } = require('./hooks/useSignupForm')
-    useSignupForm.mockReturnValue({
+    mockedUseSignupForm.mockReturnValue({
       state: {
         formData: { email: '', password: '', confirmPassword: '' },
         loading: true,
@@ -54,8 +56,7 @@ describe('SignupForm', () => {
   })
 
   it('renders with error message', () => {
-    const { useSignupForm } = require('./hooks/useSignupForm')
-    useSignupForm.mockReturnValue({
+    mockedUseSignupForm.mockReturnValue({
       state: {
         formData: { email: '', password: '', confirmPassword: '' },
         loading: false,
@@ -73,11 +74,10 @@ describe('SignupForm', () => {
   })
 
   it('passes onSuccess to hook', () => {
-    const { useSignupForm } = require('./hooks/useSignupForm')
     const onSuccess = vi.fn()
 
     render(<SignupForm onSuccess={onSuccess} />)
 
-    expect(useSignupForm).toHaveBeenCalledWith({ onSuccess })
+    expect(mockedUseSignupForm).toHaveBeenCalledWith({ onSuccess })
   })
 })

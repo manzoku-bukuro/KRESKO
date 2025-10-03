@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { ModeToggle } from './ModeToggle'
 import type { ModeToggleProps, QuizMode } from './ModeToggle.types'
+import * as useModeToggleModule from './hooks/useModeToggle'
 
 // Mock the view component
 vi.mock('./ModeToggle.view', () => ({
@@ -22,6 +23,8 @@ vi.mock('./hooks/useModeToggle', () => ({
     },
   })),
 }))
+
+const mockedUseModeToggle = vi.mocked(useModeToggleModule.useModeToggle)
 
 describe('ModeToggle', () => {
   const defaultProps: ModeToggleProps = {
@@ -45,7 +48,6 @@ describe('ModeToggle', () => {
   })
 
   it('passes props to hook', () => {
-    const { useModeToggle } = require('./hooks/useModeToggle')
     const onModeChange = vi.fn()
 
     render(
@@ -55,7 +57,7 @@ describe('ModeToggle', () => {
       />
     )
 
-    expect(useModeToggle).toHaveBeenCalledWith({
+    expect(mockedUseModeToggle).toHaveBeenCalledWith({
       currentMode: 'traditional',
       onModeChange,
     })

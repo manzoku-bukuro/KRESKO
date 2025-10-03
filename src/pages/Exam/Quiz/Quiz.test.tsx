@@ -1,10 +1,11 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { Quiz } from './Quiz'
+import * as useQuizModule from './hooks/useQuiz'
 
 // Mock UnifiedQuiz component
 vi.mock('../../../components/UnifiedQuiz', () => ({
-  UnifiedQuiz: ({ metadata, error, errorConfig }: any) => {
+  UnifiedQuiz: ({ metadata, error, errorConfig }: { metadata?: { title: string; subtitle: string }; error?: string; errorConfig?: { title: string; message: string; onAction: () => void; actionLabel: string } }) => {
     if (error) {
       return (
         <div>
@@ -51,7 +52,9 @@ describe('Quiz', () => {
   })
 
   it('renders error state when dataError is present', () => {
-    const useQuiz = vi.fn(() => ({
+    const mockedUseQuiz = vi.mocked(useQuizModule.useQuiz)
+
+    mockedUseQuiz.mockReturnValueOnce({
       category: 'esuken4',
       rangeStart: '1',
       rangeSize: '10',
@@ -66,9 +69,7 @@ describe('Quiz', () => {
       handleNavigateToRange: vi.fn(),
       handleNavigateToTop: vi.fn(),
       generateCustomChoices: vi.fn(),
-    }))
-
-    vi.mocked(require('./hooks/useQuiz')).useQuiz = useQuiz
+    })
 
     render(<Quiz />)
     expect(screen.getByText('エラー')).toBeInTheDocument()
