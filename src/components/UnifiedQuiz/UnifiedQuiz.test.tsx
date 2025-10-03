@@ -4,28 +4,28 @@ import userEvent from '@testing-library/user-event'
 import { BrowserRouter } from 'react-router-dom'
 import { UnifiedQuiz } from './UnifiedQuiz'
 import type { UnifiedQuizProps, QuizQuestion } from './UnifiedQuiz.types'
-import * as hooks from '../../hooks'
+import * as hooks from '@/hooks'
 
 // Mock useQuizEngine hook
-vi.mock('../../hooks', () => ({
+vi.mock('@/hooks', () => ({
   useQuizEngine: vi.fn()
 }))
 
 // Mock子コンポーネント
-vi.mock('../QuizHeader', () => ({
+vi.mock('@/components/QuizHeader', () => ({
   QuizHeader: ({ title }: any) => <div data-testid="quiz-header">{title}</div>
 }))
 
-vi.mock('../ChoiceButtons', () => ({
+vi.mock('@/components/ChoiceButtons', () => ({
   ChoiceButtons: () => <div data-testid="choice-buttons">Choice Buttons</div>
 }))
 
-vi.mock('../AnswerResult', () => ({
+vi.mock('@/components/AnswerResult', () => ({
   AnswerResult: ({ isVisible }: any) =>
     isVisible ? <div data-testid="answer-result">Answer Result</div> : null
 }))
 
-vi.mock('../WordList', () => ({
+vi.mock('@/components/WordList', () => ({
   WordList: () => <div data-testid="word-list">Word List</div>
 }))
 
