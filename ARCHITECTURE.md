@@ -1,15 +1,85 @@
 # MEMORUアーキテクチャ設計書
 
-**最終更新日**: 2025-10-01
+**最終更新日**: 2025-10-04
 
 > このドキュメントは、MEMORUプロジェクトのアーキテクチャ設計を記述した生きたドキュメントです。
 > 変更履歴は [docs/changes/](./docs/changes/) を参照してください。
 
 ---
 
-## 新しいディレクトリ構造
+## 現在のアーキテクチャ概要（2025-10-04時点）
 
-### 概要
+### 実装済みアーキテクチャパターン
+
+**データアクセス層**:
+- DataServiceパターンでデータ取得を統一
+- IDataSourceインターフェースによる抽象化
+- DataServiceFactory（Singleton）でインスタンス管理
+
+**型システム**:
+- src/types/domain/ - ドメインモデル型（Word, QuizMode, ResultTypeなど）
+- src/types/ui/ - UIコンポーネント型（QuizMetadata, CompletionConfigなど）
+- 型の一元管理で再利用性向上
+
+**コンポーネントアーキテクチャ**:
+- Container/View/Hook分離パターン（全12コンポーネント適用済み）
+- UnifiedQuiz: Container（23行）+ View（334行）+ Hook（115行）
+- テストファイル、Storybookファイル必須
+
+**ルーティング**:
+- モジュール化された4つのルート（static, exam, topics, user）
+- pages/ディレクトリは薄いラッパー（将来的にfeaturesへ移行予定）
+
+**パスエイリアス**:
+- `@/*` で統一（相対パス `../../` を排除）
+
+---
+
+## ディレクトリ構造
+
+### 現在の構造（2025-10-04）
+
+```
+src/
+├── components/          # 共通UIコンポーネント（Container/View/Hook分離）
+│   ├── UnifiedQuiz/     # 統合クイズコンポーネント
+│   ├── AnswerResult/    # 解答結果表示
+│   ├── ChoiceButtons/   # 4択選択ボタン
+│   ├── QuizHeader/      # クイズヘッダー
+│   ├── WordList/        # 単語一覧表示
+│   ├── ModeToggle/      # モード切り替え
+│   ├── AuthModal/       # 認証モーダル
+│   ├── LoginForm/       # ログインフォーム
+│   ├── SignupForm/      # サインアップフォーム
+│   ├── Header/          # ヘッダー
+│   ├── Footer/          # フッター
+│   ├── AuthButton/      # 認証ボタン
+│   └── AdBanner/        # 広告バナー
+├── pages/               # ルーティング専用（薄いラッパー）
+│   ├── Exam/            # 検定試験ルート
+│   ├── Topics/          # 学習トピックルート
+│   ├── Games/           # ゲームルート
+│   ├── SavedQuestions/  # 保存した問題ルート
+│   ├── Top.tsx          # トップページ
+│   └── PrivacyPolicy.tsx # プライバシーポリシー
+├── services/            # データアクセス層
+│   ├── data/            # DataService実装
+│   └── firebase/        # Firebase関連サービス
+├── hooks/               # グローバルカスタムフック
+│   ├── useQuizEngine.ts # クイズエンジン
+│   └── useAuth.ts       # 認証管理
+├── utils/               # ユーティリティ
+├── types/               # 型定義
+│   ├── domain/          # ドメインモデル型
+│   └── ui/              # UIコンポーネント型
+└── routes/              # ルーティング設定（モジュール化済み）
+    ├── staticRoutes.tsx # 静的ページルート
+    ├── examRoutes.tsx   # 検定試験ルート
+    ├── topicsRoutes.tsx # 学習トピックルート
+    └── userRoutes.tsx   # ユーザー機能ルート
+```
+
+### 将来の構造（features/への移行予定）
 
 - **src/pages/**: ルーティング専用の薄いラッパーコンポーネント
 - **src/features/**: 各機能の実装本体（コンポーネント、hooks、utils、data）
@@ -282,13 +352,13 @@ export const TOPICS: TopicConfig[] = [
 4. **並び替えモード**: 各学習ページに `?mode=arrange` を追加
 5. **その他の学習モード**: `?mode=listening`, `?mode=writing` など
 
-## コンポーネントのコロケーション方針
+## コンポーネントのコロケーション方針（実装済み）
 
 ### 原則: 関連ファイルを同じディレクトリに配置
 
 各コンポーネントに関連するファイル（View、型定義、テスト、Storybook、カスタムフック）は、そのコンポーネントと同じディレクトリに配置する。
 
-### 既存の標準ファイル構成パターン
+### 標準ファイル構成パターン（全12コンポーネント適用済み）
 
 ```
 ComponentName/
@@ -305,28 +375,38 @@ ComponentName/
 注: View層のテストは不要（Storybookで視覚確認）
 ```
 
-この構成を全てのコンポーネントで統一する。
+**適用済みコンポーネント（12個）**:
+- UnifiedQuiz, AnswerResult, ChoiceButtons, QuizHeader, WordList, ModeToggle
+- Header, Footer, AuthButton, AdBanner, LoginForm, SignupForm, AuthModal
 
 **重要**:
-- `.stories.tsx` は全てのコンポーネントで必須
-- 視覚的なパターン確認とデザインシステムの統一のため
+- `.stories.tsx` は全てのコンポーネントで必須（視覚的パターン確認）
+- `.test.tsx` はContainerとhooksで必須（Viewは不要）
+- `.view.tsx` は小文字推奨（他の拡張子と統一）
 
-### 例: UnifiedQuizコンポーネント（現状の構成を維持）
+### 実装例: UnifiedQuizコンポーネント
+
+**アーキテクチャ**: Container（23行）+ View（334行）+ Hook（115行）
 
 ```
 src/components/UnifiedQuiz/
-├── UnifiedQuiz.tsx           # メインコンポーネント
-├── UnifiedQuiz.types.ts      # 型定義
-├── UnifiedQuiz.test.tsx      # テスト
-└── index.ts                  # エクスポート
+├── UnifiedQuiz.tsx              # Container（23行）
+├── UnifiedQuiz.view.tsx         # View（334行）
+├── UnifiedQuiz.types.ts         # 型定義
+├── UnifiedQuiz.test.tsx         # Containerのテスト
+├── UnifiedQuiz.stories.tsx      # Storybook
+├── hooks/
+│   ├── useUnifiedQuiz.ts        # ビジネスロジック（115行）
+│   └── useUnifiedQuiz.test.tsx  # フックのテスト
+└── index.tsx                    # エクスポート
 ```
 
-**サブコンポーネント（別ディレクトリ）**:
+**使用するサブコンポーネント（別ディレクトリ）**:
 - `QuizHeader/` - クイズヘッダー（Container + View + types + hooks + stories）
 - `ChoiceButtons/` - 選択肢ボタン（Container + View + types + hooks + stories）
 - `AnswerResult/` - 回答結果（Container + View + types + hooks + stories）
 - `WordList/` - 単語リスト（Container + View + types + hooks + stories）
-- `ModeToggle/` - モード切替（Container + View + types + hooks + stories）
+- `ModeToggle/` - モード切替（QuizHeader経由で使用）
 
 ### 例: ページコンポーネント（pages/ - ルーティング専用）
 
@@ -715,13 +795,37 @@ const simpleValue = useMemo(() => a + b, [a, b])  // 単純な計算
 - [ ] 型定義が .types.ts に分離されているか
 - [ ] 不要な依存関係がないか（import の整理）
 
+## 実装済み改善（2025-10-04時点）
+
+### 完了したリファクタリング
+
+1. **UnifiedQuiz統合**: Quiz.tsx 370行 → Container 23行（347行削減）
+2. **DataService層導入**: データアクセスの統一、normalizeWords関数削除
+3. **型システム統一**: src/types/（domain/ui）への一元化
+4. **ルーティングモジュール化**: App.tsx分割（4モジュール）
+5. **パスエイリアス導入**: `@/*` で統一
+6. **Container/View/Hook分離**: 全12コンポーネント適用完了
+
+### テスト・品質
+
+- **テストカバレッジ**: 79テスト全てパス
+- **TypeScript**: 0エラー、strict mode対応
+- **ESLint**: `any`型排除、型安全性向上
+- **Storybook**: 全コンポーネント適用
+
+### 既知の課題
+
+1. **ESLint警告**: react-refresh/only-export-components（12箇所、実用上問題なし）
+2. **Storybook imports**: `@storybook/react-vite` 推奨
+3. **バンドルサイズ**: 906KB（コード分割で改善可能）
+4. **useQuizEngine**: 298行（さらなる分割検討中）
+
 ## 注意事項
 
-- UnifiedQuizコンポーネントは変更せず、使い回す
-- useQuizEngineフックも現状のまま利用
-- データファイル（JSON）の構造は維持
-- 既存のテストは全て更新が必要
-- コロケーション方針に従い、関連ファイルを同じディレクトリに移動
-- **新規コンポーネントには必ずテストを追加**
+- UnifiedQuizコンポーネントは全学習モードで使用（変更注意）
+- useQuizEngineフックは全クイズロジックの中核（変更注意）
+- DataServiceパターンでデータ取得を統一
+- 型は必ずsrc/types/から import
+- **新規コンポーネントには必ずテスト・Storybookを追加**
 - **型安全性を最優先し、anyの使用を避ける**
 - **useEffectは最小限に抑え、適切な抽象化を使用する**

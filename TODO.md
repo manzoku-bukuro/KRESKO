@@ -1,6 +1,6 @@
 # TODO - 次回作業項目
 
-**最終更新**: 2025-10-03
+**最終更新**: 2025-10-04
 
 ---
 
@@ -105,20 +105,42 @@
 
 ## 📝 メモ
 
-### 今日完了したこと（2025-10-03）
+### 今日完了したこと（2025-10-04）
+- ✅ UnifiedQuiz統合（Quiz.tsx 370行 → Container 23行、347行削減）
+  - Container/View/Hook分離パターン適用
+  - useUnifiedQuiz.ts（115行）作成
+  - UnifiedQuiz.view.tsx（334行）作成
+  - 包括的テスト作成（10テストカテゴリ）
+- ✅ DataService層導入
+  - IDataSourceインターフェースによる抽象化
+  - JsonDataSource実装
+  - DataServiceFactory（Singleton）実装
+  - normalizeWords関数削除
+- ✅ 型システム統一（src/types/）
+  - domain/ui分離で型の再利用性向上
+  - 7コンポーネントの.types.ts クリーンアップ
+  - 6 index.tsxファイル更新
+  - 型の再エクスポート削除、直接エクスポートに統一
+- ✅ ルーティングモジュール化（App.tsx分割）
+  - staticRoutes.tsx, examRoutes.tsx, topicsRoutes.tsx, userRoutes.tsx
+- ✅ パスエイリアス導入（`@/*`）
+  - 全ファイルで相対パス `../../` → `@/*` 統一
+- ✅ ドキュメント更新
+  - CLAUDE.md - 開発ガイド完全更新
+  - PROJECT_DOCUMENTATION.md - プロジェクト設計書更新
+  - ARCHITECTURE.md - アーキテクチャ設計書更新
+  - TODO.md - このファイル更新
+- ✅ 全テスト実行（79テスト全てパス）
+- ✅ TypeScript 0エラー（strict mode対応）
+
+### 前回完了したこと（2025-10-03）
 - ✅ 開発サーバー起動確認（http://localhost:5173/）
 - ✅ 全テスト実行（79テスト全てパス）
 - ✅ Storybook起動確認（http://localhost:6006/）
 - ✅ テストカバレッジ向上（9コンポーネントのテスト作成）
-  - AdBanner, AnswerResult, AuthButton, ChoiceButtons
-  - LoginForm, ModeToggle, QuizHeader, SignupForm, WordList
 - ✅ ESLintエラー修正（76個 → 39個に削減）
-  - `any`型の置き換え（13箇所）
-  - テストファイルの`require()`を`vi.mocked()`に変更（9ファイル）
-  - 空のinterface修正（5箇所）
-  - 未使用変数の削除（3箇所）
 
-### 前回完了したこと（2025-10-01）
+### さらに前回完了したこと（2025-10-01）
 - ✅ Quiz.tsxのContainer/View分離
 - ✅ AuthModalのディレクトリ化
 - ✅ `.View.tsx` → `.view.tsx` 命名統一（10ファイル）
@@ -128,10 +150,32 @@
 ### 技術的な決定事項
 - View層のテストは不要（Storybookで視覚確認）
 - Container層（ロジック層）のテストは必須
+- DataServiceパターンでデータ取得を統一
+- 型はsrc/types/から一元管理
+- パスエイリアス `@/*` で統一
 - Next.js移行は準備完了後（Phase 3）
 - SEO重視の事業戦略に対応
 
+### 実装済みアーキテクチャ改善（2025-10-04時点）
+
+1. **Container/View/Hook分離**: 全12コンポーネント完全適用
+2. **DataService層**: データ取得を統一インターフェースで抽象化
+3. **型の一元管理**: domain/ui分離で型の再利用性向上
+4. **ルーティングモジュール化**: 4モジュール（static, exam, topics, user）
+5. **パスエイリアス**: `@/*` で統一
+6. **テスト完備**: 79テスト全てパス、カバレッジ向上
+7. **Storybook完備**: 全コンポーネントでストーリー作成
+
+### 既知の課題・改善の余地
+
+1. **ESLint警告**: react-refresh/only-export-components（12箇所、実用上問題なし）
+2. **Storybook imports**: `@storybook/react-vite` 推奨
+3. **バンドルサイズ**: 906KB（コード分割で改善可能）
+4. **useQuizEngine**: 298行（さらなる分割検討中）
+5. **utils/firestore.ts**: 169行（モジュール化検討中）
+
 ### 参考ドキュメント
-- `/ARCHITECTURE.md` - 設計書
+- `/CLAUDE.md` - 開発ガイド（2025-10-04更新済み）
+- `/PROJECT_DOCUMENTATION.md` - プロジェクト設計書（2025-10-04更新済み）
+- `/ARCHITECTURE.md` - アーキテクチャ設計書（2025-10-04更新済み）
 - `/docs/changes/` - プロジェクト記録
-- `/CLAUDE.md` - 開発ガイド
