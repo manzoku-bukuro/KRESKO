@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 import { ModeToggle } from './ModeToggle'
-import type { QuizMode } from './ModeToggle.types'
+import type { QuizMode } from '@/types'
 
 const meta: Meta<typeof ModeToggle> = {
   title: 'Components/ModeToggle',

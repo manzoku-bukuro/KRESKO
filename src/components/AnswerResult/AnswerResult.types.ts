@@ -1,7 +1,4 @@
-import type { ResultType, WordDisplay } from '../../types'
-
-// Re-export for convenience
-export type { ResultType, WordDisplay }
+import type { ResultType, WordDisplay } from '@/types'
 
 export interface AnswerResultProps {
   // 表示モード

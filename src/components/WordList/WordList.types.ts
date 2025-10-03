@@ -1,7 +1,4 @@
-import type { WordItem } from '../../types'
-
-// Re-export for convenience
-export type { WordItem }
+import type { WordItem } from '@/types'
 
 export interface WordListProps {
   title: string

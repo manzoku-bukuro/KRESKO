@@ -4,6 +4,6 @@ export { useWordList } from './hooks/useWordList'
 export type {
   WordListProps,
   WordListState,
-  WordListActions,
-  WordItem
+  WordListActions
 } from './WordList.types'
+export type { WordItem } from '@/types'

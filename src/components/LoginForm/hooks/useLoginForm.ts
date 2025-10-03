@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
-import { signInWithEmail, signInWithGoogle } from '../../../utils/auth'
-import type { LoginFormData, LoginFormState, LoginFormActions, LoginFormProps } from '../LoginForm.types'
+import { signInWithEmail, signInWithGoogle } from '@/utils/auth'
+import type { LoginFormState, LoginFormActions, LoginFormProps } from '../LoginForm.types'
+import type { LoginFormData } from '@/types'
 
 const getErrorMessage = (errorCode?: string): string => {
   switch (errorCode) {
@@ -28,7 +29,7 @@ export const useLoginForm = ({ onSuccess }: Pick<LoginFormProps, 'onSuccess'>) =
   const [error, setError] = useState('')
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prev => ({
+    setFormData((prev: LoginFormData) => ({
       ...prev,
       [e.target.name]: e.target.value
     }))

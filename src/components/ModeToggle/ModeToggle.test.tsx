@@ -1,7 +1,8 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { ModeToggle } from './ModeToggle'
-import type { ModeToggleProps, QuizMode } from './ModeToggle.types'
+import type { ModeToggleProps } from './ModeToggle.types'
+import type { QuizMode } from '@/types'
 import * as useModeToggleModule from './hooks/useModeToggle'
 
 // Mock the view component

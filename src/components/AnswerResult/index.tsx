@@ -4,7 +4,6 @@ export { useAnswerResult } from './hooks/useAnswerResult'
 export type {
   AnswerResultProps,
   AnswerResultState,
-  AnswerResultActions,
-  ResultType,
-  WordDisplay
+  AnswerResultActions
 } from './AnswerResult.types'
+export type { ResultType, WordDisplay } from '@/types'

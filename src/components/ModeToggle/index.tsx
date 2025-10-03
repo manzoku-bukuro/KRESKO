@@ -4,6 +4,6 @@ export { useModeToggle } from './hooks/useModeToggle'
 export type {
   ModeToggleProps,
   ModeToggleState,
-  ModeToggleActions,
-  QuizMode
+  ModeToggleActions
 } from './ModeToggle.types'
+export type { QuizMode } from '@/types'

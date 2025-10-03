@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
-import { createEmailAccount, signInWithGoogle } from '../../../utils/auth'
-import type { SignupFormData, SignupFormState, SignupFormActions, SignupFormProps } from '../SignupForm.types'
+import { createEmailAccount, signInWithGoogle } from '@/utils/auth'
+import type { SignupFormState, SignupFormActions, SignupFormProps } from '../SignupForm.types'
+import type { SignupFormData } from '@/types'
 
 const getErrorMessage = (errorCode?: string): string => {
   switch (errorCode) {
@@ -25,7 +26,7 @@ export const useSignupForm = ({ onSuccess }: Pick<SignupFormProps, 'onSuccess'>)
   const [error, setError] = useState('')
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prev => ({
+    setFormData((prev: SignupFormData) => ({
       ...prev,
       [e.target.name]: e.target.value
     }))

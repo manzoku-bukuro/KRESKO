@@ -1,7 +1,4 @@
-import type { QuizMode } from '../../types'
-
-// Re-export for convenience
-export type { QuizMode }
+import type { QuizMode } from '@/types'
 
 export interface ModeToggleProps {
   currentMode: QuizMode

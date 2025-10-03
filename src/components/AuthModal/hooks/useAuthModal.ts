@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { AuthMode } from '../AuthModal.types'
+import type { AuthMode } from '@/types'
 
 export const useAuthModal = (defaultMode: AuthMode = 'login') => {
   const [mode, setMode] = useState<AuthMode>(defaultMode)

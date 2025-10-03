@@ -1,7 +1,4 @@
-import type { LoginFormData } from '../../types'
-
-// Re-export for convenience
-export type { LoginFormData }
+import type { LoginFormData } from '@/types'
 
 export interface LoginFormProps {
   onSuccess?: () => void

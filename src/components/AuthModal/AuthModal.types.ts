@@ -1,7 +1,4 @@
-import type { AuthMode } from '../../types'
-
-// Re-export for convenience
-export type { AuthMode }
+import type { AuthMode } from '@/types'
 
 export interface AuthModalProps {
   isOpen: boolean
