@@ -1,10 +1,4 @@
-import type { QuizQuestion } from '../../../hooks'
-
-export interface Word {
-  esperanto: string
-  japanese: string
-  extra?: string
-}
+import type { QuizQuestion } from '../../../types'
 
 export interface QuizViewProps {
   dataError: string | null

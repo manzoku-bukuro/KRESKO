@@ -1,12 +1,12 @@
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react'
-import { type QuizMode } from '../components/ModeToggle'
-import {
-  type QuizQuestion,
-  type QuizEngineConfig,
-  type QuizEngineState,
-  type QuizEngineActions,
-  type UseQuizEngineReturn,
-} from './useQuizEngine.types'
+import type {
+  QuizMode,
+  QuizQuestion,
+  QuizEngineConfig,
+  QuizEngineState,
+  QuizEngineActions,
+  UseQuizEngineReturn,
+} from '../types'
 
 const DEFAULT_CONFIG: QuizEngineConfig = {
   initialMode: 'traditional',

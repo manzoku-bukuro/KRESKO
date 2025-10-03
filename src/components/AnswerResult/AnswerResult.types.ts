@@ -1,10 +1,7 @@
-export type ResultType = 'correct' | 'wrong' | 'neutral'
+import type { ResultType, WordDisplay } from '../../types'
 
-export interface WordDisplay {
-  primary?: string     // エスペラント語または質問文
-  secondary?: string   // 日本語意味または答え
-  extra?: string      // 追加情報・解説
-}
+// Re-export for convenience
+export type { ResultType, WordDisplay }
 
 export interface AnswerResultProps {
   // 表示モード

@@ -1,6 +1,6 @@
 import vortaro from '../../../../data/vortaro.json'
 import esuken4 from '../../../../data/esuken4.json'
-import type { Word } from '../Quiz.types'
+import type { Word } from '../../../../types'
 
 // JSON → 共通形式に変換
 export const normalizeWords = (category: string): Word[] => {

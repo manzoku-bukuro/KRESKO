@@ -1,11 +1,11 @@
+import type { LoginFormData } from '../../types'
+
+// Re-export for convenience
+export type { LoginFormData }
+
 export interface LoginFormProps {
   onSuccess?: () => void
   onSwitchToSignup?: () => void
-}
-
-export interface LoginFormData {
-  email: string
-  password: string
 }
 
 export interface LoginFormState {

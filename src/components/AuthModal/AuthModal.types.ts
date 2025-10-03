@@ -1,10 +1,13 @@
+import type { AuthMode } from '../../types'
+
+// Re-export for convenience
+export type { AuthMode }
+
 export interface AuthModalProps {
   isOpen: boolean
   onClose: () => void
-  defaultMode?: 'login' | 'signup'
+  defaultMode?: AuthMode
 }
-
-export type AuthMode = 'login' | 'signup'
 
 export interface AuthModalViewProps {
   isOpen: boolean
