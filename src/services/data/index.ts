@@ -1,0 +1,5 @@
+export { DataService, type IDataSource } from './DataService'
+export { VortaroDataSource } from './VortaroDataSource'
+export { Esuken4DataSource } from './Esuken4DataSource'
+export { InterrogativeDataSource } from './InterrogativeDataSource'
+export { getDataService, resetDataService } from './DataServiceFactory'

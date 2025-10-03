@@ -1,13 +1,15 @@
 import { useEffect, useMemo } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { updatePageMeta, seoData } from '../../../../utils/seo'
-import vortaro from '../../../../data/vortaro.json'
-import esuken4 from '../../../../data/esuken4.json'
+import { getDataService } from '../../../../services'
+import type { CategoryId } from '../../../../types/domain'
 import type { RangeOption } from '../RangeSelect.types'
 
 export const useRangeSelect = () => {
   const { category } = useParams<{ category: string }>()
   const navigate = useNavigate()
+
+  const dataService = useMemo(() => getDataService(), [])
 
   // SEO meta tags
   useEffect(() => {
@@ -18,12 +20,23 @@ export const useRangeSelect = () => {
     }
   }, [category, navigate])
 
+  // メタデータとカテゴリ情報を取得
+  const metadata = useMemo(() => {
+    try {
+      return dataService.getDataSource(category as CategoryId).getMetadata()
+    } catch (error) {
+      return null
+    }
+  }, [dataService, category])
+
   // 単語数
   const total = useMemo(() => {
-    if (category === 'drill') return vortaro.length
-    if (category === 'esuken4') return esuken4.length
-    return 0
-  }, [category])
+    try {
+      return dataService.getTotalWords(category as CategoryId)
+    } catch (error) {
+      return 0
+    }
+  }, [dataService, category])
 
   // 範囲オプション生成
   const makeOptions = useMemo(() => {
@@ -39,19 +52,6 @@ export const useRangeSelect = () => {
   const rangeOptions10 = useMemo(() => makeOptions(10), [makeOptions])
   const rangeOptions100 = useMemo(() => makeOptions(100), [makeOptions])
 
-  // カテゴリ情報
-  const getCategoryEmoji = (cat: string) => {
-    if (cat === 'drill') return '📚'
-    if (cat === 'esuken4') return '🏆'
-    return '📖'
-  }
-
-  const getCategoryName = (cat: string) => {
-    if (cat === 'drill') return 'ドリル式'
-    if (cat === 'esuken4') return 'エス検4級'
-    return cat
-  }
-
   const handleSelectRange = (start: number, size: number) => {
     navigate(`/quiz/${category}/${start}/${size}`)
   }
@@ -65,8 +65,8 @@ export const useRangeSelect = () => {
     total,
     rangeOptions10,
     rangeOptions100,
-    categoryEmoji: getCategoryEmoji(category || ''),
-    categoryName: getCategoryName(category || ''),
+    categoryEmoji: metadata?.emoji || '📖',
+    categoryName: metadata?.name || category || '',
     onSelectRange: handleSelectRange,
     onNavigateToTop: handleNavigateToTop,
   }

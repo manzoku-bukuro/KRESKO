@@ -2,8 +2,8 @@ import { useState, useEffect, useMemo } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../../../contexts/AuthContext'
 import { saveWeakQuestion } from '../../../../utils/firestore'
-import type { QuizQuestion } from '../../../../hooks'
-import { normalizeWords, getCategoryEmoji, getCategoryName } from '../utils/normalizeWords'
+import { getDataService } from '../../../../services'
+import type { QuizQuestion, CategoryId } from '../../../../types/domain'
 
 export const useQuiz = () => {
   const { category, rangeStart, rangeSize } = useParams<{
@@ -24,7 +24,26 @@ export const useQuiz = () => {
     }
   }, [category, navigate])
 
-  const words = useMemo(() => normalizeWords(category!), [category])
+  // DataServiceを使用して単語データを取得
+  const dataService = useMemo(() => getDataService(), [])
+
+  const words = useMemo(() => {
+    try {
+      return dataService.getAllWords(category as CategoryId)
+    } catch (error) {
+      console.error('データ取得エラー:', error)
+      return []
+    }
+  }, [dataService, category])
+
+  const metadata = useMemo(() => {
+    try {
+      return dataService.getDataSource(category as CategoryId).getMetadata()
+    } catch (error) {
+      return null
+    }
+  }, [dataService, category])
+
   const start = useMemo(() => Number(rangeStart) - 1, [rangeStart])
   const size = useMemo(() => Number(rangeSize), [rangeSize])
 
@@ -96,8 +115,8 @@ export const useQuiz = () => {
   }
 
   // 選択肢生成関数
-  const generateCustomChoices = (currentQuestion: QuizQuestion): string[] => {
-    const otherWords = words.filter(word => word.japanese !== currentQuestion.japanese)
+  const generateCustomChoices = (currentQuestion: QuizQuestion, allQuestions: QuizQuestion[]): string[] => {
+    const otherWords = allQuestions.filter(word => word.japanese !== currentQuestion.japanese)
     const wrongChoices = [...otherWords]
       .sort(() => 0.5 - Math.random())
       .slice(0, 3)
@@ -114,8 +133,8 @@ export const useQuiz = () => {
     dataError,
     quizQuestions,
     user,
-    categoryEmoji: getCategoryEmoji(category!),
-    categoryName: getCategoryName(category!),
+    categoryEmoji: metadata?.emoji || '📖',
+    categoryName: metadata?.name || category!,
     markAsWeak,
     handleNextRange,
     handleNavigateToRange,

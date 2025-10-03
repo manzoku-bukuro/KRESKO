@@ -21,8 +21,7 @@ export interface QuizViewProps {
   onNavigateToRange: () => void
   onNavigateToTop: () => void
   onGenerateCustomChoices: (
-    questions: QuizQuestion[],
     currentQuestion: QuizQuestion,
-    correctAnswer: string
+    allQuestions: QuizQuestion[]
   ) => string[]
 }
