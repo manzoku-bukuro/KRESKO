@@ -1,6 +1,6 @@
 import { Route } from 'react-router-dom'
-import RangeSelect from '../pages/Exam/RangeSelect'
-import Quiz from '../pages/Exam/Quiz'
+import RangeSelect from '@/pages/Exam/RangeSelect'
+import Quiz from '@/pages/Exam/Quiz'
 
 /**
  * 試験・学習関連のルート

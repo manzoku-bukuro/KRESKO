@@ -1,9 +1,9 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { useAuth } from '../../../../contexts/AuthContext'
-import { saveWeakQuestion } from '../../../../utils/firestore'
-import { getDataService } from '../../../../services'
-import type { QuizQuestion, CategoryId } from '../../../../types/domain'
+import { useAuth } from '@/contexts/AuthContext'
+import { saveWeakQuestion } from '@/utils/firestore'
+import { getDataService } from '@/services'
+import type { QuizQuestion, CategoryId } from '@/types/domain'
 
 export const useQuiz = () => {
   const { category, rangeStart, rangeSize } = useParams<{

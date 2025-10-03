@@ -1,8 +1,8 @@
 import { useEffect, useMemo } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { updatePageMeta, seoData } from '../../../../utils/seo'
-import { getDataService } from '../../../../services'
-import type { CategoryId } from '../../../../types/domain'
+import { updatePageMeta, seoData } from '@/utils/seo'
+import { getDataService } from '@/services'
+import type { CategoryId } from '@/types/domain'
 import type { RangeOption } from '../RangeSelect.types'
 
 export const useRangeSelect = () => {

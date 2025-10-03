@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { BrowserRouter } from 'react-router-dom'
-import { AuthProvider } from '../../../../contexts/AuthContext'
+import { AuthProvider } from '@/contexts/AuthContext'
 import { Basic } from './Basic'
 
 const meta: Meta<typeof Basic> = {

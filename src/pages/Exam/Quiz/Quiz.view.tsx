@@ -1,6 +1,6 @@
-import { UnifiedQuiz } from '../../../components/UnifiedQuiz'
+import { UnifiedQuiz } from '@/components/UnifiedQuiz'
 import type { QuizViewProps } from './Quiz.types'
-import type { QuizQuestion } from '../../../hooks'
+import type { QuizQuestion } from '@/types'
 
 export const QuizView = ({
   dataError,

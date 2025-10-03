@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useQuizEngine } from '../../hooks'
-import { QuizHeader } from '../QuizHeader'
-import { ChoiceButtons } from '../ChoiceButtons'
-import { AnswerResult } from '../AnswerResult'
-import { WordList } from '../WordList'
+import { useQuizEngine } from '@/hooks'
+import { QuizHeader } from '@/components/QuizHeader'
+import { ChoiceButtons } from '@/components/ChoiceButtons'
+import { AnswerResult } from '@/components/AnswerResult'
+import { WordList } from '@/components/WordList'
 import type { UnifiedQuizProps, QuizResults } from './UnifiedQuiz.types'
 
 export const UnifiedQuiz = ({

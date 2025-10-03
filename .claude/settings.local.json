@@ -28,7 +28,11 @@
       "Bash(pkill:*)",
       "Bash(for component in AdBanner AnswerResult AuthButton AuthModal ChoiceButtons Footer LoginForm ModeToggle QuizHeader SignupForm UnifiedQuiz WordList)",
       "Bash(do echo \"=== $component ===\" grep -r \"from.*components/$component\" /Users/bukuro/src/KRESKO/src/pages --include=\"*.tsx\" --include=\"*.ts\")",
-      "Bash(xargs sed:*)"
+      "Bash(xargs sed:*)",
+      "Bash(npm run storybook:*)",
+      "Bash(tree:*)",
+      "Bash(cat:*)",
+      "Bash(timeout 10s npm run dev:*)"
     ],
     "deny": [],
     "ask": []

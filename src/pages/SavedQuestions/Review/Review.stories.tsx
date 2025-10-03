@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { BrowserRouter } from 'react-router-dom'
-import { AuthProvider } from '../../../contexts/AuthContext'
+import { AuthProvider } from '@/contexts/AuthContext'
 import { ReviewView } from './Review.view'
-import type { WeakQuestion } from '../../../utils/firestore'
-import type { QuizQuestion } from '../../../hooks'
-import { createMockUser } from '../../../test/mockHelpers'
+import type { WeakQuestion } from '@/utils/firestore'
+import type { QuizQuestion } from '@/types'
+import { createMockUser } from '@/test/mockHelpers'
 
 const meta: Meta<typeof ReviewView> = {
   title: 'Pages/SavedQuestions/Review',

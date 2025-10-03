@@ -1,7 +1,7 @@
 import { Route } from 'react-router-dom'
-import Top from '../pages/Top'
-import NumberGame from '../pages/NumberGame'
-import PrivacyPolicy from '../pages/PrivacyPolicy'
+import Top from '@/pages/Top'
+import NumberGame from '@/pages/NumberGame'
+import PrivacyPolicy from '@/pages/PrivacyPolicy'
 
 /**
  * 静的ページのルート

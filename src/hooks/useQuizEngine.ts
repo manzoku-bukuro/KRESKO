@@ -6,7 +6,7 @@ import type {
   QuizEngineState,
   QuizEngineActions,
   UseQuizEngineReturn,
-} from '../types'
+} from '@/types'
 
 const DEFAULT_CONFIG: QuizEngineConfig = {
   initialMode: 'traditional',

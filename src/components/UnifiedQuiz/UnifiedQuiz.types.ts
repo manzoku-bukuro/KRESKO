@@ -7,7 +7,7 @@ import type {
   ErrorConfig,
   LoadingConfig,
   QuizResults,
-} from '../../types'
+} from '@/types'
 
 // Re-export for convenience
 export type {

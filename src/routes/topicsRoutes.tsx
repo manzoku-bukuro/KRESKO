@@ -1,8 +1,8 @@
 import { Route } from 'react-router-dom'
-import InterrogativeMenu from '../pages/Topics/Interrogative/Menu'
-import InterrogativeExplanation from '../pages/Topics/Interrogative/Explanation'
-import InterrogativeBasic from '../pages/Topics/Interrogative/Basic'
-import InterrogativeAdvanced from '../pages/Topics/Interrogative/Advanced'
+import InterrogativeMenu from '@/pages/Topics/Interrogative/Menu'
+import InterrogativeExplanation from '@/pages/Topics/Interrogative/Explanation'
+import InterrogativeBasic from '@/pages/Topics/Interrogative/Basic'
+import InterrogativeAdvanced from '@/pages/Topics/Interrogative/Advanced'
 
 /**
  * トピック学習関連のルート

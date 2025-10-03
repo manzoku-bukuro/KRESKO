@@ -1,7 +1,7 @@
 import { renderHook, act } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { useQuizEngine } from '../useQuizEngine'
-import type { QuizQuestion, QuizEngineConfig } from '../useQuizEngine.types'
+import type { QuizQuestion, QuizEngineConfig } from '@/types'
 
 // テスト用のサンプルデータ
 const sampleQuestions: QuizQuestion[] = [

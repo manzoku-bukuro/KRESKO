@@ -1,6 +1,6 @@
 import { Route } from 'react-router-dom'
-import WeakQuestions from '../pages/SavedQuestions/List'
-import WeakQuestionsReview from '../pages/SavedQuestions/Review'
+import WeakQuestions from '@/pages/SavedQuestions/List'
+import WeakQuestionsReview from '@/pages/SavedQuestions/Review'
 
 /**
  * ユーザーデータ関連のルート

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { BrowserRouter } from 'react-router-dom'
-import { AuthProvider } from '../../../contexts/AuthContext'
+import { AuthProvider } from '@/contexts/AuthContext'
 import { QuizView } from './Quiz.view'
 import type { QuizViewProps } from './Quiz.types'
 

@@ -1,4 +1,4 @@
-import type { QuizQuestion } from '../../../types'
+import type { QuizQuestion } from '@/types'
 
 export interface QuizViewProps {
   dataError: string | null
