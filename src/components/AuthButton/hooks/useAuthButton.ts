@@ -1,10 +1,11 @@
 import { useState } from 'react'
+import type { User } from 'firebase/auth'
 import { useAuth } from '../../../contexts/AuthContext'
 
 export type AuthMode = 'login' | 'signup'
 
 export interface AuthButtonData {
-  user: any | null
+  user: User | null
   showAuthModal: boolean
   authMode: AuthMode
   loading: boolean

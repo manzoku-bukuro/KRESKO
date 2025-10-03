@@ -12,10 +12,8 @@ export interface WordListProps {
   className?: string
 }
 
-export interface WordListState {
-  // 将来的に展開可能性のため予約
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- 将来的に展開可能性のため予約
+export interface WordListState {}
 
-export interface WordListActions {
-  // 将来的に展開可能性のため予約
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- 将来的に展開可能性のため予約
+export interface WordListActions {}

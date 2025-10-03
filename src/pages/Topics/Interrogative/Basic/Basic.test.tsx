@@ -4,7 +4,7 @@ import { Basic } from './Basic'
 
 // Mock UnifiedQuiz component
 vi.mock('../../../../components/UnifiedQuiz', () => ({
-  UnifiedQuiz: ({ metadata }: any) => (
+  UnifiedQuiz: ({ metadata }: { metadata: { title: string; subtitle: string } }) => (
     <div>
       <h1>{metadata.title}</h1>
       <p>{metadata.subtitle}</p>

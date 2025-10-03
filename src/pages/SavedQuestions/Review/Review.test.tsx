@@ -8,7 +8,7 @@ import type { QuizQuestion } from '../../../hooks'
 
 // Mock UnifiedQuiz component
 vi.mock('../../../components/UnifiedQuiz', () => ({
-  UnifiedQuiz: ({ metadata, loading, error, errorConfig }: any) => {
+  UnifiedQuiz: ({ metadata, loading, error, errorConfig }: { metadata?: { title: string; subtitle: string }; loading?: boolean; error?: string; errorConfig?: { title: string; message: string; onAction: () => void; actionLabel: string } }) => {
     if (loading) {
       return <div>Loading...</div>
     }

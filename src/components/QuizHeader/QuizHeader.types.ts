@@ -13,10 +13,8 @@ export interface QuizHeaderProps {
   className?: string
 }
 
-export interface QuizHeaderState {
-  // 将来的に展開可能性のため予約
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- 将来的に展開可能性のため予約
+export interface QuizHeaderState {}
 
-export interface QuizHeaderActions {
-  // 将来的に展開可能性のため予約
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- 将来的に展開可能性のため予約
+export interface QuizHeaderActions {}

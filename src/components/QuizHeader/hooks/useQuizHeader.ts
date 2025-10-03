@@ -1,6 +1,6 @@
 import type { QuizHeaderProps, QuizHeaderState, QuizHeaderActions } from '../QuizHeader.types'
 
-export const useQuizHeader = (_props: QuizHeaderProps) => {
+export const useQuizHeader = (/* _props: QuizHeaderProps */) => {
   const state: QuizHeaderState = {}
 
   const actions: QuizHeaderActions = {}

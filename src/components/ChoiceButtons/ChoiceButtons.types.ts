@@ -9,9 +9,8 @@ export interface ChoiceButtonsProps {
   className?: string
 }
 
-export interface ChoiceButtonsState {
-  // 将来的に展開可能性のため予約
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- 将来的に展開可能性のため予約
+export interface ChoiceButtonsState {}
 
 export interface ChoiceButtonsActions {
   handleChoiceClick: (choice: string) => void

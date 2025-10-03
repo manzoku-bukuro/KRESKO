@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { AdBanner } from './AdBanner'
+import * as useAdBannerModule from './hooks/useAdBanner'
 
 // Mock the view component
 vi.mock('./AdBanner.view', () => ({
@@ -29,6 +30,8 @@ vi.mock('./hooks/useAdBanner', () => ({
   })),
 }))
 
+const mockedUseAdBanner = vi.mocked(useAdBannerModule.useAdBanner)
+
 describe('AdBanner', () => {
   it('renders with required slot prop', () => {
     render(<AdBanner slot="1234567890" />)
@@ -37,8 +40,6 @@ describe('AdBanner', () => {
   })
 
   it('passes props to the hook', () => {
-    const { useAdBanner } = require('./hooks/useAdBanner')
-
     render(
       <AdBanner
         slot="1234567890"
@@ -48,7 +49,7 @@ describe('AdBanner', () => {
       />
     )
 
-    expect(useAdBanner).toHaveBeenCalledWith({
+    expect(mockedUseAdBanner).toHaveBeenCalledWith({
       slot: '1234567890',
       format: 'rectangle',
       responsive: false,
@@ -57,11 +58,9 @@ describe('AdBanner', () => {
   })
 
   it('uses default values for optional props', () => {
-    const { useAdBanner } = require('./hooks/useAdBanner')
-
     render(<AdBanner slot="1234567890" />)
 
-    expect(useAdBanner).toHaveBeenCalledWith({
+    expect(mockedUseAdBanner).toHaveBeenCalledWith({
       slot: '1234567890',
       format: 'auto',
       responsive: true,

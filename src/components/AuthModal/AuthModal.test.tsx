@@ -4,7 +4,7 @@ import { AuthModal } from './AuthModal'
 
 // Mock child components
 vi.mock('../SignupForm', () => ({
-  SignupForm: ({ onSuccess, onSwitchToLogin }: any) => (
+  SignupForm: ({ onSuccess, onSwitchToLogin }: { onSuccess?: () => void; onSwitchToLogin?: () => void }) => (
     <div>
       <h2>Signup Form</h2>
       <button onClick={onSuccess}>Submit Signup</button>
@@ -14,7 +14,7 @@ vi.mock('../SignupForm', () => ({
 }))
 
 vi.mock('../LoginForm', () => ({
-  LoginForm: ({ onSuccess, onSwitchToSignup }: any) => (
+  LoginForm: ({ onSuccess, onSwitchToSignup }: { onSuccess?: () => void; onSwitchToSignup?: () => void }) => (
     <div>
       <h2>Login Form</h2>
       <button onClick={onSuccess}>Submit Login</button>

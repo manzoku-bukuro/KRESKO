@@ -1,8 +1,9 @@
+import type { User } from 'firebase/auth'
 import type { WeakQuestion } from '../../../utils/firestore'
 import type { QuizQuestion } from '../../../hooks'
 
 export interface ReviewViewProps {
-  user: any
+  user: User | null
   loading: boolean
   error: string | null
   allWeakQuestions: WeakQuestion[]

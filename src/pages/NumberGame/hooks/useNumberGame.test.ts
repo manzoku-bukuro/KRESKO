@@ -141,8 +141,6 @@ describe('useNumberGame', () => {
   it('generates a new game', async () => {
     const { result } = renderHook(() => useNumberGame())
 
-    const initialNumber = result.current.targetNumber
-
     act(() => {
       result.current.onSelectCard(2, 'du')
     })

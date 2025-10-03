@@ -27,9 +27,9 @@ describe('SEO utilities', () => {
     it('updates meta description when element exists', () => {
       const mockMetaElement = {
         setAttribute: vi.fn()
-      }
+      } as unknown as Element
       const querySelectorSpy = vi.spyOn(document, 'querySelector')
-      querySelectorSpy.mockReturnValue(mockMetaElement as any)
+      querySelectorSpy.mockReturnValue(mockMetaElement)
 
       updatePageDescription('テスト説明文')
 
@@ -50,9 +50,9 @@ describe('SEO utilities', () => {
     it('updates both title and description', () => {
       const mockMetaElement = {
         setAttribute: vi.fn()
-      }
+      } as unknown as Element
       const querySelectorSpy = vi.spyOn(document, 'querySelector')
-      querySelectorSpy.mockReturnValue(mockMetaElement as any)
+      querySelectorSpy.mockReturnValue(mockMetaElement)
 
       updatePageMeta('テストタイトル', 'テスト説明文')
 

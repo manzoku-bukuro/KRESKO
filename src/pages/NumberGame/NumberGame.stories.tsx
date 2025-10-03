@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { BrowserRouter } from 'react-router-dom'
 import { NumberGameView } from './NumberGame.view'
-import type { Card, GameResult } from './NumberGame.types'
+import type { Card } from './NumberGame.types'
 
 const meta: Meta<typeof NumberGameView> = {
   title: 'Pages/NumberGame',

@@ -8,9 +8,8 @@ export interface ModeToggleProps {
   className?: string
 }
 
-export interface ModeToggleState {
-  // 将来的に展開可能性のため予約
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- 将来的に展開可能性のため予約
+export interface ModeToggleState {}
 
 export interface ModeToggleActions {
   handleTraditionalClick: () => void

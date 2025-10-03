@@ -3,7 +3,6 @@ import type { ReviewViewProps } from './Review.types'
 import type { QuizQuestion } from '../../../hooks'
 
 export const ReviewView = ({
-  user,
   loading,
   error,
   allWeakQuestions,
