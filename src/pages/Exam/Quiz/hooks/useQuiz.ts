@@ -1,18 +1,22 @@
 import { useState, useEffect, useMemo } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import { saveWeakQuestion } from '@/utils/firestore'
 import { getDataService } from '@/services'
 import type { QuizQuestion, CategoryId } from '@/types/domain'
 
 export const useQuiz = () => {
-  const { category, rangeStart, rangeSize } = useParams<{
+  const { category } = useParams<{
     category: string
-    rangeStart: string
-    rangeSize: string
   }>()
+  const [searchParams] = useSearchParams()
   const navigate = useNavigate()
   const { user } = useAuth()
+
+  // クエリパラメータから開始位置を取得（デフォルト: 1）
+  const rangeStart = searchParams.get('start') || '1'
+  // 固定で10問出題
+  const rangeSize = '10'
 
   const [dataError, setDataError] = useState<string | null>(null)
 
@@ -39,7 +43,7 @@ export const useQuiz = () => {
   const metadata = useMemo(() => {
     try {
       return dataService.getDataSource(category as CategoryId).getMetadata()
-    } catch (error) {
+    } catch {
       return null
     }
   }, [dataService, category])
@@ -49,7 +53,7 @@ export const useQuiz = () => {
 
   // データの整合性チェック
   useEffect(() => {
-    if (!category || !rangeStart || !rangeSize) {
+    if (!category) {
       setDataError('クイズパラメータが正しくありません')
       return
     }
@@ -65,7 +69,7 @@ export const useQuiz = () => {
     }
 
     setDataError(null)
-  }, [category, rangeStart, rangeSize, words, start])
+  }, [category, words, start])
 
   const slice = useMemo(() => words.slice(start, start + size), [words, start, size])
 
@@ -99,15 +103,15 @@ export const useQuiz = () => {
   const handleNextRange = () => {
     const nextStart = start + size + 1
     if (nextStart <= words.length) {
-      navigate(`/quiz/${category}/${nextStart}/${size}`)
+      navigate(`/quiz/${category}?start=${nextStart}`)
     } else {
-      // 末尾を超えたら範囲選択に戻る
-      navigate(`/range/${category}`)
+      // 末尾を超えたら単語リストに戻る
+      navigate(`/wordlist/${category}`)
     }
   }
 
   const handleNavigateToRange = () => {
-    navigate(`/range/${category}`)
+    navigate(`/wordlist/${category}`)
   }
 
   const handleNavigateToTop = () => {

@@ -33,7 +33,7 @@ export const useTop = () => {
     fetchWeakQuestionsCount()
   }, [user])
 
-  const handleNavigateToExam = () => navigate('/range/esuken4')
+  const handleNavigateToExam = () => navigate('/wordlist/esuken4')
   const handleNavigateToInterrogative = () => navigate('/interrogative-menu')
   const handleNavigateToNumberGame = () => navigate('/number-game')
   const handleNavigateToWeakQuestions = () => {
