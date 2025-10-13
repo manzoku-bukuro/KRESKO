@@ -1,0 +1,1 @@
+export { StarLogo } from './StarLogo'

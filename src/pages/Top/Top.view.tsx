@@ -1,74 +1,74 @@
+import { Trophy, BookOpen, Gamepad2, BookmarkCheck } from 'lucide-react'
+import { Header } from '../../components/Header'
 import { Footer } from '../../components/Footer'
-import { AuthButton } from '../../components/AuthButton'
+import { StarLogo } from '../../components/StarLogo'
+import { LearningModeCard } from '../../components/LearningModeCard'
 import type { TopViewProps } from './Top.types'
 
 export const TopView = ({
   weakQuestionsCount,
-  isAuthenticated,
   onNavigateToExam,
   onNavigateToInterrogative,
   onNavigateToNumberGame,
   onNavigateToWeakQuestions,
 }: TopViewProps) => {
   return (
-    <>
-      <div className="app-container">
-        <div className="card category-selection">
-          <div className="header-with-auth">
-            <div>
-              <h1>MEMORU</h1>
-              <h2>カテゴリを選択</h2>
-            </div>
-            <AuthButton />
-          </div>
-          <div className="category-buttons">
-            <button
-              className="btn btn-primary btn-large btn-full"
-              onClick={onNavigateToExam}
-            >
-              🏆 エス検4級
-            </button>
-            <button
-              className="btn btn-secondary btn-large btn-full"
-              onClick={onNavigateToInterrogative}
-            >
-              ❓ 疑問詞
-            </button>
-            <button
-              className="btn btn-accent btn-large btn-full"
-              onClick={onNavigateToNumberGame}
-            >
-              🔢 数字当てゲーム
-            </button>
+    <div className="flex min-h-screen flex-col bg-background">
+      <Header />
 
-            {isAuthenticated && weakQuestionsCount > 0 && (
-              <button
-                className="btn btn-outline btn-large btn-full"
-                onClick={onNavigateToWeakQuestions}
-                style={{
-                  marginTop: '1rem',
-                  borderTop: '1px solid #e0e0e0',
-                  paddingTop: '1rem'
-                }}
-              >
-                📚 苦手問題を復習
-                <span className="badge" style={{
-                  marginLeft: '0.5rem',
-                  backgroundColor: '#ff6b6b',
-                  color: 'white',
-                  borderRadius: '12px',
-                  padding: '2px 8px',
-                  fontSize: '12px',
-                  fontWeight: 'bold'
-                }}>
-                  {weakQuestionsCount}
-                </span>
-              </button>
-            )}
+      <main className="mx-auto w-full max-w-[375px] flex-1 px-4 py-8">
+        <div className="mb-8 flex flex-col items-center text-center">
+          <div className="mb-4 flex h-20 w-20 items-center justify-center">
+            <StarLogo className="h-20 w-20 text-primary drop-shadow-lg" />
           </div>
+          <h1 className="mb-3 font-sans text-3xl font-bold tracking-tight text-foreground">
+            MEMORU
+          </h1>
+          <p className="text-base leading-relaxed text-muted-foreground">
+            エスペラント語を楽しく学ぼう
+          </p>
         </div>
-      </div>
+
+        <div className="space-y-4">
+          <LearningModeCard
+            title="エス検対策"
+            description="検定試験の対策学習"
+            icon={Trophy}
+            onClick={onNavigateToExam}
+            color="primary"
+          />
+
+          <LearningModeCard
+            title="トピック学習"
+            description="疑問詞や文法の学習"
+            icon={BookOpen}
+            onClick={onNavigateToInterrogative}
+            color="secondary"
+          />
+
+          <LearningModeCard
+            title="ゲーム"
+            description="楽しく学べるゲーム"
+            icon={Gamepad2}
+            onClick={onNavigateToNumberGame}
+            color="accent"
+          />
+        </div>
+
+        <div className="mt-8">
+          <h2 className="mb-4 font-sans text-lg font-bold text-foreground">学習管理</h2>
+          <LearningModeCard
+            title="苦手問題"
+            description={`保存した問題を復習 (${weakQuestionsCount}問)`}
+            icon={BookmarkCheck}
+            onClick={onNavigateToWeakQuestions}
+            color="primary"
+            badge={weakQuestionsCount}
+          />
+        </div>
+      </main>
+
       <Footer />
-    </>
+    </div>
   )
 }
