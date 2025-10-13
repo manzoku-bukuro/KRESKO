@@ -41,7 +41,7 @@ export const TopView = ({
               🔢 数字当てゲーム
             </button>
 
-            {isAuthenticated && (
+            {isAuthenticated && weakQuestionsCount > 0 && (
               <button
                 className="btn btn-outline btn-large btn-full"
                 onClick={onNavigateToWeakQuestions}
@@ -52,19 +52,17 @@ export const TopView = ({
                 }}
               >
                 📚 苦手問題を復習
-                {weakQuestionsCount > 0 && (
-                  <span className="badge" style={{
-                    marginLeft: '0.5rem',
-                    backgroundColor: '#ff6b6b',
-                    color: 'white',
-                    borderRadius: '12px',
-                    padding: '2px 8px',
-                    fontSize: '12px',
-                    fontWeight: 'bold'
-                  }}>
-                    {weakQuestionsCount}
-                  </span>
-                )}
+                <span className="badge" style={{
+                  marginLeft: '0.5rem',
+                  backgroundColor: '#ff6b6b',
+                  color: 'white',
+                  borderRadius: '12px',
+                  padding: '2px 8px',
+                  fontSize: '12px',
+                  fontWeight: 'bold'
+                }}>
+                  {weakQuestionsCount}
+                </span>
               </button>
             )}
           </div>
