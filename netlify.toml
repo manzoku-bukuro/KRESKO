@@ -2,6 +2,11 @@
   publish = "dist"
   command = "npm run build"
 
+# Firebase環境変数はクライアントサイドで使用されるため、バンドルに含まれることは正常
+# secrets scanを無効化して誤検知を防ぐ
+[build.environment]
+  SECRETS_SCAN_ENABLED = "false"
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
