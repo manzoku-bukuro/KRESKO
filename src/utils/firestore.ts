@@ -38,8 +38,12 @@ export const saveWeakQuestion = async (question: Omit<WeakQuestion, 'addedAt' | 
 
   try {
     const userDoc = await getDoc(userDocRef);
+
+    // Firestoreはundefinedを許可しないため、extraがundefinedの場合は除外
     const weakQuestion: WeakQuestion = {
-      ...question,
+      esperanto: question.esperanto,
+      japanese: question.japanese,
+      ...(question.extra !== undefined && { extra: question.extra }),
       addedAt: new Date(),
       incorrectCount: 1
     };
