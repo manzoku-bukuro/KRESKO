@@ -5,6 +5,7 @@ export interface TopViewProps {
   onNavigateToExam: () => void
   onNavigateToInterrogative: () => void
   onNavigateToNumberGame: () => void
+  onNavigateToSearch: () => void
   onNavigateToWeakQuestions: () => void
   onCloseAuthModal: () => void
   onAuthSuccess: () => void

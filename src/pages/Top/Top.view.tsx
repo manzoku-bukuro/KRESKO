@@ -1,4 +1,4 @@
-import { Trophy, BookOpen, Gamepad2, BookmarkCheck } from 'lucide-react'
+import { Trophy, BookOpen, Gamepad2, BookmarkCheck, Search } from 'lucide-react'
 import { Header } from '../../components/Header'
 import { Footer } from '../../components/Footer'
 import { StarLogo } from '../../components/StarLogo'
@@ -12,6 +12,7 @@ export const TopView = ({
   onNavigateToExam,
   onNavigateToInterrogative,
   onNavigateToNumberGame,
+  onNavigateToSearch,
   onNavigateToWeakQuestions,
   onCloseAuthModal,
   onAuthSuccess,
@@ -40,6 +41,14 @@ export const TopView = ({
             icon={Trophy}
             onClick={onNavigateToExam}
             color="primary"
+          />
+
+          <LearningModeCard
+            title="単語検索"
+            description="日本語・エスペラント語で検索"
+            icon={Search}
+            onClick={onNavigateToSearch}
+            color="secondary"
           />
 
           <LearningModeCard

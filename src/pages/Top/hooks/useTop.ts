@@ -36,6 +36,7 @@ export const useTop = () => {
   const handleNavigateToExam = () => navigate('/wordlist/esuken4')
   const handleNavigateToInterrogative = () => navigate('/interrogative-menu')
   const handleNavigateToNumberGame = () => navigate('/number-game')
+  const handleNavigateToSearch = () => navigate('/search')
   const handleNavigateToWeakQuestions = () => {
     if (user) {
       navigate('/weak-questions')
@@ -60,6 +61,7 @@ export const useTop = () => {
     onNavigateToExam: handleNavigateToExam,
     onNavigateToInterrogative: handleNavigateToInterrogative,
     onNavigateToNumberGame: handleNavigateToNumberGame,
+    onNavigateToSearch: handleNavigateToSearch,
     onNavigateToWeakQuestions: handleNavigateToWeakQuestions,
     onCloseAuthModal: handleCloseAuthModal,
     onAuthSuccess: handleAuthSuccess,
