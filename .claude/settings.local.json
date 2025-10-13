@@ -32,7 +32,9 @@
       "Bash(npm run storybook:*)",
       "Bash(tree:*)",
       "Bash(cat:*)",
-      "Bash(timeout 10s npm run dev:*)"
+      "Bash(timeout 10s npm run dev:*)",
+      "Bash(git config:*)",
+      "Bash(git mv:*)"
     ],
     "deny": [],
     "ask": []

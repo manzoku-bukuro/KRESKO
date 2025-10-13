@@ -3,6 +3,7 @@ import type { AuthMode } from '@/types'
 export interface AuthModalProps {
   isOpen: boolean
   onClose: () => void
+  onSuccess?: () => void
   defaultMode?: AuthMode
 }
 

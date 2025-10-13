@@ -8,10 +8,14 @@ describe('TopView', () => {
   const defaultProps: TopViewProps = {
     weakQuestionsCount: 0,
     isAuthenticated: false,
+    showAuthModal: false,
     onNavigateToExam: vi.fn(),
     onNavigateToInterrogative: vi.fn(),
     onNavigateToNumberGame: vi.fn(),
+    onNavigateToSearch: vi.fn(),
     onNavigateToWeakQuestions: vi.fn(),
+    onCloseAuthModal: vi.fn(),
+    onAuthSuccess: vi.fn(),
   }
 
   it('renders the main heading', () => {
