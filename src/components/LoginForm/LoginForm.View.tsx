@@ -11,18 +11,49 @@ export const LoginFormView = ({ state, actions, onSwitchToSignup }: LoginFormVie
   const { handleChange, handleSubmit, handleGoogleLogin } = actions
 
   return (
-    <div className="auth-form">
-      <h2>ログイン</h2>
+    <div style={{ width: '100%' }}>
+      <h2
+        style={{
+          fontSize: '1.5rem',
+          fontWeight: 'bold',
+          marginBottom: '1.5rem',
+          color: 'var(--color-text)',
+          textAlign: 'center',
+        }}
+      >
+        ログイン
+      </h2>
 
       {error && (
-        <div className="error-message">
+        <div
+          style={{
+            padding: '0.75rem 1rem',
+            marginBottom: '1rem',
+            backgroundColor: 'rgb(254 226 226)',
+            border: '1px solid rgb(248 113 113)',
+            borderRadius: '0.375rem',
+            color: 'rgb(153 27 27)',
+            fontSize: '0.875rem',
+          }}
+        >
           {error}
         </div>
       )}
 
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="email">メールアドレス</label>
+        <div style={{ marginBottom: '1rem' }}>
+          <label
+            htmlFor="email"
+            style={{
+              display: 'block',
+              marginBottom: '0.5rem',
+              fontSize: '0.875rem',
+              fontWeight: 500,
+              color: 'var(--color-text)',
+            }}
+          >
+            メールアドレス
+          </label>
           <input
             type="email"
             id="email"
@@ -31,11 +62,39 @@ export const LoginFormView = ({ state, actions, onSwitchToSignup }: LoginFormVie
             onChange={handleChange}
             required
             disabled={loading}
+            style={{
+              width: '100%',
+              padding: '0.625rem 0.75rem',
+              fontSize: '0.875rem',
+              border: '1px solid var(--color-border)',
+              borderRadius: '0.375rem',
+              backgroundColor: 'var(--color-surface)',
+              color: 'var(--color-text)',
+              outline: 'none',
+              transition: 'border-color 0.15s ease',
+            }}
+            onFocus={(e) => {
+              e.currentTarget.style.borderColor = 'var(--color-primary)'
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.borderColor = 'var(--color-border)'
+            }}
           />
         </div>
 
-        <div className="form-group">
-          <label htmlFor="password">パスワード</label>
+        <div style={{ marginBottom: '1.5rem' }}>
+          <label
+            htmlFor="password"
+            style={{
+              display: 'block',
+              marginBottom: '0.5rem',
+              fontSize: '0.875rem',
+              fontWeight: 500,
+              color: 'var(--color-text)',
+            }}
+          >
+            パスワード
+          </label>
           <input
             type="password"
             id="password"
@@ -44,39 +103,144 @@ export const LoginFormView = ({ state, actions, onSwitchToSignup }: LoginFormVie
             onChange={handleChange}
             required
             disabled={loading}
+            style={{
+              width: '100%',
+              padding: '0.625rem 0.75rem',
+              fontSize: '0.875rem',
+              border: '1px solid var(--color-border)',
+              borderRadius: '0.375rem',
+              backgroundColor: 'var(--color-surface)',
+              color: 'var(--color-text)',
+              outline: 'none',
+              transition: 'border-color 0.15s ease',
+            }}
+            onFocus={(e) => {
+              e.currentTarget.style.borderColor = 'var(--color-primary)'
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.borderColor = 'var(--color-border)'
+            }}
           />
         </div>
 
         <button
           type="submit"
-          className="btn btn-primary"
           disabled={loading}
+          style={{
+            width: '100%',
+            padding: '0.75rem 1rem',
+            fontSize: '0.875rem',
+            fontWeight: 500,
+            backgroundColor: loading ? 'var(--color-muted)' : 'var(--color-primary)',
+            color: 'white',
+            border: 'none',
+            borderRadius: '0.375rem',
+            cursor: loading ? 'not-allowed' : 'pointer',
+            transition: 'all 0.15s ease',
+            boxShadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+          }}
+          onMouseOver={(e) => {
+            if (!loading) {
+              e.currentTarget.style.backgroundColor = 'var(--color-primary-dark)'
+            }
+          }}
+          onMouseOut={(e) => {
+            if (!loading) {
+              e.currentTarget.style.backgroundColor = 'var(--color-primary)'
+            }
+          }}
         >
           {loading ? 'ログイン中...' : '📧 メールでログイン'}
         </button>
       </form>
 
-      <div className="auth-divider">
-        <span>または</span>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          textAlign: 'center',
+          margin: '1.5rem 0',
+          position: 'relative',
+        }}
+      >
+        <div
+          style={{
+            flex: 1,
+            borderTop: '1px solid var(--color-border)',
+          }}
+        />
+        <span
+          style={{
+            padding: '0 1rem',
+            fontSize: '0.875rem',
+            color: 'var(--color-muted)',
+          }}
+        >
+          または
+        </span>
+        <div
+          style={{
+            flex: 1,
+            borderTop: '1px solid var(--color-border)',
+          }}
+        />
       </div>
 
       <button
         type="button"
-        className="btn btn-google"
         onClick={handleGoogleLogin}
         disabled={loading}
+        style={{
+          width: '100%',
+          padding: '0.75rem 1rem',
+          fontSize: '0.875rem',
+          fontWeight: 500,
+          backgroundColor: 'var(--color-surface)',
+          color: 'var(--color-text)',
+          border: '1px solid var(--color-border)',
+          borderRadius: '0.375rem',
+          cursor: loading ? 'not-allowed' : 'pointer',
+          transition: 'all 0.15s ease',
+          boxShadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+        }}
+        onMouseOver={(e) => {
+          if (!loading) {
+            e.currentTarget.style.backgroundColor = 'var(--color-surface-hover)'
+          }
+        }}
+        onMouseOut={(e) => {
+          if (!loading) {
+            e.currentTarget.style.backgroundColor = 'var(--color-surface)'
+          }
+        }}
       >
         🔍 Googleでログイン
       </button>
 
-      <div className="auth-switch">
-        <p>
+      <div
+        style={{
+          marginTop: '1.5rem',
+          textAlign: 'center',
+          fontSize: '0.875rem',
+          color: 'var(--color-muted)',
+        }}
+      >
+        <p style={{ margin: 0 }}>
           アカウントをお持ちでない方は
           <button
             type="button"
-            className="link-button"
             onClick={onSwitchToSignup}
             disabled={loading}
+            style={{
+              marginLeft: '0.25rem',
+              padding: 0,
+              background: 'none',
+              border: 'none',
+              color: 'var(--color-primary)',
+              textDecoration: 'underline',
+              cursor: loading ? 'not-allowed' : 'pointer',
+              fontSize: '0.875rem',
+            }}
           >
             新規登録
           </button>
