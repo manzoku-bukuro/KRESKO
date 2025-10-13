@@ -8,6 +8,7 @@ export const useTop = () => {
   const navigate = useNavigate()
   const { user } = useAuth()
   const [weakQuestionsCount, setWeakQuestionsCount] = useState<number>(0)
+  const [showAuthModal, setShowAuthModal] = useState(false)
 
   // SEO meta tags
   useEffect(() => {
@@ -35,14 +36,32 @@ export const useTop = () => {
   const handleNavigateToExam = () => navigate('/range/esuken4')
   const handleNavigateToInterrogative = () => navigate('/interrogative-menu')
   const handleNavigateToNumberGame = () => navigate('/number-game')
-  const handleNavigateToWeakQuestions = () => navigate('/weak-questions')
+  const handleNavigateToWeakQuestions = () => {
+    if (user) {
+      navigate('/weak-questions')
+    } else {
+      setShowAuthModal(true)
+    }
+  }
+
+  const handleCloseAuthModal = () => {
+    setShowAuthModal(false)
+  }
+
+  const handleAuthSuccess = () => {
+    setShowAuthModal(false)
+    navigate('/weak-questions')
+  }
 
   return {
     weakQuestionsCount,
     isAuthenticated: !!user,
+    showAuthModal,
     onNavigateToExam: handleNavigateToExam,
     onNavigateToInterrogative: handleNavigateToInterrogative,
     onNavigateToNumberGame: handleNavigateToNumberGame,
     onNavigateToWeakQuestions: handleNavigateToWeakQuestions,
+    onCloseAuthModal: handleCloseAuthModal,
+    onAuthSuccess: handleAuthSuccess,
   }
 }

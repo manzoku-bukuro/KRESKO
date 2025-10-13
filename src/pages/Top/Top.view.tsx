@@ -3,14 +3,18 @@ import { Header } from '../../components/Header'
 import { Footer } from '../../components/Footer'
 import { StarLogo } from '../../components/StarLogo'
 import { LearningModeCard } from '../../components/LearningModeCard'
+import AuthModal from '../../components/AuthModal'
 import type { TopViewProps } from './Top.types'
 
 export const TopView = ({
   weakQuestionsCount,
+  showAuthModal,
   onNavigateToExam,
   onNavigateToInterrogative,
   onNavigateToNumberGame,
   onNavigateToWeakQuestions,
+  onCloseAuthModal,
+  onAuthSuccess,
 }: TopViewProps) => {
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -69,6 +73,13 @@ export const TopView = ({
       </main>
 
       <Footer />
+
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={onCloseAuthModal}
+        onSuccess={onAuthSuccess}
+        defaultMode="login"
+      />
     </div>
   )
 }
